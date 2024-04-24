@@ -1,0 +1,165 @@
+from django.contrib.postgres.fields import ArrayField
+from django.db import models
+from netbox.models import NetBoxModel
+from django.urls import reverse
+from utilities.choices import ChoiceSet
+
+
+class SignalTypeChoices(ChoiceSet):
+    key = 'Sender.signal_type'  # todo anderer key -> allgemeiner?
+
+    CHOICES = [
+        ('video', 'Video', 'red'),
+        ('audio', 'Audio', 'blue'),
+        ('metadata', 'Metadata', 'yellow'),
+    ]
+
+
+class SwitchMethodChoices(ChoiceSet):
+    key = 'Sender.switch_method'  # todo anderer key -> allgemeiner?
+
+    CHOICES = [
+        ('sips_merge', 'SiPs Merge', 'red'),
+        ('sips_split', 'SiPs Split', 'green'),
+    ]
+
+
+# model for internal processing units of devices -> has senders and receivers
+class Processor(NetBoxModel):
+    name = models.CharField(max_length=100)
+    device = models.ForeignKey(to='dcim.Device', on_delete=models.CASCADE, related_name='+') # todo related_name='+' um keine beziehung rückwärst zu erstellen
+    module = models.ForeignKey(to='dcim.Module', on_delete=models.CASCADE, related_name='+', null=True, blank=True)
+    sender_count = models.PositiveIntegerField(default=0, null=True, blank=True) # todo logik zähler
+    receiver_count = models.PositiveIntegerField(default=0, null=True, blank=True) # liste -> darin verlinkung
+    description = models.CharField(max_length=500, null=True, blank=True)
+    comments = models.TextField(null=True, blank=True)
+    # TODO NMOS? -> Port?
+    # TODO Journal?
+
+    class Meta:
+        ordering = ("name",)
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('plugins:netbox_multicast_stream_mapping:processor', args=[self.pk])
+
+
+# model for internal processing units of devices -> has senders and receivers
+class Sender(NetBoxModel):
+    name = models.CharField(max_length=100)
+    processor = models.ForeignKey(to=Processor, on_delete=models.CASCADE) # todo löschmodus?
+    sender_ip = models.OneToOneField(to='ipam.IPAddress', on_delete=models.SET_NULL, related_name='+', blank=True, null=True)
+    max_bandwidth_out = models.FloatField(null=True, blank=True)
+    supported_formats = models.CharField() # todo multiple choice
+    signal_type = models.CharField(choices=SignalTypeChoices, null=True, blank=True)
+    description = models.CharField(max_length=500, null=True, blank=True)
+    comments = models.TextField(null=True, blank=True)
+
+    class Meta:
+        ordering = ("name",)
+        # todo unique_together = ('access_list', 'index') ?
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('plugins:netbox_multicast_stream_mapping:sender', args=[self.pk])
+
+    # todo farben klappen nicht
+    def get_signal_type_color(self):
+        return SignalTypeChoices.colors.get(self.signal_type)
+
+    # todo switch method
+
+
+# model for internal processing units of devices -> has senders and receivers
+class Receiver(NetBoxModel):
+    name = models.CharField(max_length=100)
+    processor = models.ForeignKey(Processor, on_delete=models.CASCADE)
+    receiver_ip = models.OneToOneField(to='ipam.IPAddress', on_delete=models.SET_NULL, related_name='+', blank=True, null=True)
+    max_bandwidth_in = models.FloatField(null=True, blank=True)
+    supported_formats = models.CharField() # todo choice
+    signal_type = models.CharField(choices=SignalTypeChoices, null=True, blank=True)
+    switch_method = models.CharField(choices=SwitchMethodChoices, null=True, blank=True)
+    comments = models.TextField(blank=True)
+    description = models.CharField(max_length=500, blank=True)
+
+    class Meta:
+        ordering = ("name",)
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('plugins:netbox_multicast_stream_mapping:receiver', args=[self.pk])
+
+    # todo farben klappen nicht
+    def get_signal_type_color(self):
+        return SignalTypeChoices.colors.get(self.signal_type)
+
+    # todo farben klappen nicht
+    def get_switch_method_color(self):
+        return SwitchMethodChoices.colors.get(self.switch_method)
+
+
+# model for internal processing units of devices -> has senders and receivers
+class Stream(NetBoxModel):
+    name = models.CharField(max_length=100)
+    processor = models.PositiveIntegerField(default=0) #  todo pflicht
+    sender = models.CharField(max_length=12, default='???')
+    receivers = models.CharField(max_length=12, default='???') # todo plural
+    bandwidth = models.CharField()
+    signal_type = models.CharField() # todo choice: Audio, Video, ANC, Mix???
+    protocol = models.CharField() # todo choice
+    format = models.CharField() # todo choice
+    audio_channels = models.CharField() # todo choice
+    comments = models.TextField(blank=True)
+    description = models.CharField(max_length=500, blank=True)
+
+    class Meta:
+        ordering = ("name",)
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('plugins:netbox_multicast_stream_mapping:stream', args=[self.pk])
+
+
+
+# # model for multicast sender inside processor -> only one per stream!
+# class MulticastSender(NetBoxModel):
+#     name = models.CharField(max_length=100)
+#
+#     default_action = models.CharField(max_length=30)
+#
+#     comments = models.TextField(blank=True)
+#
+#     # mapping to foreign key: related parent model, action, attribute in related model
+#     # action: when deleting sender (CASCADE -> alle darunter löschen; PROTECT -> nicht löschen, wenn sender existieren
+#     #-> TODO vllt. bei streams?)
+#     processor = models.ForeignKey(to=Processor, on_delete=models.CASCADE, related_name='senders')
+#
+#     # index -> order in list todo
+#     index = models.PositiveIntegerField()
+#
+#     # optional -> blank = true TODO char array field
+#     # formats = models.CharField(max_length=50, blank=True)
+#     formats = ArrayField(base_field=models.CharField(), blank=True, null=True)
+#
+#     # todo -> choice set
+#     # action = models.CharField(max_length=30)
+#     description = models.CharField(max_length=500, blank=True)
+#
+#     # alphabetical ordering for model instances
+#     class Meta:
+#         ordering = ("name",)
+#         # todo
+#         # ordering = ('access_list', 'index')
+#         # unique_together = ('access_list', 'index')
+#
+#     # method to control, how model is converted into string
+#     def __str__(self):
+#         return self.name
