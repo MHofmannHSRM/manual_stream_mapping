@@ -79,7 +79,7 @@ class StreamTable(NetBoxTable):
     tags = TagColumn()  # TODO -> Verlinkung -> Filter?
 
     class Meta(NetBoxTable.Meta):
-        model = Receiver
+        model = Stream
         # template_name = 'utilities/tables/netbox_table.html' TODO
         fields = ('pk', 'id', 'name', 'processor', 'sender', 'receivers', 'bandwidth', 'format', 'signal_type',
                   'protocol', 'audio_channels', 'comments', 'description', 'tags') # todo updated?

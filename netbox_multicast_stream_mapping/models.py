@@ -99,7 +99,6 @@ class Sender(NetBoxModel):
     processor = models.ForeignKey(to=Processor, on_delete=models.CASCADE) # todo löschmodus?
     sender_ip = models.OneToOneField(to='ipam.IPAddress', on_delete=models.SET_NULL, related_name='+', blank=True, null=True)
     max_bandwidth_out = models.FloatField(null=True, blank=True)
-    # supported_formats = models.ForeignKey(to=Format, on_delete=models.SET_NULL, blank=True, null=True)
     supported_formats = models.ManyToManyField(to=Format, blank=True)
     switch_method = models.CharField(choices=SwitchMethodChoices, null=True, blank=True)
     signal_type = models.CharField(choices=SignalTypeChoices, null=True, blank=True)
@@ -129,7 +128,7 @@ class Receiver(NetBoxModel):
     processor = models.ForeignKey(Processor, on_delete=models.CASCADE)
     receiver_ip = models.OneToOneField(to='ipam.IPAddress', on_delete=models.SET_NULL, related_name='+', blank=True, null=True)
     max_bandwidth_in = models.FloatField(null=True, blank=True)
-    supported_formats = models.CharField() # todo choice
+    supported_formats = models.ManyToManyField(to=Format, blank=True)
     signal_type = models.CharField(choices=SignalTypeChoices, null=True, blank=True)
     switch_method = models.CharField(choices=SwitchMethodChoices, null=True, blank=True)
     comments = models.TextField(blank=True)
