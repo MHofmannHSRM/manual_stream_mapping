@@ -38,6 +38,15 @@ stream_button = [
     )
 ]
 
+format_button = [
+    PluginMenuButton(
+        link='plugins:netbox_multicast_stream_mapping:format_add',
+        title='Add',
+        icon_class='mdi mdi-plus-thick',
+        color=ButtonColorChoices.GREEN
+    )
+]
+
 
 menu_items = (
     PluginMenuItem(
@@ -59,5 +68,10 @@ menu_items = (
         link='plugins:netbox_multicast_stream_mapping:stream_list',
         link_text='Multicast Streams',
         buttons=stream_button
+    ),
+    PluginMenuItem(
+        link='plugins:netbox_multicast_stream_mapping:format_list',
+        link_text='Format Tags',
+        buttons=format_button
     ),
 )

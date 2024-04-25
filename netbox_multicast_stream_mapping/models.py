@@ -24,6 +24,53 @@ class SwitchMethodChoices(ChoiceSet):
     ]
 
 
+class FormatTypeChoices(ChoiceSet):
+    key = 'Format.type'  # todo anderer key -> allgemeiner?
+
+    CHOICES = [
+        ('audio', 'Audio', 'red'),
+        ('video', 'Video', 'blue'),
+        ('metadata', 'Metadata', 'yellow'),
+        ('ect', 'Ect.', 'green')
+    ]
+
+
+class FpsChoices(ChoiceSet):
+    key = 'Format.fps'  # todo anderer key -> allgemeiner?
+
+    CHOICES = [
+        ('i25', 'i25'),
+        ('p25', 'p25'),
+        ('i50', 'i50'),
+        ('p50', 'p50'),
+        ('i30', 'i30'),
+        ('p30', 'p30'),
+        ('i60', 'i60'),
+        ('p60', 'p60'),
+    ]
+
+
+# model for internal processing units of devices -> has senders and receivers
+class Format(NetBoxModel):
+    name = models.CharField(max_length=100)
+    type = models.CharField(choices=FormatTypeChoices, null=True, blank=True)
+    res_h = models.PositiveIntegerField(null=True, blank=True)
+    res_w = models.PositiveIntegerField(null=True, blank=True)
+    fps = models.CharField(choices=FpsChoices, null=True, blank=True)
+    audio_ch = models.PositiveIntegerField(null=True, blank=True)
+    comments = models.TextField(blank=True)
+    description = models.CharField(max_length=500, blank=True)
+
+    class Meta:
+        ordering = ("name",)
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('plugins:netbox_multicast_stream_mapping:format', args=[self.pk])
+
+
 # model for internal processing units of devices -> has senders and receivers
 class Processor(NetBoxModel):
     name = models.CharField(max_length=100)
@@ -52,7 +99,9 @@ class Sender(NetBoxModel):
     processor = models.ForeignKey(to=Processor, on_delete=models.CASCADE) # todo löschmodus?
     sender_ip = models.OneToOneField(to='ipam.IPAddress', on_delete=models.SET_NULL, related_name='+', blank=True, null=True)
     max_bandwidth_out = models.FloatField(null=True, blank=True)
-    supported_formats = models.CharField() # todo multiple choice
+    # supported_formats = models.ForeignKey(to=Format, on_delete=models.SET_NULL, blank=True, null=True)
+    supported_formats = models.ManyToManyField(to=Format, blank=True)
+    switch_method = models.CharField(choices=SwitchMethodChoices, null=True, blank=True)
     signal_type = models.CharField(choices=SignalTypeChoices, null=True, blank=True)
     description = models.CharField(max_length=500, null=True, blank=True)
     comments = models.TextField(null=True, blank=True)
@@ -126,6 +175,7 @@ class Stream(NetBoxModel):
 
     def get_absolute_url(self):
         return reverse('plugins:netbox_multicast_stream_mapping:stream', args=[self.pk])
+
 
 
 

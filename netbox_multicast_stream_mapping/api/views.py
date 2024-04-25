@@ -1,7 +1,7 @@
 from netbox.api.viewsets import NetBoxModelViewSet
 
 from .. import filtersets, models
-from .serializers import ProcessorSerializer, SenderSerializer, ReceiverSerializer, StreamSerializer
+from .serializers import ProcessorSerializer, SenderSerializer, ReceiverSerializer, StreamSerializer, FormatSerializer
 
 
 class ProcessorViewSet(NetBoxModelViewSet):
@@ -26,3 +26,9 @@ class StreamViewSet(NetBoxModelViewSet):
     queryset = models.Stream.objects.prefetch_related('tags')
     serializer_class = StreamSerializer
     filterset_class = filtersets.StreamFilterSet
+
+
+class FormatViewSet(NetBoxModelViewSet):
+    queryset = models.Format.objects.prefetch_related('tags')
+    serializer_class = FormatSerializer
+    # filterset_class = filtersets.StreamFilterSet

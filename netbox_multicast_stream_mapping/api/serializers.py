@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from netbox.api.serializers import NetBoxModelSerializer, WritableNestedSerializer
-from ..models import Processor, Sender, Receiver, Stream
+from ..models import Processor, Sender, Receiver, Stream, Format
 from ipam.api.serializers import NestedPrefixSerializer
 
 
@@ -81,4 +81,15 @@ class StreamSerializer(NetBoxModelSerializer):
         fields = (
             'id', 'url', 'display', 'name', 'processor', 'sender', 'receivers', 'bandwidth', 'format', 'signal_type',
             'protocol', 'audio_channels', 'comments', 'description', 'tags', 'custom_fields', 'created', 'last_updated',
+        )
+
+
+class FormatSerializer(NetBoxModelSerializer):
+
+    url = serializers.HyperlinkedIdentityField(view_name='plugins-api:netbox_multicast_stream_mapping-api:format-detail')
+
+    class Meta:
+        model = Format
+        fields = (
+            'id', 'url', 'display', 'name', 'comments', 'description', 'custom_fields', 'created', 'last_updated',
         )

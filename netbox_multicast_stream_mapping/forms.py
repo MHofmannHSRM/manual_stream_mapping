@@ -1,6 +1,6 @@
 from netbox.forms import NetBoxModelForm
 from utilities.forms.fields import CommentField, DynamicModelChoiceField # TODO
-from .models import Processor, Sender, Receiver, Stream
+from .models import Processor, Sender, Receiver, Stream, Format
 from django import forms
 from netbox.forms import NetBoxModelForm, NetBoxModelFilterSetForm
 
@@ -31,8 +31,8 @@ class SenderForm(NetBoxModelForm):
 
     class Meta:
         model = Sender
-        fields = ('name', 'processor', 'sender_ip', 'max_bandwidth_out',
-                  'supported_formats', 'signal_type', 'comments', 'description', 'tags')
+        fields = ('name', 'processor', 'sender_ip', 'signal_type', 'supported_formats', 'switch_method',
+                  'max_bandwidth_out', 'tags', 'description', 'comments')
 
 
 class SenderFilterForm(NetBoxModelFilterSetForm):
@@ -52,8 +52,8 @@ class ReceiverForm(NetBoxModelForm):
 
     class Meta:
         model = Receiver
-        fields = ('name', 'processor', 'receiver_ip', 'max_bandwidth_in',
-                  'supported_formats', 'signal_type', 'comments', 'description', 'tags')
+        fields = ('name', 'processor', 'receiver_ip', 'signal_type', 'supported_formats', 'switch_method',
+                  'max_bandwidth_in', 'tags', 'description', 'comments')
 
 
 class ReceiverFilterForm(NetBoxModelFilterSetForm):
@@ -89,6 +89,14 @@ class StreamFilterForm(NetBoxModelFilterSetForm):
     # index = forms.IntegerField(
     #     required=False
     # )
+
+
+class FormatForm(NetBoxModelForm):
+
+    class Meta:
+        model = Format
+        fields = ('name', 'type', 'res_h', 'res_w', 'fps', 'audio_ch', 'comments', 'description', 'tags')
+
 
 
 

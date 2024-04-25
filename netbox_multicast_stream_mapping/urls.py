@@ -39,4 +39,13 @@ urlpatterns = (
     path('streams/<int:pk>/delete/', views.StreamDeleteView.as_view(), name='stream_delete'),
     path('streams/<int:pk>/changelog/', ObjectChangeLogView.as_view(), name='stream_changelog',
          kwargs={'model': models.Stream}),
+
+    # MulticastStream
+    path('formats/', views.FormatListView.as_view(), name='format_list'),
+    path('formats/add/', views.FormatEditView.as_view(), name='format_add'),
+    path('formats/<int:pk>/', views.FormatView.as_view(), name='format'),
+    path('formats/<int:pk>/edit/', views.FormatEditView.as_view(), name='format_edit'),
+    path('formats/<int:pk>/delete/', views.FormatDeleteView.as_view(), name='format_delete'),
+    path('formats/<int:pk>/changelog/', ObjectChangeLogView.as_view(), name='format_changelog',
+         kwargs={'model': models.Format}),
 )

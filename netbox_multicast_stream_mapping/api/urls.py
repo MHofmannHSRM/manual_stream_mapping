@@ -10,6 +10,7 @@ router.register('processors', views.ProcessorViewSet)
 router.register('senders', views.SenderViewSet)
 router.register('receivers', views.ReceiverViewSet)
 router.register('streams', views.StreamViewSet)
+router.register('formats', views.FormatViewSet)
 
 
 urlpatterns = router.urls

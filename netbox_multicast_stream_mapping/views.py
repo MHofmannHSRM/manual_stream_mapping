@@ -111,3 +111,30 @@ class StreamEditView(generic.ObjectEditView):
 # delete view
 class StreamDeleteView(generic.ObjectDeleteView):
     queryset = models.Stream.objects.all()
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+# detail view
+class FormatView(generic.ObjectView):
+    queryset = models.Format.objects.all()
+
+
+# list view
+class FormatListView(generic.ObjectListView):
+    queryset = models.Format.objects.all()
+    table = tables.FormatTable
+    # filterset = filtersets.StreamFilterSet
+    # filterset_form = forms.StreamFilterForm
+
+
+# edit view
+class FormatEditView(generic.ObjectEditView):
+    queryset = models.Format.objects.all()
+    form = forms.FormatForm
+
+
+# delete view
+class FormatDeleteView(generic.ObjectDeleteView):
+    queryset = models.Format.objects.all()
