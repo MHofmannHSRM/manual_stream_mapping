@@ -12,24 +12,14 @@ urlpatterns = (
     path('processors/<int:pk>/changelog/', ObjectChangeLogView.as_view(), name='processor_changelog',
          kwargs={'model': models.Processor}),
 
-
     # MulticastSender
-    path('senders/', views.SenderListView.as_view(), name='sender_list'),
-    path('senders/add/', views.SenderEditView.as_view(), name='sender_add'),
-    path('senders/<int:pk>/', views.SenderView.as_view(), name='sender'),
-    path('senders/<int:pk>/edit/', views.SenderEditView.as_view(), name='sender_edit'),
-    path('senders/<int:pk>/delete/', views.SenderDeleteView.as_view(), name='sender_delete'),
-    path('senders/<int:pk>/changelog/', ObjectChangeLogView.as_view(), name='sender_changelog',
-         kwargs={'model': models.Sender}),
-
-    # MulticastReceiver
-    path('receivers/', views.ReceiverListView.as_view(), name='receiver_list'),
-    path('receivers/add/', views.ReceiverEditView.as_view(), name='receiver_add'),
-    path('receivers/<int:pk>/', views.ReceiverView.as_view(), name='receiver'),
-    path('receivers/<int:pk>/edit/', views.ReceiverEditView.as_view(), name='receiver_edit'),
-    path('receivers/<int:pk>/delete/', views.ReceiverDeleteView.as_view(), name='receiver_delete'),
-    path('receivers/<int:pk>/changelog/', ObjectChangeLogView.as_view(), name='receiver_changelog',
-         kwargs={'model': models.Receiver}),
+    path('endpoints/', views.EndpointListView.as_view(), name='endpoint_list'),
+    path('endpoints/add/', views.EndpointEditView.as_view(), name='endpoint_add'),
+    path('endpoints/<int:pk>/', views.EndpointView.as_view(), name='endpoint'),
+    path('endpoints/<int:pk>/edit/', views.EndpointEditView.as_view(), name='endpoint_edit'),
+    path('endpoints/<int:pk>/delete/', views.EndpointDeleteView.as_view(), name='endpoint_delete'),
+    path('endpoints/<int:pk>/changelog/', ObjectChangeLogView.as_view(), name='endpoint_changelog',
+         kwargs={'model': models.Endpoint}),
 
     # MulticastStream
     path('streams/', views.StreamListView.as_view(), name='stream_list'),
@@ -40,7 +30,7 @@ urlpatterns = (
     path('streams/<int:pk>/changelog/', ObjectChangeLogView.as_view(), name='stream_changelog',
          kwargs={'model': models.Stream}),
 
-    # MulticastStream
+    # Format Tags
     path('formats/', views.FormatListView.as_view(), name='format_list'),
     path('formats/add/', views.FormatEditView.as_view(), name='format_add'),
     path('formats/<int:pk>/', views.FormatView.as_view(), name='format'),
@@ -48,4 +38,5 @@ urlpatterns = (
     path('formats/<int:pk>/delete/', views.FormatDeleteView.as_view(), name='format_delete'),
     path('formats/<int:pk>/changelog/', ObjectChangeLogView.as_view(), name='format_changelog',
          kwargs={'model': models.Format}),
+
 )

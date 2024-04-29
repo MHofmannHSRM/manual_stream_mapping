@@ -11,23 +11,15 @@ processor_buttons = [
     )
 ]
 
-sender_button = [
+endpoint_button = [
     PluginMenuButton(
-        link='plugins:netbox_multicast_stream_mapping:sender_add',
+        link='plugins:netbox_multicast_stream_mapping:endpoint_add',
         title='Add',
         icon_class='mdi mdi-plus-thick',
         color=ButtonColorChoices.GREEN
     )
 ]
 
-receiver_button = [
-    PluginMenuButton(
-        link='plugins:netbox_multicast_stream_mapping:receiver_add',
-        title='Add',
-        icon_class='mdi mdi-plus-thick',
-        color=ButtonColorChoices.GREEN
-    )
-]
 
 stream_button = [
     PluginMenuButton(
@@ -55,18 +47,13 @@ menu_items = (
         buttons=processor_buttons
     ),
     PluginMenuItem(
-        link='plugins:netbox_multicast_stream_mapping:sender_list',
-        link_text='Multicast Senders',
-        buttons=sender_button
-    ),
-    PluginMenuItem(
-        link='plugins:netbox_multicast_stream_mapping:receiver_list',
-        link_text='Multicast Receivers',
-        buttons=receiver_button
+        link='plugins:netbox_multicast_stream_mapping:endpoint_list',
+        link_text='Endpoints',
+        buttons=endpoint_button
     ),
     PluginMenuItem(
         link='plugins:netbox_multicast_stream_mapping:stream_list',
-        link_text='Multicast Streams',
+        link_text='Streams',
         buttons=stream_button
     ),
     PluginMenuItem(

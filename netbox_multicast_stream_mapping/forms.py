@@ -1,6 +1,6 @@
 from netbox.forms import NetBoxModelForm
 from utilities.forms.fields import CommentField, DynamicModelChoiceField # TODO
-from .models import Processor, Sender, Receiver, Stream, Format
+from .models import Processor, Endpoint, Stream, Format
 from django import forms
 from netbox.forms import NetBoxModelForm, NetBoxModelFilterSetForm
 
@@ -27,37 +27,16 @@ class ProcessorFilterForm(NetBoxModelFilterSetForm):
     # )
 
 
-class SenderForm(NetBoxModelForm):
+class EndpointForm(NetBoxModelForm):
 
     class Meta:
-        model = Sender
-        fields = ('name', 'processor', 'sender_ip', 'signal_type', 'supported_formats', 'switch_method',
-                  'max_bandwidth_out', 'tags', 'description', 'comments')
+        model = Endpoint
+        fields = ('name', 'processor', 'ip', 'signal_type', 'supported_formats', 'switch_method',
+                  'max_bandwidth', 'tags', 'description', 'comments')
 
 
-class SenderFilterForm(NetBoxModelFilterSetForm):
-    model = Sender
-
-    # access_list = forms.ModelMultipleChoiceField( TODO -> für sender/receiver
-    #     queryset=AccessList.objects.all(),
-    #     required=False
-    # )
-    #
-    # index = forms.IntegerField(
-    #     required=False
-    # )
-
-
-class ReceiverForm(NetBoxModelForm):
-
-    class Meta:
-        model = Receiver
-        fields = ('name', 'processor', 'receiver_ip', 'signal_type', 'supported_formats', 'switch_method',
-                  'max_bandwidth_in', 'tags', 'description', 'comments')
-
-
-class ReceiverFilterForm(NetBoxModelFilterSetForm):
-    model = Receiver
+class EndpointFilterForm(NetBoxModelFilterSetForm):
+    model = Endpoint
 
     # access_list = forms.ModelMultipleChoiceField( TODO -> für sender/receiver
     #     queryset=AccessList.objects.all(),
@@ -75,7 +54,6 @@ class StreamForm(NetBoxModelForm):
         model = Stream
         fields = ('name', 'processor', 'sender', 'receivers', 'bandwidth', 'format', 'signal_type',
                   'protocol', 'audio_channels', 'comments', 'description', 'tags') # todo updated?
-
 
 
 class StreamFilterForm(NetBoxModelFilterSetForm):

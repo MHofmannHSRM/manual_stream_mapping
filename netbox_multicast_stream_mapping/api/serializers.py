@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from netbox.api.serializers import NetBoxModelSerializer, WritableNestedSerializer
-from ..models import Processor, Sender, Receiver, Stream, Format
+from ..models import Processor, Endpoint, Stream, Format
 from ipam.api.serializers import NestedPrefixSerializer
 
 
@@ -36,34 +36,18 @@ class ProcessorSerializer(NetBoxModelSerializer):
 #         fields = ('id', 'url', 'display', 'name')
 #
 
-class SenderSerializer(NetBoxModelSerializer):
+class EndpointSerializer(NetBoxModelSerializer):
 
-    url = serializers.HyperlinkedIdentityField(view_name='plugins-api:netbox_multicast_stream_mapping-api:sender-detail')
-
-    # todo access_list = NestedAccessListSerializer()
-    # todo andere modlle     source_prefix = NestedPrefixSerializer()
-    # todo rules count
-
-    class Meta:
-        model = Sender
-        fields = (
-            'id', 'url', 'display', 'name', 'processor', 'sender_ip', 'max_bandwidth_out',
-            'supported_formats', 'signal_type', 'comments', 'description', 'tags', 'custom_fields', 'created', 'last_updated',
-        )
-
-
-class ReceiverSerializer(NetBoxModelSerializer):
-
-    url = serializers.HyperlinkedIdentityField(view_name='plugins-api:netbox_multicast_stream_mapping-api:receiver-detail')
+    url = serializers.HyperlinkedIdentityField(view_name='plugins-api:netbox_multicast_stream_mapping-api:endpoint-detail')
 
     # todo access_list = NestedAccessListSerializer()
     # todo andere modlle     source_prefix = NestedPrefixSerializer()
     # todo rules count
 
     class Meta:
-        model = Receiver
+        model = Endpoint
         fields = (
-            'id', 'url', 'display', 'name', 'processor', 'receiver_ip', 'max_bandwidth_in',
+            'id', 'url', 'display', 'name', 'processor', 'ip', 'max_bandwidth',
             'supported_formats', 'signal_type', 'comments', 'description', 'tags', 'custom_fields', 'created', 'last_updated',
         )
 

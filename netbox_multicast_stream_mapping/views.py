@@ -1,5 +1,10 @@
 from netbox.views import generic
+
+from utilities.views import ViewTab, register_model_view
 from . import filtersets, forms, models, tables
+from .models import Processor, Endpoint
+from dcim.models import Device
+from .tables import EndpointTable
 
 
 # detail view
@@ -31,58 +36,30 @@ class ProcessorDeleteView(generic.ObjectDeleteView):
 
 
 # detail view
-class SenderView(generic.ObjectView):
-    queryset = models.Sender.objects.all()
+class EndpointView(generic.ObjectView):
+    queryset = models.Endpoint.objects.all()
 
 
 # list view
-class SenderListView(generic.ObjectListView):
-    queryset = models.Sender.objects.all()
+class EndpointListView(generic.ObjectListView):
+    queryset = models.Endpoint.objects.all()
     # für logik
     # queryset = models.AccessList.objects.annotate(rule_count=Count('rules'))
-    table = tables.SenderTable
-    filterset = filtersets.SenderFilterSet
-    filterset_form = forms.SenderFilterForm
+    table = tables.EndpointTable
+    filterset = filtersets.EndpointFilterSet
+    filterset_form = forms.EndpointFilterForm
 
 
 # edit view
-class SenderEditView(generic.ObjectEditView):
-    queryset = models.Sender.objects.all()
-    form = forms.SenderForm
+class EndpointEditView(generic.ObjectEditView):
+    queryset = models.Endpoint.objects.all()
+    form = forms.EndpointForm
 
 
 # delete view
-class SenderDeleteView(generic.ObjectDeleteView):
-    queryset = models.Sender.objects.all()
+class EndpointDeleteView(generic.ObjectDeleteView):
+    queryset = models.Endpoint.objects.all()
 
-
-# ----------------------------------------------------------------------------------------------------------------------
-
-
-# detail view
-class ReceiverView(generic.ObjectView):
-    queryset = models.Receiver.objects.all()
-
-
-# list view
-class ReceiverListView(generic.ObjectListView):
-    queryset = models.Receiver.objects.all()
-    # für logik
-    # queryset = models.AccessList.objects.annotate(rule_count=Count('rules'))
-    table = tables.ReceiverTable
-    filterset = filtersets.ReceiverFilterSet
-    filterset_form = forms.ReceiverFilterForm
-
-
-# edit view
-class ReceiverEditView(generic.ObjectEditView):
-    queryset = models.Receiver.objects.all()
-    form = forms.ReceiverForm
-
-
-# delete view
-class ReceiverDeleteView(generic.ObjectDeleteView):
-    queryset = models.Receiver.objects.all()
 
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -138,3 +115,100 @@ class FormatEditView(generic.ObjectEditView):
 # delete view
 class FormatDeleteView(generic.ObjectDeleteView):
     queryset = models.Format.objects.all()
+
+
+# endpoint view for devices
+# @register_model_view(model=Device, name='Endpoints', path='endpoints')
+# class EndpointView(generic.ObjectChildrenView):
+#     queryset = Processor.objects.all()
+#     child_model = Sender
+#     table = SenderTable
+#     filterset = filtersets.SenderFilterSet
+#     # template_name = 'ipam/prefix/ip_ranges.html' # TODO
+#
+#     tab = ViewTab(
+#         label="Stream Endpoints",
+#         weight=100,
+#
+#         # permission="netbox_dns.view_zone", # TODO
+#         # badge=lambda obj: len(obj.zones),
+#     )
+
+
+# @register_model_view(model=Device, name='Endpoints', path='endpoints')
+# class EndpointListView(generic.ObjectListView):
+#     queryset = models.Sender.objects.all().union(models.Receiver.objects.all()) # todo
+#     table = tables.SenderTable
+#     filterset = filtersets.SenderFilterSet
+#     filterset_form = forms.SenderFilterForm
+#
+#     # tab = ViewTab(
+#     #     label="Stream Endpoints",
+#     #     weight=100, )
+#
+#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    # def get_queryset(self):
+    #     device_id = self.kwargs.get('device_id')
+    #     if device_id:
+    #         device = get_object_or_404(Device, pk=device_id)
+    #         return device.processor.all()
+    #     return Processor.objects.none()
+
+    # def get_children(self, request, parent):
+    #     return parent.get_child_ranges().restrict(request.user, 'view').prefetch_related('tenant__group', )
+
+    # def get_children(self, request, parent):
+    #     return Zone.objects.filter(
+    #         Q(registrant=parent)
+    #         | Q(admin_c=parent)
+    #         | Q(tech_c=parent)
+    #         | Q(billing_c=parent)
+    #     )
+
+    # def get_extra_context(self, request, instance):
+
+
+# TODO URL
+# @register_model_view(model=Processor, name='Endpoints', path='some-other-stuff')
+# class EndpointView(generic.ObjectView):
+# # class EndpointView(generic.ObjectChildrenView):
+#
+#     # queryset = models.SystemTemplate.objects.all()
+#     # child_model = models.System
+#     # table = tables.SystemTable
+#     # template_name = 'generic/object_children.html'
+#
+#     tab = ViewTab(
+#         label='Endpoints',
+#         # badge=lambda obj: Stuff.objects.filter(site=obj).count(), # TODO
+#         # badge='0',
+#         # weight =
+#         # permission='myplugin.view_stuff'
+#     )
+#
+#     # def get_children(self, request, parent):
+#     #     return self.child_model.objects.filter(system_template=parent)
+#
+#     def get(self, request, pk):
+#         # TODO
+#         return render(request, "myplugin/mytabview.html", context={"tab": self.tab, }, )
+
+
+# TODO urls path('system-templates/<int:pk>/systems', views.SystemTemplateSystemsView.as_view(), name='systemtemplate_systems')
+
+
+

@@ -1,5 +1,5 @@
 from netbox.search import SearchIndex, register_search
-from .models import Processor, Sender, Receiver
+from .models import Processor, Endpoint
 
 
 @register_search

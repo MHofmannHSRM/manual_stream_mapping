@@ -1,5 +1,5 @@
 from netbox.filtersets import NetBoxModelFilterSet
-from .models import Processor, Sender, Receiver, Stream
+from .models import Processor, Endpoint, Stream
 
 
 class ProcessorFilterSet(NetBoxModelFilterSet):
@@ -12,20 +12,10 @@ class ProcessorFilterSet(NetBoxModelFilterSet):
         return queryset.filter(description__icontains=value)
 
 
-class SenderFilterSet(NetBoxModelFilterSet):
+class EndpointFilterSet(NetBoxModelFilterSet):
 
     class Meta:
-        model = Sender
-        fields = ('id', 'name') # TODO
-
-    def search(self, queryset, name, value):
-        return queryset.filter(description__icontains=value)
-
-
-class ReceiverFilterSet(NetBoxModelFilterSet):
-
-    class Meta:
-        model = Receiver
+        model = Endpoint
         fields = ('id', 'name') # TODO
 
     def search(self, queryset, name, value):

@@ -2,7 +2,7 @@ import django_tables2 as tables
 
 from netbox.tables import NetBoxTable, ChoiceFieldColumn, TagColumn, ManyToManyColumn
 
-from .models import Processor, Sender, Receiver, Stream, Format
+from .models import Processor, Endpoint, Stream, Format
 
 
 class FormatTable(NetBoxTable):
@@ -42,11 +42,11 @@ class ProcessorTable(NetBoxTable):
         default_columns = ('name', 'device', 'module', 'sender_count', 'receiver_count', 'tags', 'description')
 
 
-class SenderTable(NetBoxTable):
+class EndpointTable(NetBoxTable):
     name = tables.Column(linkify=True)
     processor = tables.Column(linkify=True)
-    sender_ip = tables.Column(linkify=True, verbose_name='Sender IP-Adress')
-    max_bandwidth_out = tables.Column(verbose_name='Max. Bandwidth (Mbps)')
+    ip = tables.Column(linkify=True, verbose_name='Sender IP-Adress')
+    max_bandwidth = tables.Column(verbose_name='Max. Bandwidth (Mbps)')
     supported_formats = ManyToManyColumn()
     switch_method = tables.Column(verbose_name='Switch Method (2022-7)')
     signal_type = ChoiceFieldColumn(verbose_name='Signal Type')
@@ -55,31 +55,11 @@ class SenderTable(NetBoxTable):
     tags = TagColumn()  # TODO -> Verlinkung -> Filter?
 
     class Meta(NetBoxTable.Meta):
-        model = Sender
+        model = Endpoint
         # template_name = 'utilities/tables/netbox_table.html' TODO
-        fields = ('pk', 'id', 'name', 'processor', 'signal_type', 'sender_ip', 'max_bandwidth_out',
+        fields = ('pk', 'id', 'name', 'processor', 'signal_type', 'ip', 'max_bandwidth',
                   'supported_formats', 'switch_method',  'comments', 'description', 'tags') # todo updated?
-        default_columns = ('name', 'processor', 'signal_type', 'sender_ip', 'supported_formats', 'tags', 'description')
-
-
-class ReceiverTable(NetBoxTable):
-    name = tables.Column(linkify=True)
-    processor = tables.Column(linkify=True)
-    receiver_ip = tables.Column(linkify=True, verbose_name='Receiver IP-Adress')
-    max_bandwidth_in = tables.Column(verbose_name='Max. Bandwidth (Mbps)')
-    supported_formats = ManyToManyColumn()
-    switch_method = ChoiceFieldColumn(verbose_name='Switch Method (2022-7)')
-    signal_type = ChoiceFieldColumn(verbose_name='Signal Type')
-    comments = tables.Column()
-    description = tables.Column()
-    tags = TagColumn()  # TODO -> Verlinkung -> Filter?
-
-    class Meta(NetBoxTable.Meta):
-        model = Receiver
-        # template_name = 'utilities/tables/netbox_table.html' TODO
-        fields = ('pk', 'id', 'name', 'processor', 'signal_type',  'receiver_ip', 'max_bandwidth_in',
-                  'supported_formats', 'switch_method', 'comments', 'description', 'tags') # todo updated?
-        default_columns = ('name', 'processor', 'signal_type', 'receiver_ip', 'supported_formats', 'tags', 'description')
+        default_columns = ('name', 'processor', 'signal_type', 'ip', 'supported_formats', 'tags', 'description')
 
 
 class StreamTable(NetBoxTable):
@@ -102,4 +82,3 @@ class StreamTable(NetBoxTable):
         fields = ('pk', 'id', 'name', 'processor', 'sender', 'receivers', 'bandwidth', 'format', 'signal_type',
                   'protocol', 'audio_channels', 'comments', 'description', 'tags') # todo updated?
         default_columns = ('name', 'signal_type', 'sender', 'receivers', 'description', 'tags')
-

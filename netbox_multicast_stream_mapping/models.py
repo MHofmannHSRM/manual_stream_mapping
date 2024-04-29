@@ -6,7 +6,7 @@ from utilities.choices import ChoiceSet
 
 
 class SignalTypeChoices(ChoiceSet):
-    key = 'Sender.signal_type'  # todo anderer key -> allgemeiner?
+    key = 'Endpoint.signal_type'  # todo anderer key -> allgemeiner?
 
     CHOICES = [
         ('video', 'Video', 'red'),
@@ -16,7 +16,7 @@ class SignalTypeChoices(ChoiceSet):
 
 
 class SwitchMethodChoices(ChoiceSet):
-    key = 'Sender.switch_method'  # todo anderer key -> allgemeiner?
+    key = 'Endpoint.switch_method'  # todo anderer key -> allgemeiner?
 
     CHOICES = [
         ('sips_merge', 'SiPs Merge', 'red'),
@@ -94,11 +94,11 @@ class Processor(NetBoxModel):
 
 
 # model for internal processing units of devices -> has senders and receivers
-class Sender(NetBoxModel):
+class Endpoint(NetBoxModel):
     name = models.CharField(max_length=100)
     processor = models.ForeignKey(to=Processor, on_delete=models.CASCADE) # todo löschmodus?
-    sender_ip = models.OneToOneField(to='ipam.IPAddress', on_delete=models.SET_NULL, related_name='+', blank=True, null=True)
-    max_bandwidth_out = models.FloatField(null=True, blank=True)
+    ip = models.OneToOneField(to='ipam.IPAddress', on_delete=models.SET_NULL, related_name='+', blank=True, null=True)
+    max_bandwidth = models.FloatField(null=True, blank=True)
     supported_formats = models.ManyToManyField(to=Format, blank=True)
     switch_method = models.CharField(choices=SwitchMethodChoices, null=True, blank=True)
     signal_type = models.CharField(choices=SignalTypeChoices, null=True, blank=True)
@@ -113,43 +113,13 @@ class Sender(NetBoxModel):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('plugins:netbox_multicast_stream_mapping:sender', args=[self.pk])
+        return reverse('plugins:netbox_multicast_stream_mapping:endpoint', args=[self.pk])
 
     # todo farben klappen nicht
     def get_signal_type_color(self):
         return SignalTypeChoices.colors.get(self.signal_type)
 
     # todo switch method
-
-
-# model for internal processing units of devices -> has senders and receivers
-class Receiver(NetBoxModel):
-    name = models.CharField(max_length=100)
-    processor = models.ForeignKey(Processor, on_delete=models.CASCADE)
-    receiver_ip = models.OneToOneField(to='ipam.IPAddress', on_delete=models.SET_NULL, related_name='+', blank=True, null=True)
-    max_bandwidth_in = models.FloatField(null=True, blank=True)
-    supported_formats = models.ManyToManyField(to=Format, blank=True)
-    signal_type = models.CharField(choices=SignalTypeChoices, null=True, blank=True)
-    switch_method = models.CharField(choices=SwitchMethodChoices, null=True, blank=True)
-    comments = models.TextField(blank=True)
-    description = models.CharField(max_length=500, blank=True)
-
-    class Meta:
-        ordering = ("name",)
-
-    def __str__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return reverse('plugins:netbox_multicast_stream_mapping:receiver', args=[self.pk])
-
-    # todo farben klappen nicht
-    def get_signal_type_color(self):
-        return SignalTypeChoices.colors.get(self.signal_type)
-
-    # todo farben klappen nicht
-    def get_switch_method_color(self):
-        return SwitchMethodChoices.colors.get(self.switch_method)
 
 
 # model for internal processing units of devices -> has senders and receivers
