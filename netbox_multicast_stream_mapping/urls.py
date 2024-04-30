@@ -39,4 +39,7 @@ urlpatterns = (
     path('formats/<int:pk>/changelog/', ObjectChangeLogView.as_view(), name='format_changelog',
          kwargs={'model': models.Format}),
 
+    # tab device processor
+    path("devices/<int:pk>/processors/", views.DeviceProcessorView.as_view(), name="device_processors"),
+
 )

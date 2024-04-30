@@ -27,12 +27,12 @@ class ProcessorFilterForm(NetBoxModelFilterSetForm):
     # )
 
 
-class EndpointForm(NetBoxModelForm):
+class EndpointForm(NetBoxModelForm): # todo verbose?
 
     class Meta:
         model = Endpoint
-        fields = ('name', 'processor', 'ip', 'signal_type', 'supported_formats', 'switch_method',
-                  'max_bandwidth', 'tags', 'description', 'comments')
+        fields = ('name', 'processor', 'endpoint_type', 'primary_ip', 'secondary_ip', 'max_bandwidth', 'signal_type',
+                  'supported_formats', 'switch_method', 'tags', 'description', 'comments')
 
 
 class EndpointFilterForm(NetBoxModelFilterSetForm):

@@ -45,9 +45,11 @@ class ProcessorTable(NetBoxTable):
 class EndpointTable(NetBoxTable):
     name = tables.Column(linkify=True)
     processor = tables.Column(linkify=True)
-    ip = tables.Column(linkify=True, verbose_name='Sender IP-Adress')
+    endpoint_type = tables.Column(verbose_name='Endpoint Type')
+    primary_ip = tables.Column(linkify=True, verbose_name='Primary IP Address')
+    secondary_ip = tables.Column(linkify=True, verbose_name='Secondary IP Address')
     max_bandwidth = tables.Column(verbose_name='Max. Bandwidth (Mbps)')
-    supported_formats = ManyToManyColumn()
+    supported_formats = ManyToManyColumn(verbose_name='Supported Formats')
     switch_method = tables.Column(verbose_name='Switch Method (2022-7)')
     signal_type = ChoiceFieldColumn(verbose_name='Signal Type')
     description = tables.Column()
@@ -57,9 +59,10 @@ class EndpointTable(NetBoxTable):
     class Meta(NetBoxTable.Meta):
         model = Endpoint
         # template_name = 'utilities/tables/netbox_table.html' TODO
-        fields = ('pk', 'id', 'name', 'processor', 'signal_type', 'ip', 'max_bandwidth',
-                  'supported_formats', 'switch_method',  'comments', 'description', 'tags') # todo updated?
-        default_columns = ('name', 'processor', 'signal_type', 'ip', 'supported_formats', 'tags', 'description')
+        fields = ('pk', 'id', 'name', 'processor', 'endpoint_type', 'primary_ip', 'secondary_ip', 'max_bandwidth',
+                  'supported_formats',  'signal_type', 'comments', 'description', 'tags')  # todo updated?
+        default_columns = ('processor', 'description', 'switch_method', 'name', 'supported_formats', 'signal_type',
+                           'primary_ip', 'secondary_ip', 'tags')
 
 
 class StreamTable(NetBoxTable):

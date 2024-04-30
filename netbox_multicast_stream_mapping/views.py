@@ -4,7 +4,8 @@ from utilities.views import ViewTab, register_model_view
 from . import filtersets, forms, models, tables
 from .models import Processor, Endpoint
 from dcim.models import Device
-from .tables import EndpointTable
+from .tables import EndpointTable, ProcessorTable
+
 
 
 # detail view
@@ -118,21 +119,26 @@ class FormatDeleteView(generic.ObjectDeleteView):
 
 
 # endpoint view for devices
-# @register_model_view(model=Device, name='Endpoints', path='endpoints')
-# class EndpointView(generic.ObjectChildrenView):
-#     queryset = Processor.objects.all()
-#     child_model = Sender
-#     table = SenderTable
-#     filterset = filtersets.SenderFilterSet
-#     # template_name = 'ipam/prefix/ip_ranges.html' # TODO
-#
-#     tab = ViewTab(
-#         label="Stream Endpoints",
-#         weight=100,
-#
-#         # permission="netbox_dns.view_zone", # TODO
-#         # badge=lambda obj: len(obj.zones),
-#     )
+@register_model_view(model=Device, name='Processors', path='processors')
+class DeviceProcessorView(generic.ObjectChildrenView):
+    queryset = Device.objects.all()
+    child_model = Processor
+    table = tables.ProcessorTable
+    filterset = filtersets.ProcessorFilterSet
+    template_name = 'netbox_multicast_stream_mapping/processor_list.html' # TODO
+    # template_name = 'dcim/device_list.html' # TODO
+
+    tab = ViewTab(
+        label="Processors",
+        weight=100,
+
+        # permission="netbox_dns.view_zone", # TODO
+        # badge=lambda obj: len(obj.zones),
+    )
+
+    def get_children(self, request, instance):
+        # hier logik
+        return Processor.objects.filter(device=instance)
 
 
 # @register_model_view(model=Device, name='Endpoints', path='endpoints')

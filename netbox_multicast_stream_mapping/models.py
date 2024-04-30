@@ -5,6 +5,15 @@ from django.urls import reverse
 from utilities.choices import ChoiceSet
 
 
+class EndpointTypeChoices(ChoiceSet):
+    key = 'Endpoint.endpoint_type'  # todo anderer key -> allgemeiner?
+
+    CHOICES = [
+        ('sender', 'Sender', 'red'),
+        ('receiver', 'Receiver', 'blue'),
+    ]
+
+
 class SignalTypeChoices(ChoiceSet):
     key = 'Endpoint.signal_type'  # todo anderer key -> allgemeiner?
 
@@ -97,7 +106,9 @@ class Processor(NetBoxModel):
 class Endpoint(NetBoxModel):
     name = models.CharField(max_length=100)
     processor = models.ForeignKey(to=Processor, on_delete=models.CASCADE) # todo löschmodus?
-    ip = models.OneToOneField(to='ipam.IPAddress', on_delete=models.SET_NULL, related_name='+', blank=True, null=True)
+    endpoint_type = models.CharField(choices=EndpointTypeChoices, null=True)
+    primary_ip = models.OneToOneField(to='ipam.IPAddress', on_delete=models.SET_NULL, related_name='+', blank=True, null=True)
+    secondary_ip = models.OneToOneField(to='ipam.IPAddress', on_delete=models.SET_NULL, related_name='+', blank=True, null=True)
     max_bandwidth = models.FloatField(null=True, blank=True)
     supported_formats = models.ManyToManyField(to=Format, blank=True)
     switch_method = models.CharField(choices=SwitchMethodChoices, null=True, blank=True)

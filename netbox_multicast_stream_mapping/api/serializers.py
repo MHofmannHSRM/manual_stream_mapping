@@ -47,9 +47,9 @@ class EndpointSerializer(NetBoxModelSerializer):
     class Meta:
         model = Endpoint
         fields = (
-            'id', 'url', 'display', 'name', 'processor', 'ip', 'max_bandwidth',
-            'supported_formats', 'signal_type', 'comments', 'description', 'tags', 'custom_fields', 'created', 'last_updated',
-        )
+            'id', 'url', 'display', 'name', 'processor', 'endpoint_type', 'primary_ip', 'secondary_ip', 'max_bandwidth',
+            'supported_formats', 'switch_method', 'signal_type', 'comments', 'description', 'tags', 'custom_fields',
+            'created', 'last_updated',)
 
 
 class StreamSerializer(NetBoxModelSerializer):
