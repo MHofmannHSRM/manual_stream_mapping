@@ -5,7 +5,7 @@ from . import filtersets, forms, models, tables
 from .models import Processor, Endpoint
 from dcim.models import Device
 from .tables import EndpointTable, ProcessorTable
-
+from django.db.models import Count
 
 
 # detail view
@@ -15,7 +15,8 @@ class ProcessorView(generic.ObjectView):
 
 # list view
 class ProcessorListView(generic.ObjectListView):
-    queryset = models.Processor.objects.all()
+    # queryset = models.Processor.objects.all()
+    queryset = models.Processor.objects.annotate(endpoint_count=Count('endpoint'))# TODO
     # für logik
     # queryset = models.AccessList.objects.annotate(rule_count=Count('rules'))
     table = tables.ProcessorTable
@@ -139,6 +140,37 @@ class DeviceProcessorView(generic.ObjectChildrenView):
     def get_children(self, request, instance):
         # hier logik
         return Processor.objects.filter(device=instance)
+
+
+# class ProcessorEndpointView(generic.ObjectChildrenView):
+#     queryset = Processor.objects.all()
+#     child_model = Endpoint
+#     table = tables.EndpointTable
+#     filterset = filtersets.EndpointFilterSet
+#     template_name = 'netbox_multicast_stream_mapping/processor_list.html' # TODO
+#     # template_name = 'dcim/device_list.html' # TODO
+#
+#     def get_children(self, request, instance):
+#         # hier logik
+#         return Endpoint.objects.filter(device=instance)
+
+
+@register_model_view(models.Processor, name='endpoints', path='endpoints')
+class EndpointChildView(generic.ObjectChildrenView):
+    queryset = models.Processor.objects.all().prefetch_related('endpoint_set')
+    child_model = models.Endpoint
+    table = tables.EndpointTable
+    template_name = "netbox_multicast_stream_mapping/processor_list.html" # todo
+    hide_if_empty = False
+    tab = ViewTab(
+        label='Endpunkte',
+        badge=lambda obj: obj.endpoint_set.count(),
+        permission='myplugin.view_endpoint'
+    )
+
+    def get_children(self, request, parent):
+        return parent.endpoint_set.all()
+
 
 
 # @register_model_view(model=Device, name='Endpoints', path='endpoints')

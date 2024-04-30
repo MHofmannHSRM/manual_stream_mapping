@@ -9,6 +9,7 @@ urlpatterns = (
     path('processors/<int:pk>/', views.ProcessorView.as_view(), name='processor'),
     path('processors/<int:pk>/edit/', views.ProcessorEditView.as_view(), name='processor_edit'),
     path('processors/<int:pk>/delete/', views.ProcessorDeleteView.as_view(), name='processor_delete'),
+    path("processors/<int:pk>/endpoints/", views.EndpointChildView.as_view(), name="endpoint_children"), # todo andere überschrift in dieser ansicht
     path('processors/<int:pk>/changelog/', ObjectChangeLogView.as_view(), name='processor_changelog',
          kwargs={'model': models.Processor}),
 
@@ -40,6 +41,6 @@ urlpatterns = (
          kwargs={'model': models.Format}),
 
     # tab device processor
-    path("devices/<int:pk>/processors/", views.DeviceProcessorView.as_view(), name="device_processors"),
+    path("devices/<int:pk>/processors/", views.DeviceProcessorView.as_view(), name="device_processors"), # todo über andere seite verlinken -> andere felder...
 
 )

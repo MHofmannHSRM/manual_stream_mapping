@@ -11,7 +11,7 @@ class ProcessorForm(NetBoxModelForm):
 
     class Meta:
         model = Processor
-        fields = ('name', 'device', 'module', 'sender_count', 'receiver_count', 'description', 'comments', 'tags')
+        fields = ('name', 'device', 'module', 'description', 'comments', 'tags')
 
 
 class ProcessorFilterForm(NetBoxModelFilterSetForm):

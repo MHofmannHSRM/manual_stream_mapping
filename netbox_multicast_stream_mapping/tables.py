@@ -1,8 +1,7 @@
 import django_tables2 as tables
-
-from netbox.tables import NetBoxTable, ChoiceFieldColumn, TagColumn, ManyToManyColumn
-
+from netbox.tables import NetBoxTable, ChoiceFieldColumn, TagColumn, ManyToManyColumn, columns
 from .models import Processor, Endpoint, Stream, Format
+from django_tables2.utils import A
 
 
 class FormatTable(NetBoxTable):
@@ -27,8 +26,28 @@ class ProcessorTable(NetBoxTable):
     name = tables.Column(linkify=True)
     device = tables.Column(linkify=True)
     module = tables.Column(linkify=True)
-    sender_count = tables.Column(verbose_name='Number of Senders') # todo counter cache field
-    receiver_count = tables.Column(verbose_name='Number of Receivers') # todo counter cache field
+
+
+    # endpoint_count = tables.Column(linkify=True, verbose_name='Number of Endpoints')
+    # endpoint_count = tables.Column(verbose_name='Number of Endpoints')
+
+    endpoint_count = tables.LinkColumn(
+            'plugins:netbox_multicast_stream_mapping:endpoint_children',  # URL-Name der Endpoint-Tabelle
+            args=[A("pk")],
+            # args=[pk],  # Verwendung der Prozessor-ID als Argument
+            verbose_name='Number of Endpoints',
+    )
+
+
+
+    # endpoint_count = columns.LinkedCountColumn(
+    #     viewname='plugins:netbox_multicast_stream_mapping:endpoint_children',
+    #     url_params={'processor_id': 'pk'},
+    #     # url_params={'device_type_id': 'pk'},
+    #     verbose_name=('Number of Endpoints')
+    # )
+
+
     description = tables.Column()
     comments = tables.Column()
     tags = TagColumn() # TODO -> Verlinkung -> Filter?
@@ -37,9 +56,8 @@ class ProcessorTable(NetBoxTable):
     class Meta(NetBoxTable.Meta):
         model = Processor
         # template_name = 'utilities/tables/netbox_table.html' TODO
-        fields = ('pk', 'id', 'name', 'device', 'module', 'sender_count', 'receiver_count', 'description', 'comments',
-                  'tags') # todo updated?
-        default_columns = ('name', 'device', 'module', 'sender_count', 'receiver_count', 'tags', 'description')
+        fields = ('pk', 'id', 'name', 'device', 'module', 'endpoint_count', 'description', 'comments', 'tags') # todo updated?
+        default_columns = ('name', 'device', 'module', 'endpoint_count', 'tags', 'description')
 
 
 class EndpointTable(NetBoxTable):

@@ -84,9 +84,8 @@ class Format(NetBoxModel):
 class Processor(NetBoxModel):
     name = models.CharField(max_length=100)
     device = models.ForeignKey(to='dcim.Device', on_delete=models.CASCADE, related_name='+') # todo related_name='+' um keine beziehung rückwärst zu erstellen
-    module = models.ForeignKey(to='dcim.Module', on_delete=models.CASCADE, related_name='+', null=True, blank=True)
-    sender_count = models.PositiveIntegerField(default=0, null=True, blank=True) # todo logik zähler
-    receiver_count = models.PositiveIntegerField(default=0, null=True, blank=True) # liste -> darin verlinkung
+    module = models.ForeignKey(to='dcim.Module', on_delete=models.CASCADE, related_name='+', null=True, blank=True) # todo logik -> modul muss zu device gehören
+    # endpoint_count = models.PositiveIntegerField(default=0, null=True, blank=True) # todo logik zähler
     description = models.CharField(max_length=500, null=True, blank=True)
     comments = models.TextField(null=True, blank=True)
     # TODO NMOS? -> Port?

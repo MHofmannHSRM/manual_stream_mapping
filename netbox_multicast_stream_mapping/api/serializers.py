@@ -23,7 +23,7 @@ class ProcessorSerializer(NetBoxModelSerializer):
     class Meta:
         model = Processor
         fields = (
-            'id', 'url', 'display', 'name', 'device', 'module', 'sender_count', 'receiver_count', 'description',
+            'id', 'url', 'display', 'name', 'device', 'module', 'description',
             'comments', 'tags', 'custom_fields', 'created', 'last_updated',
         )
 
