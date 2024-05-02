@@ -11,6 +11,16 @@ from django.db.models import Count
 class ProcessorView(generic.ObjectView):
     queryset = models.Processor.objects.all()
 
+    def get_extra_context(self, request, instance):
+        endpoints = instance.endpoint_set.all()
+
+        table = tables.EndpointTable(endpoints)
+        table.configure(request)
+
+        return {
+            'endpoints_table': table,
+        }
+
 
 # list view
 class ProcessorListView(generic.ObjectListView):

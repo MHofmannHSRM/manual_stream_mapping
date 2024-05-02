@@ -1,4 +1,5 @@
 {% extends 'generic/object.html' %}
+{% load render_table from django_tables2 %}
 
 <!--TODO: Add Rules Table -> in Views ergänzen -< context data -> context variable -->
 <!--TODO: get_absolute_url; placeholder; protocol/action -> funktion schritt 6 -->
@@ -39,23 +40,24 @@
 
         </div>
       </div>
-      {% include 'inc/panels/tags.html' %}
-      {% include 'inc/panels/comments.html' %}
-      {% include 'inc/panels/custom_fields.html' %}
+
     </div>
 
     <div class="col col-md-6">
-      <div class="card">
-        <h5 class="card-header">Endpoints</h5>
-        <div class="card-body">
-          <table class="table table-hover attr-table">
-              <tr>
-              <th scope="row">Platzhalter</th>
-              <td>{{ "Platzhalter" }}</td>
-            </tr>
-          </table>
-        </div>
-      </div>
+      {% include 'inc/panels/tags.html' %}
+      {% include 'inc/panels/comments.html' %}
+      {% include 'inc/panels/custom_fields.html' %}
+
     </div>
   </div>
+
+<div class="card">
+        <h5 class="card-header">Endpoints</h5>
+        <div class="card-body">
+        <div class="card-body table-responsive">
+          {% render_table endpoints_table %}
+        </div>
+        </div>
+      </div>
+
 {% endblock content %}
