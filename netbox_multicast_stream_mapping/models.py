@@ -85,7 +85,6 @@ class Processor(NetBoxModel):
     name = models.CharField(max_length=100)
     device = models.ForeignKey(to='dcim.Device', on_delete=models.CASCADE, related_name='+') # todo related_name='+' um keine beziehung rückwärst zu erstellen
     module = models.ForeignKey(to='dcim.Module', on_delete=models.CASCADE, related_name='+', null=True, blank=True) # todo logik -> modul muss zu device gehören
-    # endpoint_count = models.PositiveIntegerField(default=0, null=True, blank=True) # todo logik zähler
     description = models.CharField(max_length=500, null=True, blank=True)
     comments = models.TextField(null=True, blank=True)
     # TODO NMOS? -> Port?
@@ -154,41 +153,3 @@ class Stream(NetBoxModel):
 
     def get_absolute_url(self):
         return reverse('plugins:netbox_multicast_stream_mapping:stream', args=[self.pk])
-
-
-
-
-# # model for multicast sender inside processor -> only one per stream!
-# class MulticastSender(NetBoxModel):
-#     name = models.CharField(max_length=100)
-#
-#     default_action = models.CharField(max_length=30)
-#
-#     comments = models.TextField(blank=True)
-#
-#     # mapping to foreign key: related parent model, action, attribute in related model
-#     # action: when deleting sender (CASCADE -> alle darunter löschen; PROTECT -> nicht löschen, wenn sender existieren
-#     #-> TODO vllt. bei streams?)
-#     processor = models.ForeignKey(to=Processor, on_delete=models.CASCADE, related_name='senders')
-#
-#     # index -> order in list todo
-#     index = models.PositiveIntegerField()
-#
-#     # optional -> blank = true TODO char array field
-#     # formats = models.CharField(max_length=50, blank=True)
-#     formats = ArrayField(base_field=models.CharField(), blank=True, null=True)
-#
-#     # todo -> choice set
-#     # action = models.CharField(max_length=30)
-#     description = models.CharField(max_length=500, blank=True)
-#
-#     # alphabetical ordering for model instances
-#     class Meta:
-#         ordering = ("name",)
-#         # todo
-#         # ordering = ('access_list', 'index')
-#         # unique_together = ('access_list', 'index')
-#
-#     # method to control, how model is converted into string
-#     def __str__(self):
-#         return self.name

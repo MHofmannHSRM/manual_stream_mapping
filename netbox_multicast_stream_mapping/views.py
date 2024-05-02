@@ -15,10 +15,7 @@ class ProcessorView(generic.ObjectView):
 
 # list view
 class ProcessorListView(generic.ObjectListView):
-    # queryset = models.Processor.objects.all()
     queryset = models.Processor.objects.annotate(endpoint_count=Count('endpoint'))# TODO
-    # für logik
-    # queryset = models.AccessList.objects.annotate(rule_count=Count('rules'))
     table = tables.ProcessorTable
     filterset = filtersets.ProcessorFilterSet
     filterset_form = forms.ProcessorFilterForm
@@ -45,8 +42,6 @@ class EndpointView(generic.ObjectView):
 # list view
 class EndpointListView(generic.ObjectListView):
     queryset = models.Endpoint.objects.all()
-    # für logik
-    # queryset = models.AccessList.objects.annotate(rule_count=Count('rules'))
     table = tables.EndpointTable
     filterset = filtersets.EndpointFilterSet
     filterset_form = forms.EndpointFilterForm
@@ -120,6 +115,7 @@ class FormatDeleteView(generic.ObjectDeleteView):
 
 
 # endpoint view for devices
+# todo bobbel mit anzahl für gerät
 @register_model_view(model=Device, name='Processors', path='processors')
 class DeviceProcessorView(generic.ObjectChildrenView):
     queryset = Device.objects.all()
@@ -132,14 +128,15 @@ class DeviceProcessorView(generic.ObjectChildrenView):
     tab = ViewTab(
         label="Processors",
         weight=100,
-
+        badge=lambda obj: Processor.objects.filter(device=obj).count(),
         # permission="netbox_dns.view_zone", # TODO
         # badge=lambda obj: len(obj.zones),
     )
 
     def get_children(self, request, instance):
         # hier logik
-        return Processor.objects.filter(device=instance)
+        return Processor.objects.filter(device=instance).annotate(endpoint_count=Count('endpoint'))
+
 
 
 # class ProcessorEndpointView(generic.ObjectChildrenView):

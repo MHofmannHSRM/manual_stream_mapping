@@ -17,7 +17,6 @@ class FormatTable(NetBoxTable):
 
     class Meta(NetBoxTable.Meta):
         model = Format
-        # template_name = 'utilities/tables/netbox_table.html' TODO
         fields = ('pk', 'id', 'name', 'type', 'res_h', 'res_w', 'fps', 'audio_ch', 'comments', 'description', 'tags') # todo updated?
         default_columns = ('name', 'type', 'res_h', 'res_w', 'fps', 'audio_ch', 'description', 'tags')
 
@@ -26,38 +25,21 @@ class ProcessorTable(NetBoxTable):
     name = tables.Column(linkify=True)
     device = tables.Column(linkify=True)
     module = tables.Column(linkify=True)
-
-
-    # endpoint_count = tables.Column(linkify=True, verbose_name='Number of Endpoints')
-    # endpoint_count = tables.Column(verbose_name='Number of Endpoints')
-
     endpoint_count = tables.LinkColumn(
             'plugins:netbox_multicast_stream_mapping:endpoint_children',  # URL-Name der Endpoint-Tabelle
             args=[A("pk")],
             # args=[pk],  # Verwendung der Prozessor-ID als Argument
-            verbose_name='Number of Endpoints',
-    )
-
-
-
-    # endpoint_count = columns.LinkedCountColumn(
-    #     viewname='plugins:netbox_multicast_stream_mapping:endpoint_children',
-    #     url_params={'processor_id': 'pk'},
-    #     # url_params={'device_type_id': 'pk'},
-    #     verbose_name=('Number of Endpoints')
-    # )
-
-
+            verbose_name='Number of Endpoints')
     description = tables.Column()
     comments = tables.Column()
-    tags = TagColumn() # TODO -> Verlinkung -> Filter?
+    tags = TagColumn()  # TODO -> Verlinkung -> Filter?
     # tags = TagColumn(url_name='tag')
 
     class Meta(NetBoxTable.Meta):
         model = Processor
         # template_name = 'utilities/tables/netbox_table.html' TODO
         fields = ('pk', 'id', 'name', 'device', 'module', 'endpoint_count', 'description', 'comments', 'tags') # todo updated?
-        default_columns = ('name', 'device', 'module', 'endpoint_count', 'tags', 'description')
+        default_columns = ('name', 'device', 'endpoint_count', 'tags', 'description')
 
 
 class EndpointTable(NetBoxTable):
