@@ -81,7 +81,7 @@ class Format(NetBoxModel):
 
 
 # model for internal processing units of devices -> has senders and receivers
-class Processor(NetBoxModel):
+class Processor(NetBoxModel): # todo detail view table endpoints
     name = models.CharField(max_length=100)
     device = models.ForeignKey(to='dcim.Device', on_delete=models.CASCADE, related_name='+') # todo related_name='+' um keine beziehung rückwärst zu erstellen
     module = models.ForeignKey(to='dcim.Module', on_delete=models.CASCADE, related_name='+', null=True, blank=True) # todo logik -> modul muss zu device gehören
@@ -105,10 +105,10 @@ class Endpoint(NetBoxModel):
     name = models.CharField(max_length=100)
     processor = models.ForeignKey(to=Processor, on_delete=models.CASCADE) # todo löschmodus?
     endpoint_type = models.CharField(choices=EndpointTypeChoices, null=True)
-    primary_ip = models.OneToOneField(to='ipam.IPAddress', on_delete=models.SET_NULL, related_name='+', blank=True, null=True)
+    primary_ip = models.OneToOneField(to='ipam.IPAddress', on_delete=models.SET_NULL, related_name='+', blank=True, null=True) # todo gleiche ip mehrfach!
     secondary_ip = models.OneToOneField(to='ipam.IPAddress', on_delete=models.SET_NULL, related_name='+', blank=True, null=True)
     max_bandwidth = models.FloatField(null=True, blank=True)
-    supported_formats = models.ManyToManyField(to=Format, blank=True)
+    supported_formats = models.ManyToManyField(to=Format, blank=True) # todo filter basiert auf signal type?
     switch_method = models.CharField(choices=SwitchMethodChoices, null=True, blank=True)
     signal_type = models.CharField(choices=SignalTypeChoices, null=True, blank=True)
     description = models.CharField(max_length=500, null=True, blank=True)
@@ -124,24 +124,19 @@ class Endpoint(NetBoxModel):
     def get_absolute_url(self):
         return reverse('plugins:netbox_multicast_stream_mapping:endpoint', args=[self.pk])
 
-    # todo farben klappen nicht
     def get_signal_type_color(self):
         return SignalTypeChoices.colors.get(self.signal_type)
-
-    # todo switch method
 
 
 # model for internal processing units of devices -> has senders and receivers
 class Stream(NetBoxModel):
     name = models.CharField(max_length=100)
-    processor = models.PositiveIntegerField(default=0) #  todo pflicht
-    sender = models.CharField(max_length=12, default='???')
-    receivers = models.CharField(max_length=12, default='???') # todo plural
-    bandwidth = models.CharField()
-    signal_type = models.CharField() # todo choice: Audio, Video, ANC, Mix???
-    protocol = models.CharField() # todo choice
-    format = models.CharField() # todo choice
-    audio_channels = models.CharField() # todo choice
+    sender = models.ForeignKey(to=Endpoint, on_delete=models.CASCADE, related_name="sent_streams")
+    receivers = models.ManyToManyField(to=Endpoint, related_name="received_streams")
+    bandwidth = models.FloatField(null=True, blank=True)
+    signal_type = models.CharField(choices=SignalTypeChoices, null=True, blank=True)
+    protocol = models.CharField(max_length=100, blank=True)  # todo choice
+    formats = models.ManyToManyField(to=Format, blank=True)
     comments = models.TextField(blank=True)
     description = models.CharField(max_length=500, blank=True)
 

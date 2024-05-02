@@ -28,12 +28,10 @@ class ProcessorTable(NetBoxTable):
     endpoint_count = tables.LinkColumn(
             'plugins:netbox_multicast_stream_mapping:endpoint_children',  # URL-Name der Endpoint-Tabelle
             args=[A("pk")],
-            # args=[pk],  # Verwendung der Prozessor-ID als Argument
             verbose_name='Number of Endpoints')
     description = tables.Column()
     comments = tables.Column()
-    tags = TagColumn()  # TODO -> Verlinkung -> Filter?
-    # tags = TagColumn(url_name='tag')
+    tags = TagColumn()  # TODO -> Verlinkung -> Filter? # tags = TagColumn(url_name='tag')
 
     class Meta(NetBoxTable.Meta):
         model = Processor
@@ -61,20 +59,18 @@ class EndpointTable(NetBoxTable):
         # template_name = 'utilities/tables/netbox_table.html' TODO
         fields = ('pk', 'id', 'name', 'processor', 'endpoint_type', 'primary_ip', 'secondary_ip', 'max_bandwidth',
                   'supported_formats',  'signal_type', 'comments', 'description', 'tags')  # todo updated?
-        default_columns = ('processor', 'description', 'switch_method', 'name', 'supported_formats', 'signal_type',
-                           'primary_ip', 'secondary_ip', 'tags')
+        default_columns = ('name', 'endpoint_type', 'signal_type', 'description',  'processor', 'switch_method',
+                           'supported_formats', 'primary_ip', 'secondary_ip', 'tags')
 
 
 class StreamTable(NetBoxTable):
     name = tables.Column(linkify=True)
-    processor = tables.Column()
     sender = tables.Column()
     receivers = tables.Column() # todo ändern
     bandwidth = tables.Column() #rechtschreibfehler überall
-    format = tables.Column()
     signal_type = tables.Column()
     protocol = tables.Column()
-    audio_channels = tables.Column()
+    formats = tables.Column()
     comments = tables.Column()
     description = tables.Column()
     tags = TagColumn()  # TODO -> Verlinkung -> Filter?
@@ -82,6 +78,6 @@ class StreamTable(NetBoxTable):
     class Meta(NetBoxTable.Meta):
         model = Stream
         # template_name = 'utilities/tables/netbox_table.html' TODO
-        fields = ('pk', 'id', 'name', 'processor', 'sender', 'receivers', 'bandwidth', 'format', 'signal_type',
-                  'protocol', 'audio_channels', 'comments', 'description', 'tags') # todo updated?
+        fields = ('pk', 'id', 'name', 'sender', 'receivers', 'bandwidth', 'signal_type', 'protocol',
+                  'formats', 'comments', 'description', 'tags') # todo updated?
         default_columns = ('name', 'signal_type', 'sender', 'receivers', 'description', 'tags')

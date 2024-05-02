@@ -8,10 +8,11 @@ from netbox.forms import NetBoxModelForm, NetBoxModelFilterSetForm
 
 
 class ProcessorForm(NetBoxModelForm):
+    comments = CommentField()
 
     class Meta:
         model = Processor
-        fields = ('name', 'device', 'module', 'description', 'comments', 'tags')
+        fields = ('name', 'device', 'module', 'description', 'tags', 'comments')
 
 
 class ProcessorFilterForm(NetBoxModelFilterSetForm):
@@ -29,10 +30,17 @@ class ProcessorFilterForm(NetBoxModelFilterSetForm):
 
 class EndpointForm(NetBoxModelForm): # todo verbose?
 
+    # site = DynamicModelChoiceField(queryset=Site.objects.all())
+    comments = CommentField()
+    # fieldsets = (
+    #     ('Model Stuff', ('name', 'status', 'site', 'tags')),
+    #     ('Tenancy', ('tenant_group', 'tenant')),
+    # )
+
     class Meta:
         model = Endpoint
         fields = ('name', 'processor', 'endpoint_type', 'primary_ip', 'secondary_ip', 'max_bandwidth', 'signal_type',
-                  'supported_formats', 'switch_method', 'tags', 'description', 'comments')
+                  'supported_formats', 'switch_method', 'description',  'tags', 'comments')
 
 
 class EndpointFilterForm(NetBoxModelFilterSetForm):
@@ -49,11 +57,12 @@ class EndpointFilterForm(NetBoxModelFilterSetForm):
 
 
 class StreamForm(NetBoxModelForm):
+    comments = CommentField()
 
     class Meta:
         model = Stream
-        fields = ('name', 'processor', 'sender', 'receivers', 'bandwidth', 'format', 'signal_type',
-                  'protocol', 'audio_channels', 'comments', 'description', 'tags') # todo updated?
+        fields = ('name', 'sender', 'receivers', 'bandwidth', 'signal_type', 'protocol', 'formats', 'description',
+                  'tags', 'comments')
 
 
 class StreamFilterForm(NetBoxModelFilterSetForm):
@@ -70,10 +79,11 @@ class StreamFilterForm(NetBoxModelFilterSetForm):
 
 
 class FormatForm(NetBoxModelForm):
+    comments = CommentField()
 
     class Meta:
         model = Format
-        fields = ('name', 'type', 'res_h', 'res_w', 'fps', 'audio_ch', 'comments', 'description', 'tags')
+        fields = ('name', 'type', 'res_h', 'res_w', 'fps', 'audio_ch', 'description', 'tags', 'comments')
 
 
 
