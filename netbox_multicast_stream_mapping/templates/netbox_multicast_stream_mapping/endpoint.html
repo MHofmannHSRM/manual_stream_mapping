@@ -1,3 +1,4 @@
+
 {% extends 'generic/object.html' %}
 
 <!--TODO: Add Rules Table -> in Views ergänzen -< context data -> context variable -->
@@ -11,31 +12,78 @@
       <div class="card">
         <h5 class="card-header">Endpoint</h5>
         <div class="card-body">
+
           <table class="table table-hover attr-table">
+
+<!--            todo label buttons-->
+<!--            todo verlinkung-->
             <tr>
               <th scope="row">Name</th>
               <td>{{ object.name }}</td>
             </tr>
+
+            <tr>
+              <th scope="row">Signal Type</th>
+              <td>{{ object.signal_type }}</td>
+            </tr>
+
+            <tr>
+              <th scope="row">Processor</th>
+              <td>{{ object.processor }}</td>
+            </tr>
+
+            <tr>
+              <th scope="row">Endpoint Type</th>
+              <td>{{ object.endpoint_type }}</td>
+            </tr>
+
+            <tr>
+              <th scope="row">Primary IP Address</th>
+              <td>{{ object.primary_ip }}</td>
+            </tr>
+
+            <tr>
+              <th scope="row">Secondary IP Address</th>
+              <td>{{ object.secondary_ip }}</td>
+            </tr>
+
+            <tr>
+              <th scope="row">Max. Bandwidth (Mbps) </th>
+              <td>{{ object.max_bandwidth }}</td>
+            </tr>
+
+            <tr>
+              <th scope="row">Switch Method (2022-7) </th>
+              <td>{{ object.switch_method }}</td>
+            </tr>
+
           </table>
+
         </div>
       </div>
-      {% include 'inc/panels/tags.html' %}
-      {% include 'inc/panels/comments.html' %}
-      {% include 'inc/panels/custom_fields.html' %}
-    </div>
+      </div>
 
     <div class="col col-md-6">
+
       <div class="card">
-        <h5 class="card-header">Streams</h5>
+        <h5 class="card-header">Supported Formats</h5>
         <div class="card-body">
+
           <table class="table table-hover attr-table">
-              <tr>
-              <th scope="row">Platzhalter</th>
-              <td>{{ "Platzhalter" }}</td>
+            <!--            todo liste formate label buttons?-->
+
+            <tr>
+              <th scope="row">Supported Formats </th>
+              <td>{{ object.supported_formats }}</td>
             </tr>
+
           </table>
+
         </div>
-      </div>
+
     </div>
+          {% include 'inc/panels/tags.html' %}
+          {% include 'inc/panels/comments.html' %}
+          {% include 'inc/panels/custom_fields.html' %}
   </div>
 {% endblock content %}

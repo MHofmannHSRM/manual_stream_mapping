@@ -1,3 +1,4 @@
+
 {% extends 'generic/object.html' %}
 
 <!--TODO: Add Rules Table -> in Views ergänzen -< context data -> context variable -->
@@ -11,16 +12,55 @@
       <div class="card">
         <h5 class="card-header">Format</h5>
         <div class="card-body">
+
           <table class="table table-hover attr-table">
+
             <tr>
               <th scope="row">Name</th>
               <td>{{ object.name }}</td>
             </tr>
+
+            <tr>
+              <th scope="row">Type</th>
+              <td>{{ object.type }}</td>
+            </tr>
+
+            <tr>
+              <th scope="row">Vertical Resolution</th>
+              <td>{{ object.res_h }}</td>
+            </tr>
+
+            <tr>
+              <th scope="row">Horizontal Resolution</th>
+              <td>{{ object.res_w }}</td>
+            </tr>
+
+<!--            todo strich für nichts; pixel für res; badges für rest -->
+            <tr>
+              <th scope="row">Frame Rate</th>
+              <td>{{ object.fps }}</td>
+            </tr>
+
+            <tr>
+              <th scope="row">Number of Audio Channels </th>
+              <td>{{ object.channel_no }}</td>
+            </tr>
+
+            <tr>
+              <th scope="row">Description </th>
+              <td>{{ object.description }}</td>
+            </tr>
+
           </table>
+
         </div>
       </div>
-      {% include 'inc/panels/comments.html' %}
-      {% include 'inc/panels/custom_fields.html' %}
+      </div>
+
+    <div class="col col-md-6">
+          {% include 'inc/panels/tags.html' %}
+          {% include 'inc/panels/comments.html' %}
+          {% include 'inc/panels/custom_fields.html' %}
     </div>
   </div>
 {% endblock content %}

@@ -116,7 +116,7 @@ class FormatDeleteView(generic.ObjectDeleteView):
 # ----------------------------------------------------------------------------------------------------------------------
 
 
-# endpoint view for devices
+# processor view for devices
 @register_model_view(model=Device, name='Processors', path='processors')
 class DeviceProcessorView(generic.ObjectChildrenView):
     queryset = Device.objects.all()
@@ -135,6 +135,7 @@ class DeviceProcessorView(generic.ObjectChildrenView):
         return Processor.objects.filter(device=instance).annotate(endpoint_count=Count('endpoint'))
 
 
+# endpoint view for single processor
 class EndpointChildView(generic.ObjectChildrenView):
     queryset = models.Processor.objects.all().prefetch_related('endpoint_set')
     child_model = models.Endpoint

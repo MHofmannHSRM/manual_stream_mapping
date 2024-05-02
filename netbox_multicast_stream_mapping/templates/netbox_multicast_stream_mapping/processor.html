@@ -11,28 +11,32 @@
       <div class="card">
         <h5 class="card-header">Processor</h5>
         <div class="card-body">
+
           <table class="table table-hover attr-table">
+
             <tr>
               <th scope="row">Name</th>
               <td>{{ object.name }}</td>
             </tr>
+
             <tr>
               <th scope="row">Device</th>
               <td>{{ object.device }}</td>
             </tr>
+
             <tr>
               <th scope="row">Module</th>
               <td>{{ object.module }}</td>
             </tr>
+
+<!--todo zähler mit link-->
             <tr>
-              <th scope="row">Senders</th>
-              <td>{{ object.sender_count }}</td>
+              <th scope="row">Number of Endpoints</th>
+              <td>{{ Platzhalter }}</td>
             </tr>
-            <tr>
-              <th scope="row">Receivers</th>
-              <td>{{ object.receiver_count }}</td>
-            </tr>
+
           </table>
+
         </div>
       </div>
       {% include 'inc/panels/tags.html' %}
@@ -42,7 +46,7 @@
 
     <div class="col col-md-6">
       <div class="card">
-        <h5 class="card-header">Streams</h5>
+        <h5 class="card-header">Endpoints</h5>
         <div class="card-body">
           <table class="table table-hover attr-table">
               <tr>

@@ -63,11 +63,11 @@ class StreamSerializer(NetBoxModelSerializer):
     class Meta:
         model = Stream
         fields = (
-            'id', 'url', 'display', 'name', 'processor', 'sender', 'receivers', 'bandwidth', 'format', 'signal_type',
-            'protocol', 'audio_channels', 'comments', 'description', 'tags', 'custom_fields', 'created', 'last_updated',
+            'id', 'url', 'display', 'name', 'sender', 'receivers', 'bandwidth', 'formats', 'signal_type',
+            'comments', 'description', 'tags', 'custom_fields', 'created', 'last_updated',
         )
 
-
+# todo
 class FormatSerializer(NetBoxModelSerializer):
 
     url = serializers.HyperlinkedIdentityField(view_name='plugins-api:netbox_multicast_stream_mapping-api:format-detail')
@@ -75,5 +75,5 @@ class FormatSerializer(NetBoxModelSerializer):
     class Meta:
         model = Format
         fields = (
-            'id', 'url', 'display', 'name', 'comments', 'description', 'custom_fields', 'created', 'last_updated',
+            'id', 'url', 'display', 'name', 'type', 'res_h', 'res_w', 'fps', 'audio_ch', 'comments', 'description', 'custom_fields', 'created', 'last_updated',
         )

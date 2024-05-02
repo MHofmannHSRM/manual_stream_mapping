@@ -41,6 +41,6 @@ urlpatterns = (
          kwargs={'model': models.Format}),
 
     # tab device processor
-    path("devices/<int:pk>/processors/", views.DeviceProcessorView.as_view(), name="device_processors"), # todo über andere seite verlinken -> andere felder...
+    path("devices/<int:pk>/processors/", views.DeviceProcessorView.as_view(), name="device_processors"),
 
 )

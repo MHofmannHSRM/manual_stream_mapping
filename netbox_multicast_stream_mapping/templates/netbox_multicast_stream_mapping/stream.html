@@ -1,3 +1,4 @@
+
 {% extends 'generic/object.html' %}
 
 <!--TODO: Add Rules Table -> in Views ergänzen -< context data -> context variable -->
@@ -11,31 +12,52 @@
       <div class="card">
         <h5 class="card-header">Stream</h5>
         <div class="card-body">
+
           <table class="table table-hover attr-table">
+
+<!--            todo label buttons-->
+<!--            todo verlinkung-->
             <tr>
-              <th scope="row">Name</th>
-              <td>{{ object.name }}</td>
+              <th scope="row">Sender</th>
+              <td>{{ object.sender }}</td>
             </tr>
+
+            <tr>
+              <th scope="row">Receivers</th>
+              <td>{{ object.receivers }}</td>
+            </tr>
+
+            <tr>
+              <th scope="row">Bandwidth</th>
+              <td>{{ object.bandwidth }}</td>
+            </tr>
+
+            <tr>
+              <th scope="row">Signal Type</th>
+              <td>{{ object.signal_type }}</td>
+            </tr>
+
+            <tr>
+              <th scope="row">Protocol</th>
+              <td>{{ object.protocol }}</td>
+            </tr>
+
+            <tr>
+              <th scope="row">Formats</th>
+              <td>{{ object.formats }}</td>
+            </tr>
+
           </table>
+
         </div>
       </div>
-      {% include 'inc/panels/tags.html' %}
-      {% include 'inc/panels/comments.html' %}
-      {% include 'inc/panels/custom_fields.html' %}
-    </div>
+      </div>
 
     <div class="col col-md-6">
-      <div class="card">
-        <h5 class="card-header">Senders/Receivers</h5>
-        <div class="card-body">
-          <table class="table table-hover attr-table">
-              <tr>
-              <th scope="row">Platzhalter</th>
-              <td>{{ "Platzhalter" }}</td>
-            </tr>
-          </table>
-        </div>
-      </div>
-    </div>
+
+
+          {% include 'inc/panels/tags.html' %}
+          {% include 'inc/panels/comments.html' %}
+          {% include 'inc/panels/custom_fields.html' %}
   </div>
 {% endblock content %}

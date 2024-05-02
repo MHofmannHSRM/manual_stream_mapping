@@ -96,18 +96,3 @@ class FormatForm(NetBoxModelForm):
             'fps': 'Frame Rate',
             'audio_ch': 'Number of Audio Channels',
         }
-
-
-
-# TODO choicefields usw.
-# class AccessListRuleForm(NetBoxModelForm):
-#     access_list = DynamicModelChoiceField(
-#         queryset=AccessList.objects.all()
-#     )
-#     source_prefix = DynamicModelChoiceField(
-#         queryset=Prefix.objects.all()
-#     )
-#     destination_prefix = DynamicModelChoiceField(
-#         queryset=Prefix.objects.all()
-#     )
-
