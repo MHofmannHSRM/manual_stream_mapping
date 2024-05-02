@@ -29,18 +29,24 @@ class ProcessorFilterForm(NetBoxModelFilterSetForm):
 
 
 class EndpointForm(NetBoxModelForm): # todo verbose?
-
     # site = DynamicModelChoiceField(queryset=Site.objects.all())
     comments = CommentField()
-    # fieldsets = (
+    # fieldsets = ( # todo fieldsets?
     #     ('Model Stuff', ('name', 'status', 'site', 'tags')),
     #     ('Tenancy', ('tenant_group', 'tenant')),
     # )
 
     class Meta:
         model = Endpoint
-        fields = ('name', 'processor', 'endpoint_type', 'primary_ip', 'secondary_ip', 'max_bandwidth', 'signal_type',
+        fields = ('name', 'processor', 'endpoint_type', 'signal_type', 'primary_ip', 'secondary_ip', 'max_bandwidth',
                   'supported_formats', 'switch_method', 'description',  'tags', 'comments')
+        labels = {
+            'primary_ip': 'Primary IP Address',
+            'secondary_ip': 'Secondary IP Address',
+            'max_bandwidth': 'Max. Bandwidth (Mbps)',
+            'signal_type': 'Signal Type',
+            'switch_method': 'Switch Method (2022-7)',
+        }
 
 
 class EndpointFilterForm(NetBoxModelFilterSetForm):
@@ -84,7 +90,12 @@ class FormatForm(NetBoxModelForm):
     class Meta:
         model = Format
         fields = ('name', 'type', 'res_h', 'res_w', 'fps', 'audio_ch', 'description', 'tags', 'comments')
-
+        labels = {
+            'res_h': 'Vertical Resolution',
+            'res_w': 'Horizontal Resolution',
+            'fps': 'Frame Rate',
+            'audio_ch': 'Number of Audio Channels',
+        }
 
 
 
