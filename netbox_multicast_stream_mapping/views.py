@@ -41,27 +41,10 @@ class ProcessorDeleteView(generic.ObjectDeleteView):
     queryset = models.Processor.objects.all()
 
 
-
-
-
-
-
-
 class ProcessorBulkDeleteView(generic.BulkDeleteView):
     queryset = models.Processor.objects.prefetch_related("tags")
     filterset = filtersets.ProcessorFilterSet
     table = tables.ProcessorTable
-
-
-
-
-
-
-
-
-
-
-
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -90,6 +73,11 @@ class EndpointEditView(generic.ObjectEditView):
 class EndpointDeleteView(generic.ObjectDeleteView):
     queryset = models.Endpoint.objects.all()
 
+
+class EndpointBulkDeleteView(generic.BulkDeleteView):
+    queryset = models.Endpoint.objects.prefetch_related("tags")
+    filterset = filtersets.EndpointFilterSet
+    table = tables.EndpointTable
 
 # ----------------------------------------------------------------------------------------------------------------------
 

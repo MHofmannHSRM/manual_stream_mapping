@@ -22,6 +22,7 @@ urlpatterns = (
     path('endpoints/<int:pk>/delete/', views.EndpointDeleteView.as_view(), name='endpoint_delete'),
     path('endpoints/<int:pk>/changelog/', ObjectChangeLogView.as_view(), name='endpoint_changelog',
          kwargs={'model': models.Endpoint}),
+    path('endpoints/delete/', views.EndpointBulkDeleteView.as_view(), name='endpoint_bulk_delete'),
 
     # MulticastStream
     path('streams/', views.StreamListView.as_view(), name='stream_list'),
