@@ -32,6 +32,7 @@ urlpatterns = (
     path('streams/<int:pk>/delete/', views.StreamDeleteView.as_view(), name='stream_delete'),
     path('streams/<int:pk>/changelog/', ObjectChangeLogView.as_view(), name='stream_changelog',
          kwargs={'model': models.Stream}),
+    path('streams/delete/', views.StreamBulkDeleteView.as_view(), name='stream_bulk_delete'),
 
     # Format Tags
     path('formats/', views.FormatListView.as_view(), name='format_list'),
@@ -41,6 +42,7 @@ urlpatterns = (
     path('formats/<int:pk>/delete/', views.FormatDeleteView.as_view(), name='format_delete'),
     path('formats/<int:pk>/changelog/', ObjectChangeLogView.as_view(), name='format_changelog',
          kwargs={'model': models.Format}),
+    path('formats/delete/', views.FormatBulkDeleteView.as_view(), name='format_bulk_delete'),
 
     # tab device processor
     path("devices/<int:pk>/processors/", views.DeviceProcessorView.as_view(), name="device_processors"),

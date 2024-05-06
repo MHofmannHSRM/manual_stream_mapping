@@ -108,6 +108,11 @@ class StreamDeleteView(generic.ObjectDeleteView):
     queryset = models.Stream.objects.all()
 
 
+class StreamBulkDeleteView(generic.BulkDeleteView):
+    queryset = models.Stream.objects.prefetch_related("tags")
+    filterset = filtersets.StreamFilterSet
+    table = tables.StreamTable
+
 # ----------------------------------------------------------------------------------------------------------------------
 
 
@@ -133,6 +138,12 @@ class FormatEditView(generic.ObjectEditView):
 # delete view
 class FormatDeleteView(generic.ObjectDeleteView):
     queryset = models.Format.objects.all()
+
+
+class FormatBulkDeleteView(generic.BulkDeleteView):
+    queryset = models.Format.objects.prefetch_related("tags")
+    filterset = filtersets.FormatFilterSet
+    table = tables.FormatTable
 
 
 # ----------------------------------------------------------------------------------------------------------------------
