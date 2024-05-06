@@ -5,17 +5,21 @@ from django.urls import reverse
 from utilities.choices import ChoiceSet
 
 
+# Choices --------------------------------------------------------------------------------------------------------------
+
+# Choices for Endpoint Type -> Sender or Receiver?
 class EndpointTypeChoices(ChoiceSet):
-    key = 'Endpoint.endpoint_type'  # todo anderer key -> allgemeiner?
+    key = 'Endpoint.endpoint_type'
 
     CHOICES = [
-        ('sender', 'Sender', 'red'),
+        ('sender', 'Sender', 'green'),
         ('receiver', 'Receiver', 'blue'),
     ]
 
 
+# Choices for Signal Type of Endpoint
 class SignalTypeChoices(ChoiceSet):
-    key = 'Endpoint.signal_type'  # todo anderer key -> allgemeiner?
+    key = 'Endpoint.signal_type'
 
     CHOICES = [
         ('video', 'Video', 'red'),
@@ -24,8 +28,9 @@ class SignalTypeChoices(ChoiceSet):
     ]
 
 
+# Choices for switch method (ST 2022-7)
 class SwitchMethodChoices(ChoiceSet):
-    key = 'Endpoint.switch_method'  # todo anderer key -> allgemeiner?
+    key = 'Endpoint.switch_method'
 
     CHOICES = [
         ('sips_merge', 'SiPs Merge', 'red'),
@@ -33,33 +38,37 @@ class SwitchMethodChoices(ChoiceSet):
     ]
 
 
+# Choices for Signal Type of Format Preset
 class FormatTypeChoices(ChoiceSet):
-    key = 'Format.type'  # todo anderer key -> allgemeiner?
+    key = 'Format.type'
 
     CHOICES = [
-        ('audio', 'Audio', 'red'),
-        ('video', 'Video', 'blue'),
+        ('audio', 'Audio', 'blue'),
+        ('video', 'Video', 'red'),
         ('metadata', 'Metadata', 'yellow'),
         ('ect', 'Ect.', 'green')
     ]
 
 
+# choices for framerates in Format Presets
 class FpsChoices(ChoiceSet):
-    key = 'Format.fps'  # todo anderer key -> allgemeiner?
+    key = 'Format.fps'
 
     CHOICES = [
-        ('i25', 'i25'),
+        ('i25', 'i25'), # todo framerate hinten als zahl, nicht fieldrate! -> nachschauen, wie korrekt?
         ('p25', 'p25'),
         ('i50', 'i50'),
         ('p50', 'p50'),
         ('i30', 'i30'),
         ('p30', 'p30'),
-        ('i60', 'i60'),
-        ('p60', 'p60'),
+        ('i60', 'i60'), # TODO fractional? wie behandeln? korrekt! ansprechen! -> sollte auch rein!!
+        ('p60', 'p60'), # HFR auch
     ]
 
 
-# model for internal processing units of devices -> has senders and receivers
+# Models ---------------------------------------------------------------------------------------------------------------
+
+# model format presets -> are supported for endpoints
 class Format(NetBoxModel):
     name = models.CharField(max_length=100)
     type = models.CharField(choices=FormatTypeChoices, null=True, blank=True)
@@ -79,10 +88,13 @@ class Format(NetBoxModel):
     def get_absolute_url(self):
         return reverse('plugins:netbox_multicast_stream_mapping:format', args=[self.pk])
 
+    def get_format_type_color(self):
+        return FormatTypeChoices.colors.get(self.type) # todo
+
 
 # model for internal processing units of devices -> has senders and receivers
-class Processor(NetBoxModel): # todo detail view table endpoints
-    name = models.CharField(max_length=100)
+class Processor(NetBoxModel): # todo device spalte anzahl an enpoints oder procs?
+    name = models.CharField(max_length=100) # todo in ansicht aus gerät auch device namen anzeigen?
     device = models.ForeignKey(to='dcim.Device', on_delete=models.CASCADE, related_name='+') # todo related_name='+' um keine beziehung rückwärst zu erstellen
     module = models.ForeignKey(to='dcim.Module', on_delete=models.CASCADE, related_name='+', null=True, blank=True) # todo logik -> modul muss zu device gehören
     description = models.CharField(max_length=500, null=True, blank=True)
@@ -104,7 +116,7 @@ class Processor(NetBoxModel): # todo detail view table endpoints
 class Endpoint(NetBoxModel):
     name = models.CharField(max_length=100)
     processor = models.ForeignKey(to=Processor, on_delete=models.CASCADE) # todo löschmodus?
-    endpoint_type = models.CharField(choices=EndpointTypeChoices, null=True)
+    endpoint_type = models.CharField(choices=EndpointTypeChoices, null=True) # todo farben als plakette
     primary_ip = models.OneToOneField(to='ipam.IPAddress', on_delete=models.SET_NULL, related_name='+', blank=True, null=True) # todo gleiche ip mehrfach!
     secondary_ip = models.OneToOneField(to='ipam.IPAddress', on_delete=models.SET_NULL, related_name='+', blank=True, null=True)
     max_bandwidth = models.FloatField(null=True, blank=True)

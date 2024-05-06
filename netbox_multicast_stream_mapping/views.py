@@ -40,6 +40,30 @@ class ProcessorEditView(generic.ObjectEditView):
 class ProcessorDeleteView(generic.ObjectDeleteView):
     queryset = models.Processor.objects.all()
 
+
+
+
+
+
+
+
+class ProcessorBulkDeleteView(generic.BulkDeleteView):
+    queryset = models.Processor.objects.prefetch_related("tags")
+    filterset = filtersets.ProcessorFilterSet
+    table = tables.ProcessorTable
+
+
+
+
+
+
+
+
+
+
+
+
+
 # ----------------------------------------------------------------------------------------------------------------------
 
 
@@ -125,7 +149,7 @@ class FormatDeleteView(generic.ObjectDeleteView):
 
 # ----------------------------------------------------------------------------------------------------------------------
 
-
+# todo spalte in device list view?
 # processor view for devices
 @register_model_view(model=Device, name='Processors', path='processors')
 class DeviceProcessorView(generic.ObjectChildrenView):

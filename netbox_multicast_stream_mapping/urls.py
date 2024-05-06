@@ -12,6 +12,7 @@ urlpatterns = (
     path("processors/<int:pk>/endpoints/", views.EndpointChildView.as_view(), name="endpoint_children"), # todo andere überschrift in dieser ansicht
     path('processors/<int:pk>/changelog/', ObjectChangeLogView.as_view(), name='processor_changelog',
          kwargs={'model': models.Processor}),
+    path('processors/delete/', views.ProcessorBulkDeleteView.as_view(), name='processor_bulk_delete'),
 
     # MulticastSender
     path('endpoints/', views.EndpointListView.as_view(), name='endpoint_list'),
