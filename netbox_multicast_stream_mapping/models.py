@@ -100,7 +100,6 @@ class Processor(NetBoxModel): # todo device spalte anzahl an enpoints oder procs
     description = models.CharField(max_length=500, null=True, blank=True)
     comments = models.TextField(null=True, blank=True)
     # TODO NMOS? -> Port?
-    # TODO Journal?
 
     class Meta:
         ordering = ("name",)

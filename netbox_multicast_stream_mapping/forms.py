@@ -1,8 +1,9 @@
 from netbox.forms import NetBoxModelForm
 from utilities.forms.fields import CommentField, DynamicModelChoiceField # TODO
-from .models import Processor, Endpoint, Stream, Format
+from .models import Processor, Endpoint, Stream, Format # todo choices
 from django import forms
-from netbox.forms import NetBoxModelForm, NetBoxModelFilterSetForm
+from netbox.forms import NetBoxModelForm, NetBoxModelFilterSetForm, NetBoxModelImportForm, NetBoxModelBulkEditForm
+from dcim.models import Device, Module
 
 # TODO validierungen, widgets, ...
 
@@ -26,6 +27,19 @@ class ProcessorFilterForm(NetBoxModelFilterSetForm):
     # index = forms.IntegerField(
     #     required=False
     # )
+
+
+class ProcessorBulkEditForm(NetBoxModelBulkEditForm):
+    # todo felder anpassen
+    name = forms.CharField(required=False) # todo muss eindeutig
+    description = forms.CharField(required=False)
+    comments = CommentField(required=False)
+    device = DynamicModelChoiceField(queryset=Device.objects.all(), required=False)
+    module = DynamicModelChoiceField(queryset=Module.objects.all(), required=False)
+
+    model = Processor
+    # fieldsets = ((None, ('name')),)
+    # nullable_fields = ()
 
 
 class EndpointForm(NetBoxModelForm): # todo verbose?

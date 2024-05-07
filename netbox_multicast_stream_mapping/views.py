@@ -36,6 +36,24 @@ class ProcessorEditView(generic.ObjectEditView):
     form = forms.ProcessorForm
 
 
+
+
+
+
+
+class ProcessorBulkEditView(generic.BulkEditView):
+    # queryset = Processor.objects.add_related_count(Processor.objects.all(), Processor, 'group', 'wirelesslan_count', cumulative=True)
+    queryset = models.Processor.objects.all()
+    filterset = filtersets.ProcessorFilterSet
+    table = tables.ProcessorTable
+    form = forms.ProcessorBulkEditForm # todo
+
+
+
+
+
+
+
 # delete view
 class ProcessorDeleteView(generic.ObjectDeleteView):
     queryset = models.Processor.objects.all()

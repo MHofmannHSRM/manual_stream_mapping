@@ -13,6 +13,7 @@ urlpatterns = (
     path('processors/<int:pk>/changelog/', ObjectChangeLogView.as_view(), name='processor_changelog',
          kwargs={'model': models.Processor}),
     path('processors/delete/', views.ProcessorBulkDeleteView.as_view(), name='processor_bulk_delete'),
+    path('processors/edit/', views.ProcessorBulkEditView.as_view(), name='processor_bulk_edit'),
 
     # MulticastSender
     path('endpoints/', views.EndpointListView.as_view(), name='endpoint_list'),
