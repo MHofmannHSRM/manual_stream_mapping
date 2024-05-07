@@ -36,22 +36,12 @@ class ProcessorEditView(generic.ObjectEditView):
     form = forms.ProcessorForm
 
 
-
-
-
-
-
 class ProcessorBulkEditView(generic.BulkEditView):
     # queryset = Processor.objects.add_related_count(Processor.objects.all(), Processor, 'group', 'wirelesslan_count', cumulative=True)
     queryset = models.Processor.objects.all()
     filterset = filtersets.ProcessorFilterSet
     table = tables.ProcessorTable
     form = forms.ProcessorBulkEditForm # todo
-
-
-
-
-
 
 
 # delete view
@@ -85,6 +75,14 @@ class EndpointListView(generic.ObjectListView):
 class EndpointEditView(generic.ObjectEditView):
     queryset = models.Endpoint.objects.all()
     form = forms.EndpointForm
+
+
+class EndpointBulkEditView(generic.BulkEditView):
+    # queryset = Processor.objects.add_related_count(Processor.objects.all(), Processor, 'group', 'wirelesslan_count', cumulative=True)
+    queryset = models.Endpoint.objects.all()
+    filterset = filtersets.EndpointFilterSet
+    table = tables.EndpointTable
+    form = forms.EndpointBulkEditForm  # todo
 
 
 # delete view
@@ -121,6 +119,14 @@ class StreamEditView(generic.ObjectEditView):
     form = forms.StreamForm
 
 
+class StreamBulkEditView(generic.BulkEditView):
+    # queryset = Processor.objects.add_related_count(Processor.objects.all(), Processor, 'group', 'wirelesslan_count', cumulative=True)
+    queryset = models.Stream.objects.all()
+    filterset = filtersets.StreamFilterSet
+    table = tables.StreamTable
+    form = forms.StreamBulkEditForm  # todo
+
+
 # delete view
 class StreamDeleteView(generic.ObjectDeleteView):
     queryset = models.Stream.objects.all()
@@ -151,6 +157,14 @@ class FormatListView(generic.ObjectListView):
 class FormatEditView(generic.ObjectEditView):
     queryset = models.Format.objects.all()
     form = forms.FormatForm
+
+
+class FormatBulkEditView(generic.BulkEditView):
+    # queryset = Processor.objects.add_related_count(Processor.objects.all(), Processor, 'group', 'wirelesslan_count', cumulative=True)
+    queryset = models.Format.objects.all()
+    filterset = filtersets.FormatFilterSet
+    table = tables.FormatTable
+    form = forms.FormatBulkEditForm  # todo
 
 
 # delete view

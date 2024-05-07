@@ -24,6 +24,7 @@ urlpatterns = (
     path('endpoints/<int:pk>/changelog/', ObjectChangeLogView.as_view(), name='endpoint_changelog',
          kwargs={'model': models.Endpoint}),
     path('endpoints/delete/', views.EndpointBulkDeleteView.as_view(), name='endpoint_bulk_delete'),
+    path('endpoints/edit/', views.EndpointBulkEditView.as_view(), name='endpoint_bulk_edit'),
 
     # MulticastStream
     path('streams/', views.StreamListView.as_view(), name='stream_list'),
@@ -34,6 +35,7 @@ urlpatterns = (
     path('streams/<int:pk>/changelog/', ObjectChangeLogView.as_view(), name='stream_changelog',
          kwargs={'model': models.Stream}),
     path('streams/delete/', views.StreamBulkDeleteView.as_view(), name='stream_bulk_delete'),
+    path('streams/edit/', views.StreamBulkEditView.as_view(), name='stream_bulk_edit'),
 
     # Format Tags
     path('formats/', views.FormatListView.as_view(), name='format_list'),
@@ -44,6 +46,7 @@ urlpatterns = (
     path('formats/<int:pk>/changelog/', ObjectChangeLogView.as_view(), name='format_changelog',
          kwargs={'model': models.Format}),
     path('formats/delete/', views.FormatBulkDeleteView.as_view(), name='format_bulk_delete'),
+    path('formats/edit/', views.FormatBulkEditView.as_view(), name='format_bulk_edit'),
 
     # tab device processor
     path("devices/<int:pk>/processors/", views.DeviceProcessorView.as_view(), name="device_processors"),

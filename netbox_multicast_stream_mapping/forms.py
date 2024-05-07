@@ -1,9 +1,12 @@
 from netbox.forms import NetBoxModelForm
-from utilities.forms.fields import CommentField, DynamicModelChoiceField # TODO
-from .models import Processor, Endpoint, Stream, Format # todo choices
+from utilities.forms.fields import CommentField, DynamicModelChoiceField
+from .models import *
 from django import forms
 from netbox.forms import NetBoxModelForm, NetBoxModelFilterSetForm, NetBoxModelImportForm, NetBoxModelBulkEditForm
 from dcim.models import Device, Module
+from ipam.models import IPAddress # todo korrekt oder range?
+from utilities.forms import add_blank_choice
+
 
 # TODO validierungen, widgets, ...
 
@@ -76,6 +79,25 @@ class EndpointFilterForm(NetBoxModelFilterSetForm):
     # )
 
 
+class EndpointBulkEditForm(NetBoxModelBulkEditForm):
+    # todo felder anpassen -> feiheiten, konsistenz reihenfolge/gliederung?
+    name = forms.CharField(required=False)  # todo muss eindeutig
+    processor = DynamicModelChoiceField(queryset=Processor.objects.all(), required=False)
+    endpoint_type = forms.ChoiceField(choices=add_blank_choice(EndpointTypeChoices), required=False)
+    primary_ip = DynamicModelChoiceField(queryset=IPAddress.objects.all(), required=False)
+    secondary_ip = DynamicModelChoiceField(queryset=IPAddress.objects.all(), required=False)
+    max_bandwidth = forms.FloatField(required=False)
+    # supported_formats = todo
+    switch_method = forms.ChoiceField(choices=add_blank_choice(SwitchMethodChoices), required=False)
+    signal_type = forms.ChoiceField(choices=add_blank_choice(SignalTypeChoices), required=False)
+    description = forms.CharField(required=False)
+    comments = CommentField(required=False)
+
+    model = Endpoint
+    # fieldsets = ((None, ('name')),)
+    # nullable_fields = ()
+
+
 class StreamForm(NetBoxModelForm):
     comments = CommentField()
 
@@ -98,6 +120,14 @@ class StreamFilterForm(NetBoxModelFilterSetForm):
     # )
 
 
+class StreamBulkEditForm(NetBoxModelBulkEditForm):
+    # todo felder anpassen -> feiheiten, konsistenz reihenfolge/gliederung?
+    model = Stream
+    # fieldsets = ((None, ('name')),)
+    # nullable_fields = ()
+
+
+
 class FormatForm(NetBoxModelForm):
     comments = CommentField()
 
@@ -110,3 +140,14 @@ class FormatForm(NetBoxModelForm):
             'fps': 'Frame Rate',
             'audio_ch': 'Number of Audio Channels',
         }
+
+class FormatFilterForm(NetBoxModelFilterSetForm):
+    model = Format
+# todo filter
+
+
+class FormatBulkEditForm(NetBoxModelBulkEditForm):
+    # todo felder anpassen -> feiheiten, konsistenz reihenfolge/gliederung?
+    model = Format
+    # fieldsets = ((None, ('name')),)
+    # nullable_fields = ()
