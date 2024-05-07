@@ -6,9 +6,48 @@ from netbox.forms import NetBoxModelForm, NetBoxModelFilterSetForm, NetBoxModelI
 from dcim.models import Device, Module
 from ipam.models import IPAddress # todo korrekt oder range?
 from utilities.forms import add_blank_choice
-
-
 # TODO validierungen, widgets, ...
+
+
+# Format ---------------------------------------------------------------------------------------------------------------
+
+
+class FormatForm(NetBoxModelForm):
+    comments = CommentField()
+
+    class Meta:
+        model = Format
+        fields = ('name', 'type', 'res_h', 'res_w', 'fps', 'audio_ch', 'description', 'tags', 'comments')
+        labels = {
+            'res_h': 'Vertical Resolution',
+            'res_w': 'Horizontal Resolution',
+            'fps': 'Frame Rate',
+            'audio_ch': 'Number of Audio Channels',
+        }
+
+
+class FormatFilterForm(NetBoxModelFilterSetForm):
+    model = Format
+# todo filter
+
+
+class FormatBulkEditForm(NetBoxModelBulkEditForm):
+    # todo felder anpassen -> feiheiten, konsistenz reihenfolge/gliederung?
+    name = forms.CharField(required=False)
+    type = forms.ChoiceField(choices=add_blank_choice(FormatTypeChoices), required=False)
+    res_h = forms.IntegerField(label='Vertical Resolution', required=False, min_value=0)
+    res_w = forms.IntegerField(label='Horizontal Resolution', required=False, min_value=0)
+    fps = forms.ChoiceField(label='Frame Rate', choices=add_blank_choice(FpsChoices), required=False)
+    audio_ch = forms.IntegerField(label='Number of Audio Channels', required=False, min_value=0)
+    description = forms.CharField(required=False)
+    comments = CommentField(required=False)
+
+    model = Format
+    # fieldsets = ((None, ('name')),)
+    # nullable_fields = ()
+
+
+# Processor ------------------------------------------------------------------------------------------------------------
 
 
 class ProcessorForm(NetBoxModelForm):
@@ -43,6 +82,9 @@ class ProcessorBulkEditForm(NetBoxModelBulkEditForm):
     model = Processor
     # fieldsets = ((None, ('name')),)
     # nullable_fields = ()
+
+
+# Endpoint -------------------------------------------------------------------------------------------------------------
 
 
 class EndpointForm(NetBoxModelForm): # todo verbose?
@@ -83,19 +125,22 @@ class EndpointBulkEditForm(NetBoxModelBulkEditForm):
     # todo felder anpassen -> feiheiten, konsistenz reihenfolge/gliederung?
     name = forms.CharField(required=False)  # todo muss eindeutig
     processor = DynamicModelChoiceField(queryset=Processor.objects.all(), required=False)
-    endpoint_type = forms.ChoiceField(choices=add_blank_choice(EndpointTypeChoices), required=False)
-    primary_ip = DynamicModelChoiceField(queryset=IPAddress.objects.all(), required=False)
-    secondary_ip = DynamicModelChoiceField(queryset=IPAddress.objects.all(), required=False)
-    max_bandwidth = forms.FloatField(required=False)
+    endpoint_type = forms.ChoiceField(label='Endpoint Type', choices=add_blank_choice(EndpointTypeChoices), required=False)
+    primary_ip = DynamicModelChoiceField(label='Primary IP Address', queryset=IPAddress.objects.all(), required=False)
+    secondary_ip = DynamicModelChoiceField(label='Secondary IP Address', queryset=IPAddress.objects.all(), required=False)
+    max_bandwidth = forms.FloatField(label='Max. Bandwidth (Mbps)', required=False)
     # supported_formats = todo
-    switch_method = forms.ChoiceField(choices=add_blank_choice(SwitchMethodChoices), required=False)
-    signal_type = forms.ChoiceField(choices=add_blank_choice(SignalTypeChoices), required=False)
+    switch_method = forms.ChoiceField(label='Switch Method (2022-7)', choices=add_blank_choice(SwitchMethodChoices), required=False)
+    signal_type = forms.ChoiceField(label='Signal Type', choices=add_blank_choice(SignalTypeChoices), required=False)
     description = forms.CharField(required=False)
     comments = CommentField(required=False)
 
     model = Endpoint
     # fieldsets = ((None, ('name')),)
     # nullable_fields = ()
+
+
+# Stream/Flow ----------------------------------------------------------------------------------------------------------
 
 
 class StreamForm(NetBoxModelForm):
@@ -128,26 +173,3 @@ class StreamBulkEditForm(NetBoxModelBulkEditForm):
 
 
 
-class FormatForm(NetBoxModelForm):
-    comments = CommentField()
-
-    class Meta:
-        model = Format
-        fields = ('name', 'type', 'res_h', 'res_w', 'fps', 'audio_ch', 'description', 'tags', 'comments')
-        labels = {
-            'res_h': 'Vertical Resolution',
-            'res_w': 'Horizontal Resolution',
-            'fps': 'Frame Rate',
-            'audio_ch': 'Number of Audio Channels',
-        }
-
-class FormatFilterForm(NetBoxModelFilterSetForm):
-    model = Format
-# todo filter
-
-
-class FormatBulkEditForm(NetBoxModelBulkEditForm):
-    # todo felder anpassen -> feiheiten, konsistenz reihenfolge/gliederung?
-    model = Format
-    # fieldsets = ((None, ('name')),)
-    # nullable_fields = ()

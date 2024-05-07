@@ -1,7 +1,7 @@
 from netbox.api.viewsets import NetBoxModelViewSet
 
 from .. import filtersets, models
-from .serializers import ProcessorSerializer, EndpointSerializer, StreamSerializer, FormatSerializer
+from .serializers import *
 
 
 class ProcessorViewSet(NetBoxModelViewSet):

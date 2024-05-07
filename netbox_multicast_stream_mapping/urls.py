@@ -3,6 +3,17 @@ from . import models, views
 from netbox.views.generic import ObjectChangeLogView
 
 urlpatterns = (
+    # Format Tags
+    path('formats/', views.FormatListView.as_view(), name='format_list'),
+    path('formats/add/', views.FormatEditView.as_view(), name='format_add'),
+    path('formats/<int:pk>/', views.FormatView.as_view(), name='format'),
+    path('formats/<int:pk>/edit/', views.FormatEditView.as_view(), name='format_edit'),
+    path('formats/<int:pk>/delete/', views.FormatDeleteView.as_view(), name='format_delete'),
+    path('formats/<int:pk>/changelog/', ObjectChangeLogView.as_view(), name='format_changelog',
+         kwargs={'model': models.Format}),
+    path('formats/delete/', views.FormatBulkDeleteView.as_view(), name='format_bulk_delete'),
+    path('formats/edit/', views.FormatBulkEditView.as_view(), name='format_bulk_edit'),
+
     # Processor
     path('processors/', views.ProcessorListView.as_view(), name='processor_list'),
     path('processors/add/', views.ProcessorEditView.as_view(), name='processor_add'),
@@ -36,17 +47,6 @@ urlpatterns = (
          kwargs={'model': models.Stream}),
     path('streams/delete/', views.StreamBulkDeleteView.as_view(), name='stream_bulk_delete'),
     path('streams/edit/', views.StreamBulkEditView.as_view(), name='stream_bulk_edit'),
-
-    # Format Tags
-    path('formats/', views.FormatListView.as_view(), name='format_list'),
-    path('formats/add/', views.FormatEditView.as_view(), name='format_add'),
-    path('formats/<int:pk>/', views.FormatView.as_view(), name='format'),
-    path('formats/<int:pk>/edit/', views.FormatEditView.as_view(), name='format_edit'),
-    path('formats/<int:pk>/delete/', views.FormatDeleteView.as_view(), name='format_delete'),
-    path('formats/<int:pk>/changelog/', ObjectChangeLogView.as_view(), name='format_changelog',
-         kwargs={'model': models.Format}),
-    path('formats/delete/', views.FormatBulkDeleteView.as_view(), name='format_bulk_delete'),
-    path('formats/edit/', views.FormatBulkEditView.as_view(), name='format_bulk_edit'),
 
     # tab device processor
     path("devices/<int:pk>/processors/", views.DeviceProcessorView.as_view(), name="device_processors"),

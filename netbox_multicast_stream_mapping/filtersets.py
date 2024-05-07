@@ -1,5 +1,5 @@
 from netbox.filtersets import NetBoxModelFilterSet
-from .models import Processor, Endpoint, Stream, Format
+from .models import *
 
 
 class ProcessorFilterSet(NetBoxModelFilterSet):

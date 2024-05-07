@@ -1,6 +1,6 @@
 import django_tables2 as tables
 from netbox.tables import NetBoxTable, ChoiceFieldColumn, TagColumn, ManyToManyColumn, columns
-from .models import Processor, Endpoint, Stream, Format
+from .models import *
 from django_tables2.utils import A
 
 
