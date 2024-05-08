@@ -1,9 +1,10 @@
 from django.urls import path
-from . import models, views
 from netbox.views.generic import ObjectChangeLogView
 
+from . import models, views
+
 urlpatterns = (
-    # Format Tags
+    # Format Tags ------------------------------------------------------------------------------------------------------
     path('formats/', views.FormatListView.as_view(), name='format_list'),
     path('formats/add/', views.FormatEditView.as_view(), name='format_add'),
     path('formats/<int:pk>/', views.FormatView.as_view(), name='format'),
@@ -14,7 +15,7 @@ urlpatterns = (
     path('formats/delete/', views.FormatBulkDeleteView.as_view(), name='format_bulk_delete'),
     path('formats/edit/', views.FormatBulkEditView.as_view(), name='format_bulk_edit'),
 
-    # Processor
+    # Processor --------------------------------------------------------------------------------------------------------
     path('processors/', views.ProcessorListView.as_view(), name='processor_list'),
     path('processors/add/', views.ProcessorEditView.as_view(), name='processor_add'),
     path('processors/<int:pk>/', views.ProcessorView.as_view(), name='processor'),
@@ -26,7 +27,7 @@ urlpatterns = (
     path('processors/delete/', views.ProcessorBulkDeleteView.as_view(), name='processor_bulk_delete'),
     path('processors/edit/', views.ProcessorBulkEditView.as_view(), name='processor_bulk_edit'),
 
-    # MulticastSender
+    # Endpoints --------------------------------------------------------------------------------------------------------
     path('endpoints/', views.EndpointListView.as_view(), name='endpoint_list'),
     path('endpoints/add/', views.EndpointEditView.as_view(), name='endpoint_add'),
     path('endpoints/<int:pk>/', views.EndpointView.as_view(), name='endpoint'),
@@ -37,7 +38,7 @@ urlpatterns = (
     path('endpoints/delete/', views.EndpointBulkDeleteView.as_view(), name='endpoint_bulk_delete'),
     path('endpoints/edit/', views.EndpointBulkEditView.as_view(), name='endpoint_bulk_edit'),
 
-    # MulticastStream
+    # Stream -----------------------------------------------------------------------------------------------------------
     path('streams/', views.StreamListView.as_view(), name='stream_list'),
     path('streams/add/', views.StreamEditView.as_view(), name='stream_add'),
     path('streams/<int:pk>/', views.StreamView.as_view(), name='stream'),
@@ -48,7 +49,7 @@ urlpatterns = (
     path('streams/delete/', views.StreamBulkDeleteView.as_view(), name='stream_bulk_delete'),
     path('streams/edit/', views.StreamBulkEditView.as_view(), name='stream_bulk_edit'),
 
-    # tab device processor
+    # Other ------------------------------------------------------------------------------------------------------------
     path("devices/<int:pk>/processors/", views.DeviceProcessorView.as_view(), name="device_processors"),
 
 )

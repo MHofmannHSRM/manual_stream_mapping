@@ -2,6 +2,15 @@ from netbox.filtersets import NetBoxModelFilterSet
 from .models import *
 
 
+class FormatFilterSet(NetBoxModelFilterSet):
+    class Meta:
+        model = Format
+        fields = ('id', 'name')  # TODO
+
+    def search(self, queryset, name, value):
+        return queryset.filter(description__icontains=value)
+
+
 class ProcessorFilterSet(NetBoxModelFilterSet):
 
     class Meta:
@@ -26,16 +35,6 @@ class StreamFilterSet(NetBoxModelFilterSet):
 
     class Meta:
         model = Stream
-        fields = ('id', 'name') # TODO
-
-    def search(self, queryset, name, value):
-        return queryset.filter(description__icontains=value)
-
-
-class FormatFilterSet(NetBoxModelFilterSet):
-
-    class Meta:
-        model = Format
         fields = ('id', 'name') # TODO
 
     def search(self, queryset, name, value):

@@ -1,8 +1,8 @@
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
-from netbox.models import NetBoxModel
 from django.urls import reverse
 from utilities.choices import ChoiceSet
+from netbox.models import NetBoxModel
 
 
 # Choices --------------------------------------------------------------------------------------------------------------
@@ -43,8 +43,8 @@ class FormatTypeChoices(ChoiceSet):
     key = 'Format.type'
 
     CHOICES = [
-        ('audio', 'Audio', 'blue'),
         ('video', 'Video', 'red'),
+        ('audio', 'Audio', 'blue'),
         ('metadata', 'Metadata', 'yellow'),
         ('ect', 'Ect.', 'green')
     ]
@@ -62,7 +62,7 @@ class FpsChoices(ChoiceSet):
         ('i30', 'i30'),
         ('p30', 'p30'),
         ('i60', 'i60'), # TODO fractional? wie behandeln? korrekt! ansprechen! -> sollte auch rein!!
-        ('p60', 'p60'), # HFR auch
+        ('p60', 'p60'), # todo HFR auch?
     ]
 
 
@@ -94,12 +94,11 @@ class Format(NetBoxModel):
 
 # model for internal processing units of devices -> has senders and receivers
 class Processor(NetBoxModel): # todo device spalte anzahl an enpoints oder procs?
-    name = models.CharField(max_length=100) # todo in ansicht aus gerät auch device namen anzeigen?
+    name = models.CharField(max_length=100) # todo in tabellenansicht aus gerät auch device namen anzeigen?
     device = models.ForeignKey(to='dcim.Device', on_delete=models.CASCADE, related_name='+') # todo related_name='+' um keine beziehung rückwärst zu erstellen
     module = models.ForeignKey(to='dcim.Module', on_delete=models.CASCADE, related_name='+', null=True, blank=True) # todo logik -> modul muss zu device gehören
     description = models.CharField(max_length=500, null=True, blank=True)
     comments = models.TextField(null=True, blank=True)
-    # TODO NMOS? -> Port?
 
     class Meta:
         ordering = ("name",)
@@ -114,9 +113,9 @@ class Processor(NetBoxModel): # todo device spalte anzahl an enpoints oder procs
 # model for internal processing units of devices -> has senders and receivers
 class Endpoint(NetBoxModel):
     name = models.CharField(max_length=100)
-    processor = models.ForeignKey(to=Processor, on_delete=models.CASCADE) # todo löschmodus?
+    processor = models.ForeignKey(to=Processor, on_delete=models.CASCADE)
     endpoint_type = models.CharField(choices=EndpointTypeChoices, null=True) # todo farben als plakette
-    primary_ip = models.OneToOneField(to='ipam.IPAddress', on_delete=models.SET_NULL, related_name='+', blank=True, null=True) # todo gleiche ip mehrfach!
+    primary_ip = models.OneToOneField(to='ipam.IPAddress', on_delete=models.SET_NULL, related_name='+', blank=True, null=True) # todo gleiche ip mehrfach! oder range?
     secondary_ip = models.OneToOneField(to='ipam.IPAddress', on_delete=models.SET_NULL, related_name='+', blank=True, null=True)
     max_bandwidth = models.FloatField(null=True, blank=True)
     supported_formats = models.ManyToManyField(to=Format, blank=True) # todo filter basiert auf signal type?
@@ -146,7 +145,7 @@ class Stream(NetBoxModel):
     receivers = models.ManyToManyField(to=Endpoint, related_name="received_streams")
     bandwidth = models.FloatField(null=True, blank=True)
     signal_type = models.CharField(choices=SignalTypeChoices, null=True, blank=True)
-    protocol = models.CharField(max_length=100, blank=True)  # todo choice
+    protocol = models.CharField(max_length=100, blank=True)  # todo choice -> welche?
     formats = models.ManyToManyField(to=Format, blank=True)
     comments = models.TextField(blank=True)
     description = models.CharField(max_length=500, blank=True)

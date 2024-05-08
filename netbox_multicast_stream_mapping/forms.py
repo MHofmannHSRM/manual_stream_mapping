@@ -1,16 +1,14 @@
-from netbox.forms import NetBoxModelForm
-from utilities.forms.fields import CommentField, DynamicModelChoiceField
-from .models import *
 from django import forms
 from netbox.forms import NetBoxModelForm, NetBoxModelFilterSetForm, NetBoxModelImportForm, NetBoxModelBulkEditForm
+from utilities.forms import add_blank_choice
+from utilities.forms.fields import CommentField, DynamicModelChoiceField
+
+from .models import *
 from dcim.models import Device, Module
 from ipam.models import IPAddress # todo korrekt oder range?
-from utilities.forms import add_blank_choice
-# TODO validierungen, widgets, ...
 
 
 # Format ---------------------------------------------------------------------------------------------------------------
-
 
 class FormatForm(NetBoxModelForm):
     comments = CommentField()
@@ -49,7 +47,6 @@ class FormatBulkEditForm(NetBoxModelBulkEditForm):
 
 # Processor ------------------------------------------------------------------------------------------------------------
 
-
 class ProcessorForm(NetBoxModelForm):
     comments = CommentField()
 
@@ -85,7 +82,6 @@ class ProcessorBulkEditForm(NetBoxModelBulkEditForm):
 
 
 # Endpoint -------------------------------------------------------------------------------------------------------------
-
 
 class EndpointForm(NetBoxModelForm): # todo verbose?
     # site = DynamicModelChoiceField(queryset=Site.objects.all())
@@ -141,7 +137,6 @@ class EndpointBulkEditForm(NetBoxModelBulkEditForm):
 
 
 # Stream/Flow ----------------------------------------------------------------------------------------------------------
-
 
 class StreamForm(NetBoxModelForm):
     comments = CommentField()
