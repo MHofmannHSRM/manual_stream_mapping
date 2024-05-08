@@ -4,6 +4,12 @@ from .. import filtersets, models
 from .serializers import *
 
 
+class FormatViewSet(NetBoxModelViewSet):
+    queryset = models.Format.objects.prefetch_related('tags')
+    serializer_class = FormatSerializer
+    # filterset_class = filtersets.StreamFilterSet
+
+
 class ProcessorViewSet(NetBoxModelViewSet):
     queryset = models.Processor.objects.prefetch_related('tags')
     serializer_class = ProcessorSerializer
@@ -22,7 +28,3 @@ class StreamViewSet(NetBoxModelViewSet):
     filterset_class = filtersets.StreamFilterSet
 
 
-class FormatViewSet(NetBoxModelViewSet):
-    queryset = models.Format.objects.prefetch_related('tags')
-    serializer_class = FormatSerializer
-    # filterset_class = filtersets.StreamFilterSet

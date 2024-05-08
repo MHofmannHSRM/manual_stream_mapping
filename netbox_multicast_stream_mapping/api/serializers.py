@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from netbox.api.serializers import NetBoxModelSerializer, WritableNestedSerializer
-from ..models import Processor, Endpoint, Stream, Format
 from ipam.api.serializers import NestedPrefixSerializer
+
+from ..models import Processor, Endpoint, Stream, Format
 
 
 class NestedProcessorSerializer(WritableNestedSerializer):

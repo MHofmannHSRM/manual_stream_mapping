@@ -7,11 +7,12 @@ from .tables import *
 from .filtersets import *
 from .forms import *
 from dcim.models import Device
-
+# todo suche geht nicht (?)
+# todo in allen lösch/edit ansichten filter und filterset
 
 # Format ---------------------------------------------------------------------------------------------------------------
 
-# todo hoch
+
 # detail view
 class FormatView(generic.ObjectView):
     queryset = Format.objects.all()
@@ -21,8 +22,8 @@ class FormatView(generic.ObjectView):
 class FormatListView(generic.ObjectListView):
     queryset = Format.objects.all()
     table = FormatTable
-    # filterset = filtersets.StreamFilterSet
-    # filterset_form = forms.StreamFilterForm
+    filterset = FormatFilterSet
+    filterset_form = FormatFilterForm
 
 
 # edit view
@@ -34,8 +35,9 @@ class FormatEditView(generic.ObjectEditView):
 class FormatBulkEditView(generic.BulkEditView):
     queryset = Format.objects.all()
     filterset = FormatFilterSet
+
     table = FormatTable
-    form = FormatBulkEditForm  # todo
+    form = FormatBulkEditForm
 
 
 # delete view
@@ -50,6 +52,7 @@ class FormatBulkDeleteView(generic.BulkDeleteView):
 
 
 # Processor ------------------------------------------------------------------------------------------------------------
+
 
 # detail view
 class ProcessorView(generic.ObjectView):
@@ -82,7 +85,7 @@ class ProcessorBulkEditView(generic.BulkEditView):
     queryset = Processor.objects.all()
     filterset = ProcessorFilterSet
     table = ProcessorTable
-    form = ProcessorBulkEditForm # todo
+    form = ProcessorBulkEditForm
 
 
 # delete view
@@ -98,6 +101,7 @@ class ProcessorBulkDeleteView(generic.BulkDeleteView):
 
 
 # Endpoint -------------------------------------------------------------------------------------------------------------
+
 
 # detail view
 class EndpointView(generic.ObjectView):
@@ -122,7 +126,7 @@ class EndpointBulkEditView(generic.BulkEditView):
     queryset = Endpoint.objects.all()
     filterset = EndpointFilterSet
     table = EndpointTable
-    form = EndpointBulkEditForm  # todo
+    form = EndpointBulkEditForm
 
 
 # delete view
@@ -137,6 +141,7 @@ class EndpointBulkDeleteView(generic.BulkDeleteView):
 
 
 # Stream ---------------------------------------------------------------------------------------------------------------
+
 
 # detail view
 class StreamView(generic.ObjectView):
@@ -163,7 +168,7 @@ class StreamBulkEditView(generic.BulkEditView):
     queryset = Stream.objects.all()
     filterset = StreamFilterSet
     table = StreamTable
-    form = StreamBulkEditForm  # todo
+    form = StreamBulkEditForm
 
 
 # delete view
@@ -178,6 +183,7 @@ class StreamBulkDeleteView(generic.BulkDeleteView):
 
 
 # Other ----------------------------------------------------------------------------------------------------------------
+
 
 # todo spalte in device list view?
 # processor view for devices

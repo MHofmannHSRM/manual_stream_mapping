@@ -26,11 +26,19 @@ class FormatForm(NetBoxModelForm):
 
 class FormatFilterForm(NetBoxModelFilterSetForm):
     model = Format
-# todo filter
+
+    name = forms.CharField(required=False)
+    type = forms.ChoiceField(choices=add_blank_choice(FormatTypeChoices), required=False)
+    res_h = forms.IntegerField(label='Vertical Resolution', required=False, min_value=0)
+    res_w = forms.IntegerField(label='Horizontal Resolution', required=False, min_value=0)
+    fps = forms.ChoiceField(label='Frame Rate', choices=add_blank_choice(FpsChoices), required=False)
+    audio_ch = forms.IntegerField(label='Number of Audio Channels', required=False, min_value=0)
+    description = forms.CharField(required=False)
 
 
 class FormatBulkEditForm(NetBoxModelBulkEditForm):
-    # todo felder anpassen -> feiheiten, konsistenz reihenfolge/gliederung?
+    model = Format
+
     name = forms.CharField(required=False)
     type = forms.ChoiceField(choices=add_blank_choice(FormatTypeChoices), required=False)
     res_h = forms.IntegerField(label='Vertical Resolution', required=False, min_value=0)
@@ -40,7 +48,6 @@ class FormatBulkEditForm(NetBoxModelBulkEditForm):
     description = forms.CharField(required=False)
     comments = CommentField(required=False)
 
-    model = Format
     # fieldsets = ((None, ('name')),)
     # nullable_fields = ()
 
@@ -58,6 +65,11 @@ class ProcessorForm(NetBoxModelForm):
 class ProcessorFilterForm(NetBoxModelFilterSetForm):
     model = Processor
 
+    name = forms.CharField(required=False) # todo muss eindeutig
+    device = DynamicModelChoiceField(queryset=Device.objects.all(), required=False)
+    module = DynamicModelChoiceField(queryset=Module.objects.all(), required=False)
+    description = forms.CharField(required=False)
+
     # access_list = forms.ModelMultipleChoiceField( TODO -> für sender/receiver
     #     queryset=AccessList.objects.all(),
     #     required=False
@@ -69,6 +81,8 @@ class ProcessorFilterForm(NetBoxModelFilterSetForm):
 
 
 class ProcessorBulkEditForm(NetBoxModelBulkEditForm):
+    model = Processor
+
     # todo felder anpassen
     name = forms.CharField(required=False) # todo muss eindeutig
     description = forms.CharField(required=False)
@@ -76,7 +90,6 @@ class ProcessorBulkEditForm(NetBoxModelBulkEditForm):
     device = DynamicModelChoiceField(queryset=Device.objects.all(), required=False)
     module = DynamicModelChoiceField(queryset=Module.objects.all(), required=False)
 
-    model = Processor
     # fieldsets = ((None, ('name')),)
     # nullable_fields = ()
 
@@ -107,6 +120,17 @@ class EndpointForm(NetBoxModelForm): # todo verbose?
 class EndpointFilterForm(NetBoxModelFilterSetForm):
     model = Endpoint
 
+    name = forms.CharField(required=False)  # todo muss eindeutig
+    processor = DynamicModelChoiceField(queryset=Processor.objects.all(), required=False)
+    endpoint_type = forms.ChoiceField(label='Endpoint Type', choices=add_blank_choice(EndpointTypeChoices), required=False)
+    primary_ip = DynamicModelChoiceField(label='Primary IP Address', queryset=IPAddress.objects.all(), required=False)
+    secondary_ip = DynamicModelChoiceField(label='Secondary IP Address', queryset=IPAddress.objects.all(), required=False)
+    max_bandwidth = forms.FloatField(label='Max. Bandwidth (Mbps)', required=False)
+    # supported_formats = todo
+    switch_method = forms.ChoiceField(label='Switch Method (2022-7)', choices=add_blank_choice(SwitchMethodChoices), required=False)
+    signal_type = forms.ChoiceField(label='Signal Type', choices=add_blank_choice(SignalTypeChoices), required=False)
+    description = forms.CharField(required=False)
+
     # access_list = forms.ModelMultipleChoiceField( TODO -> für sender/receiver
     #     queryset=AccessList.objects.all(),
     #     required=False
@@ -118,6 +142,8 @@ class EndpointFilterForm(NetBoxModelFilterSetForm):
 
 
 class EndpointBulkEditForm(NetBoxModelBulkEditForm):
+    model = Endpoint
+
     # todo felder anpassen -> feiheiten, konsistenz reihenfolge/gliederung?
     name = forms.CharField(required=False)  # todo muss eindeutig
     processor = DynamicModelChoiceField(queryset=Processor.objects.all(), required=False)
@@ -131,7 +157,6 @@ class EndpointBulkEditForm(NetBoxModelBulkEditForm):
     description = forms.CharField(required=False)
     comments = CommentField(required=False)
 
-    model = Endpoint
     # fieldsets = ((None, ('name')),)
     # nullable_fields = ()
 

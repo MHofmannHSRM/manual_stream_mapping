@@ -2,6 +2,7 @@ import django_tables2 as tables
 from django_tables2.utils import A
 from netbox.tables import NetBoxTable, ChoiceFieldColumn, TagColumn, ManyToManyColumn, columns
 from .models import *
+# todo actions?
 
 
 class FormatTable(NetBoxTable):
