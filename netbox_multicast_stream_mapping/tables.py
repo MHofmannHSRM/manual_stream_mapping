@@ -43,6 +43,7 @@ class ProcessorTable(NetBoxTable):
 
 class EndpointTable(NetBoxTable):
     name = tables.Column(linkify=True)
+    device = tables.Column(linkify=True)
     processor = tables.Column(linkify=True)
     endpoint_type = tables.Column(verbose_name='Endpoint Type')
     primary_ip = tables.Column(linkify=True, verbose_name='Primary IP Address')
@@ -60,8 +61,8 @@ class EndpointTable(NetBoxTable):
         # template_name = 'utilities/tables/netbox_table.html' TODO
         fields = ('pk', 'id', 'name', 'processor', 'endpoint_type', 'primary_ip', 'secondary_ip', 'max_bandwidth',
                   'supported_formats',  'signal_type', 'comments', 'description', 'tags')  # todo updated?
-        default_columns = ('name', 'endpoint_type', 'signal_type', 'description',  'processor', 'switch_method',
-                           'supported_formats', 'primary_ip', 'secondary_ip', 'tags')
+        default_columns = ('name', 'endpoint_type', 'signal_type', 'description',  'device', 'processor',
+                           'switch_method', 'supported_formats', 'primary_ip', 'secondary_ip', 'tags')
 
 
 class StreamTable(NetBoxTable):

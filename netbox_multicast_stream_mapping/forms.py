@@ -106,8 +106,8 @@ class EndpointForm(NetBoxModelForm): # todo verbose?
 
     class Meta:
         model = Endpoint
-        fields = ('name', 'processor', 'endpoint_type', 'signal_type', 'primary_ip', 'secondary_ip', 'max_bandwidth',
-                  'supported_formats', 'switch_method', 'description',  'tags', 'comments')
+        fields = ('name', 'device', 'processor', 'endpoint_type', 'signal_type', 'primary_ip', 'secondary_ip',
+                  'max_bandwidth', 'supported_formats', 'switch_method', 'description',  'tags', 'comments')
         labels = {
             'primary_ip': 'Primary IP Address',
             'secondary_ip': 'Secondary IP Address',
@@ -121,6 +121,7 @@ class EndpointFilterForm(NetBoxModelFilterSetForm):
     model = Endpoint
 
     name = forms.CharField(required=False)  # todo muss eindeutig
+    device = DynamicModelChoiceField(queryset=Device.objects.all(), required=False)
     processor = DynamicModelChoiceField(queryset=Processor.objects.all(), required=False)
     endpoint_type = forms.ChoiceField(label='Endpoint Type', choices=add_blank_choice(EndpointTypeChoices), required=False)
     primary_ip = DynamicModelChoiceField(label='Primary IP Address', queryset=IPAddress.objects.all(), required=False)
@@ -146,6 +147,7 @@ class EndpointBulkEditForm(NetBoxModelBulkEditForm):
 
     # todo felder anpassen -> feiheiten, konsistenz reihenfolge/gliederung?
     name = forms.CharField(required=False)  # todo muss eindeutig
+    device = DynamicModelChoiceField(queryset=Device.objects.all(), required=False)
     processor = DynamicModelChoiceField(queryset=Processor.objects.all(), required=False)
     endpoint_type = forms.ChoiceField(label='Endpoint Type', choices=add_blank_choice(EndpointTypeChoices), required=False)
     primary_ip = DynamicModelChoiceField(label='Primary IP Address', queryset=IPAddress.objects.all(), required=False)

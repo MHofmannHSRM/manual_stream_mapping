@@ -31,6 +31,7 @@ class EndpointIndex(SearchIndex):
     model = Endpoint
     fields = (
         ('name', 100),
+        ('device', 100),
         ('processor', 100),
         ('endpoint_type', 100),
         ('switch_method', 100),

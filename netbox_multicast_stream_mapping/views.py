@@ -205,6 +205,27 @@ class DeviceProcessorView(generic.ObjectChildrenView):
         return Processor.objects.filter(device=instance).annotate(endpoint_count=Count('endpoint'))
 
 
+# todo spalte in device list view?
+# todo urls registrieeren?
+# processor view for devices
+@register_model_view(model=Device, name='Endpoints', path='endpoints')
+class DeviceEndpointView(generic.ObjectChildrenView):
+    queryset = Device.objects.all()
+    child_model = Endpoint
+    table = EndpointTable
+    filterset = EndpointFilterSet
+    template_name = 'netbox_multicast_stream_mapping/processor_list.html' # todo eigenes template?
+
+    tab = ViewTab(
+        label="Endpoints",
+        weight=110,
+        badge=lambda obj: Endpoint.objects.filter(device=obj).count(),
+    )
+
+    def get_children(self, request, instance):
+        return Endpoint.objects.filter(device=instance)
+
+
 # endpoint view for single processor
 class EndpointChildView(generic.ObjectChildrenView):
     queryset = Processor.objects.all().prefetch_related('endpoint_set')

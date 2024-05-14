@@ -30,7 +30,7 @@ class EndpointFilterSet(NetBoxModelFilterSet):
 
     class Meta:
         model = Endpoint
-        fields = ('id', 'name', 'processor', 'endpoint_type', 'primary_ip', 'secondary_ip', 'max_bandwidth',
+        fields = ('id', 'name', 'device', 'processor', 'endpoint_type', 'primary_ip', 'secondary_ip', 'max_bandwidth',
                   'supported_formats', 'switch_method', 'signal_type', 'description')
 
     def search(self, queryset, name, value):

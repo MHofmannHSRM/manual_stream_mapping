@@ -48,9 +48,10 @@ class EndpointSerializer(NetBoxModelSerializer):
     class Meta:
         model = Endpoint
         fields = (
-            'id', 'url', 'display', 'name', 'processor', 'endpoint_type', 'primary_ip', 'secondary_ip', 'max_bandwidth',
-            'supported_formats', 'switch_method', 'signal_type', 'comments', 'description', 'tags', 'custom_fields',
-            'created', 'last_updated',)
+            'id', 'url', 'display', 'name', 'device', 'processor', 'endpoint_type', 'primary_ip', 'secondary_ip',
+            'max_bandwidth', 'supported_formats', 'switch_method', 'signal_type', 'comments', 'description', 'tags',
+            'custom_fields', 'created', 'last_updated',
+        )
 
 
 class StreamSerializer(NetBoxModelSerializer):
@@ -68,6 +69,7 @@ class StreamSerializer(NetBoxModelSerializer):
             'comments', 'description', 'tags', 'custom_fields', 'created', 'last_updated',
         )
 
+
 # todo
 class FormatSerializer(NetBoxModelSerializer):
 
@@ -76,5 +78,6 @@ class FormatSerializer(NetBoxModelSerializer):
     class Meta:
         model = Format
         fields = (
-            'id', 'url', 'display', 'name', 'type', 'res_h', 'res_w', 'fps', 'audio_ch', 'comments', 'description', 'custom_fields', 'created', 'last_updated',
+            'id', 'url', 'display', 'name', 'type', 'res_h', 'res_w', 'fps', 'audio_ch', 'comments', 'description',
+            'custom_fields', 'created', 'last_updated',
         )

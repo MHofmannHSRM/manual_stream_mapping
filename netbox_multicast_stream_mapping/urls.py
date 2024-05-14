@@ -51,5 +51,6 @@ urlpatterns = (
 
     # Other ------------------------------------------------------------------------------------------------------------
     path("devices/<int:pk>/processors/", views.DeviceProcessorView.as_view(), name="device_processors"),
+    path("devices/<int:pk>/endpoints/", views.DeviceEndpointView.as_view(), name="device_endpoints"),
 
 )
