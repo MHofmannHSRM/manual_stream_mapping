@@ -5,7 +5,7 @@ from utilities.forms.fields import CommentField, DynamicModelChoiceField
 
 from .models import *
 from dcim.models import Device, Module
-from ipam.models import IPAddress # todo korrekt oder range?
+from ipam.models import IPAddress  # todo korrekt oder range?
 
 
 # Format ---------------------------------------------------------------------------------------------------------------
@@ -83,7 +83,7 @@ class ProcessorForm(NetBoxModelForm):
 class ProcessorFilterForm(NetBoxModelFilterSetForm):
     model = Processor
 
-    name = forms.CharField(required=False) # todo muss eindeutig
+    name = forms.CharField(required=False) # todo muss eindeutig -> generell alle namen
     device = DynamicModelChoiceField(queryset=Device.objects.all(), required=False)
     module = DynamicModelChoiceField(queryset=Module.objects.all(), required=False)
     description = forms.CharField(required=False)
@@ -108,7 +108,7 @@ class ProcessorBulkEditForm(NetBoxModelBulkEditForm):
 
 # Endpoint -------------------------------------------------------------------------------------------------------------
 
-class EndpointForm(NetBoxModelForm): # todo verbose?
+class EndpointForm(NetBoxModelForm):
     # site = DynamicModelChoiceField(queryset=Site.objects.all())
     comments = CommentField()
 
@@ -154,7 +154,7 @@ class EndpointFilterForm(NetBoxModelFilterSetForm):
     #     required=False
     # )
     #
-    # index = forms.IntegerField(
+    # index = forms.IntegerField( # todo was heißt index ?
     #     required=False
     # )
 
@@ -186,6 +186,7 @@ class EndpointBulkEditForm(NetBoxModelBulkEditForm):
 
 
 # Stream/Flow ----------------------------------------------------------------------------------------------------------
+# TODO alle Stream FUnktionen nochmal anpassen
 
 class StreamForm(NetBoxModelForm):
     comments = CommentField()
@@ -207,7 +208,6 @@ class StreamFilterForm(NetBoxModelFilterSetForm):
 
 
 class StreamBulkEditForm(NetBoxModelBulkEditForm):
-    # todo felder anpassen -> feiheiten, konsistenz reihenfolge/gliederung?
     model = Stream
 
     name = forms.CharField(required=False)

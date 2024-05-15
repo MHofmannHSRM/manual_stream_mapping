@@ -17,34 +17,40 @@
 
 <!--            todo label buttons-->
 <!--            todo verlinkung-->
+
+            <tr>
+              <th scope="row">Name</th>
+              <td>{{ object.name }}</td>
+            </tr>
+
             <tr>
               <th scope="row">Sender</th>
-              <td>{{ object.sender }}</td>
+              <td>{{ object.sender|linkify }}</td>
             </tr>
 
             <tr>
               <th scope="row">Receivers</th>
-              <td>{{ object.receivers }}</td>
+              <td>{{ object.receivers|linkify }}</td>
             </tr>
 
             <tr>
               <th scope="row">Bandwidth</th>
-              <td>{{ object.bandwidth }}</td>
+              <td>{{ object.bandwidth|placeholder }}</td>
             </tr>
 
             <tr>
               <th scope="row">Signal Type</th>
-              <td>{{ object.signal_type }}</td>
+              <td>{{ object.signal_type|placeholder }}</td>
             </tr>
 
             <tr>
               <th scope="row">Protocol</th>
-              <td>{{ object.protocol }}</td>
+              <td>{{ object.protocol|placeholder }}</td>
             </tr>
 
             <tr>
               <th scope="row">Formats</th>
-              <td>{{ object.formats }}</td>
+              <td>{{ object.formats|placeholder }}</td>
             </tr>
 
           </table>
@@ -54,7 +60,6 @@
       </div>
 
     <div class="col col-md-6">
-
 
           {% include 'inc/panels/tags.html' %}
           {% include 'inc/panels/comments.html' %}

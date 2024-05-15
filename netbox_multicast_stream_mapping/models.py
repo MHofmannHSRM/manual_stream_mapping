@@ -49,21 +49,35 @@ class FormatTypeChoices(ChoiceSet):
         ('ect', 'Ect.', 'green')
     ]
 
+# todo feste auswahloptionen fpr pixel, bandbreite, usw....
 
 # choices for framerates in Format Presets
-class FpsChoices(ChoiceSet):
+class FpsChoices(ChoiceSet): # todo in arbeit mit quelle!
     key = 'Format.fps'
 
     CHOICES = [
-        ('i25', 'i25'), # todo framerate hinten als zahl, nicht fieldrate! -> nachschauen, wie korrekt?
         ('p25', 'p25'),
-        ('i50', 'i50'),
-        ('p50', 'p50'),
-        ('i30', 'i30'),
+        ('p29.97', 'p29.97'),
         ('p30', 'p30'),
-        ('i60', 'i60'), # TODO fractional? wie behandeln? korrekt! ansprechen! -> sollte auch rein!!
-        ('p60', 'p60'), # todo HFR auch?
-        # todo 100, 120
+        ('p50', 'p50'),
+        ('p59.94', 'p59.94'),
+        ('p60', 'p60'),
+
+        ('i50', 'i50'),
+        ('i59.94', 'i59.94'),
+        ('i60', 'i60'),
+
+        ('p100', 'p100'),
+        ('p120', 'p120'),
+        ('p144', 'p144'),
+        ('p180', 'p180'),
+        ('p240', 'p240'),
+
+        ('p23.976', 'p23.976'),
+        ('p24', 'p24'),
+        ('p48', 'p48'),
+        ('p72', 'p72'),
+        ('p96', 'p96'),
     ]
 
 

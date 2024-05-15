@@ -19,22 +19,22 @@
 <!--            todo verlinkung-->
             <tr>
               <th scope="row">Name</th>
-              <td>{{ object.name }}</td>
+              <td>{{ object.name|linkify }}</td>
             </tr>
 
             <tr>
               <th scope="row">Signal Type</th>
-              <td>{{ object.signal_type }}</td>
+              <td>{{ object.signal_type|placeholder }}</td>
             </tr>
 
             <tr>
               <th scope="row">Device</th>
-              <td>{{ object.device }}</td>
+              <td>{{ object.device|linkify }}</td>
             </tr>
 
             <tr>
               <th scope="row">Processor</th>
-              <td>{{ object.processor }}</td>
+              <td>{{ object.processor|linkify }}</td>
             </tr>
 
             <tr>
@@ -44,22 +44,22 @@
 
             <tr>
               <th scope="row">Primary IP Address</th>
-              <td>{{ object.primary_ip }}</td>
+              <td>{{ object.primary_ip|linkify|placeholder }}</td>
             </tr>
 
             <tr>
               <th scope="row">Secondary IP Address</th>
-              <td>{{ object.secondary_ip }}</td>
+              <td>{{ object.secondary_ip|linkify|placeholder }}</td>
             </tr>
 
             <tr>
               <th scope="row">Max. Bandwidth (Mbps) </th>
-              <td>{{ object.max_bandwidth }}</td>
+              <td>{{ object.max_bandwidth|placeholder }}</td>
             </tr>
 
             <tr>
               <th scope="row">Switch Method (2022-7) </th>
-              <td>{{ object.switch_method }}</td>
+              <td>{{ object.switch_method|placeholder }}</td>
             </tr>
 
           </table>

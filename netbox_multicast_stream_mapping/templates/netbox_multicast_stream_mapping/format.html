@@ -22,33 +22,33 @@
 
             <tr>
               <th scope="row">Type</th>
-              <td>{{ object.type }}</td>
+              <td>{{ object.type|placeholder }}</td>
             </tr>
 
             <tr>
               <th scope="row">Vertical Resolution</th>
-              <td>{{ object.res_h }}</td>
+              <td>{{ object.res_h|placeholder }}</td>
             </tr>
 
             <tr>
               <th scope="row">Horizontal Resolution</th>
-              <td>{{ object.res_w }}</td>
+              <td>{{ object.res_w|placeholder }}</td>
             </tr>
 
 <!--            todo strich für nichts; pixel für res; badges für rest -->
             <tr>
               <th scope="row">Frame Rate</th>
-              <td>{{ object.fps }}</td>
+              <td>{{ object.fps|placeholder }}</td>
             </tr>
 
             <tr>
               <th scope="row">Number of Audio Channels </th>
-              <td>{{ object.channel_no }}</td>
+              <td>{{ object.channel_no|placeholder }}</td>
             </tr>
 
             <tr>
               <th scope="row">Description </th>
-              <td>{{ object.description }}</td>
+              <td>{{ object.description|placeholder }}</td>
             </tr>
 
           </table>

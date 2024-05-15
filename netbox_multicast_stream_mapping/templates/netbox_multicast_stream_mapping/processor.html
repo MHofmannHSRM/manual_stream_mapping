@@ -1,9 +1,6 @@
 {% extends 'generic/object.html' %}
 {% load render_table from django_tables2 %}
 
-<!--TODO: Add Rules Table -> in Views ergänzen -< context data -> context variable -->
-<!--TODO: get_absolute_url; placeholder; protocol/action -> funktion schritt 6 -->
-
 {% block content %}
   <div class="row mb-3">
 
@@ -17,23 +14,23 @@
 
             <tr>
               <th scope="row">Name</th>
-              <td>{{ object.name }}</td>
+              <td>{{ object.name|linkify }}</td>
             </tr>
 
             <tr>
               <th scope="row">Device</th>
-              <td>{{ object.device }}</td>
+              <td>{{ object.device|linkify|placeholder }}</td>
             </tr>
 
             <tr>
               <th scope="row">Module</th>
-              <td>{{ object.module }}</td>
+              <td>{{ object.module|linkify|placeholder }}</td>
             </tr>
 
 <!--todo zähler mit link-->
             <tr>
               <th scope="row">Number of Endpoints</th>
-              <td>{{ Platzhalter }}</td>
+              <td>{{ placeholder }}</td>
             </tr>
 
           </table>
