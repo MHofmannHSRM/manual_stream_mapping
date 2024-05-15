@@ -13,9 +13,17 @@ from ipam.models import IPAddress # todo korrekt oder range?
 class FormatForm(NetBoxModelForm):
     comments = CommentField()
 
+    fieldsets = (
+        ('Format', ('name', 'type', 'description')),
+        ('Technical Parameter', ('res_h', 'res_w', 'fps', 'audio_ch')),
+        ('Tags', ('tags',)),
+    )
+
     class Meta:
         model = Format
+
         fields = ('name', 'type', 'res_h', 'res_w', 'fps', 'audio_ch', 'description', 'tags', 'comments')
+
         labels = {
             'res_h': 'Vertical Resolution',
             'res_w': 'Horizontal Resolution',
@@ -48,28 +56,28 @@ class FormatBulkEditForm(NetBoxModelBulkEditForm):
     description = forms.CharField(required=False)
     comments = CommentField(required=False)
 
-    fieldsets = (('Format', ('name', 'type', 'description')),
-                 ('Technical Parameter', ('res_h', 'res_w', 'fps', 'audio_ch')),)
+    fieldsets = (
+        ('Format', ('name', 'type', 'description')),
+        ('Technical Parameter', ('res_h', 'res_w', 'fps', 'audio_ch')),
+    )
+
     nullable_fields = ('description', 'comments')
-    # fieldsets = ((None, ('name')),)
-    # nullable_fields = ()
 
 
 # Processor ------------------------------------------------------------------------------------------------------------
 
 class ProcessorForm(NetBoxModelForm):
     comments = CommentField()
-    fieldsets = ( # todo
+
+    fieldsets = (
         ('Processor', ('name', 'device', 'module', 'description')),
-        ('Tags', ('tags'))
+        ('Tags', ('tags',)),
     )
-    # TODO keine Tags?
-    # TODO Kein setnull?
 
     class Meta:
         model = Processor
+
         fields = ('name', 'device', 'module', 'description', 'tags', 'comments')
-        nullable_fields = ('description', 'comments')# todo
 
 
 class ProcessorFilterForm(NetBoxModelFilterSetForm):
@@ -79,15 +87,6 @@ class ProcessorFilterForm(NetBoxModelFilterSetForm):
     device = DynamicModelChoiceField(queryset=Device.objects.all(), required=False)
     module = DynamicModelChoiceField(queryset=Module.objects.all(), required=False)
     description = forms.CharField(required=False)
-
-    # access_list = forms.ModelMultipleChoiceField( TODO -> für sender/receiver
-    #     queryset=AccessList.objects.all(),
-    #     required=False
-    # )
-    #
-    # index = forms.IntegerField(
-    #     required=False
-    # )
 
 
 class ProcessorBulkEditForm(NetBoxModelBulkEditForm):
@@ -100,7 +99,10 @@ class ProcessorBulkEditForm(NetBoxModelBulkEditForm):
     device = DynamicModelChoiceField(queryset=Device.objects.all(), required=False)
     module = DynamicModelChoiceField(queryset=Module.objects.all(), required=False)
 
-    fieldsets = (('Processor', ('name', 'device', 'module', 'description')),)
+    fieldsets = (
+        ('Processor', ('name', 'device', 'module', 'description')),
+    )
+
     nullable_fields = ('description', 'comments')
 
 
@@ -109,15 +111,20 @@ class ProcessorBulkEditForm(NetBoxModelBulkEditForm):
 class EndpointForm(NetBoxModelForm): # todo verbose?
     # site = DynamicModelChoiceField(queryset=Site.objects.all())
     comments = CommentField()
-    # fieldsets = ( # todo fieldsets?
-    #     ('Model Stuff', ('name', 'status', 'site', 'tags')),
-    #     ('Tenancy', ('tenant_group', 'tenant')),
-    # )
+
+    fieldsets = (
+        ('Endpoint', ('name', 'device', 'processor', 'description')),
+        ('Technical Parameters', ('endpoint_type', 'supported_formats', 'signal_type', 'switch_method')),
+        ('Network Parameters', ('primary_ip', 'secondary_ip', 'max_bandwidth')),
+        ('Tags', ('tags',)),
+    )
 
     class Meta:
         model = Endpoint
+
         fields = ('name', 'device', 'processor', 'endpoint_type', 'signal_type', 'primary_ip', 'secondary_ip',
                   'max_bandwidth', 'supported_formats', 'switch_method', 'description',  'tags', 'comments')
+
         labels = {
             'primary_ip': 'Primary IP Address',
             'secondary_ip': 'Secondary IP Address',
@@ -174,6 +181,7 @@ class EndpointBulkEditForm(NetBoxModelBulkEditForm):
         ('Technical Parameters', ('endpoint_type', 'supported_formats', 'signal_type', 'switch_method')),
         ('Network Parameters', ('primary_ip', 'secondary_ip', 'max_bandwidth')),
     )
+
     nullable_fields = ('description', 'comments')
 
 
@@ -181,6 +189,12 @@ class EndpointBulkEditForm(NetBoxModelBulkEditForm):
 
 class StreamForm(NetBoxModelForm):
     comments = CommentField()
+
+    fieldsets = (
+        ('Stream', ('name', 'sender', 'receivers', 'description')),
+        ('Technical Parameters', ('bandwidth', 'signal_type', 'protocol', 'supported_formats')),
+        ('Tags', ('tags',)),
+    )
 
     class Meta:
         model = Stream
@@ -190,15 +204,6 @@ class StreamForm(NetBoxModelForm):
 
 class StreamFilterForm(NetBoxModelFilterSetForm):
     model = Stream
-
-    # access_list = forms.ModelMultipleChoiceField( TODO -> für sender/receiver
-    #     queryset=AccessList.objects.all(),
-    #     required=False
-    # )
-    #
-    # index = forms.IntegerField(
-    #     required=False
-    # )
 
 
 class StreamBulkEditForm(NetBoxModelBulkEditForm):
@@ -219,9 +224,5 @@ class StreamBulkEditForm(NetBoxModelBulkEditForm):
         ('Stream', ('name', 'sender', 'receivers', 'description')),
         ('Technical Parameters', ('bandwidth', 'signal_type', 'protocol', 'supported_formats')),
     )
+
     nullable_fields = ('description', 'comments')
-    # fieldsets = ((None, ('name')),)
-    # nullable_fields = ()
-
-
-
