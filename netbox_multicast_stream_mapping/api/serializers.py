@@ -37,6 +37,10 @@ class ProcessorSerializer(NetBoxModelSerializer):
 #         fields = ('id', 'url', 'display', 'name')
 #
 
+
+# TODO Nested Endpojnt + alle?
+
+
 class EndpointSerializer(NetBoxModelSerializer):
 
     url = serializers.HyperlinkedIdentityField(view_name='plugins-api:netbox_multicast_stream_mapping-api:endpoint-detail')

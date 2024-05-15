@@ -63,6 +63,7 @@ class FpsChoices(ChoiceSet):
         ('p30', 'p30'),
         ('i60', 'i60'), # TODO fractional? wie behandeln? korrekt! ansprechen! -> sollte auch rein!!
         ('p60', 'p60'), # todo HFR auch?
+        # todo 100, 120
     ]
 
 
