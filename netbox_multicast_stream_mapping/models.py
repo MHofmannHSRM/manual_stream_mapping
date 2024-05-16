@@ -131,6 +131,7 @@ class Endpoint(NetBoxModel):
     name = models.CharField(max_length=100)
     device = models.ForeignKey(to='dcim.Device', on_delete=models.CASCADE, null=True, related_name='+') # todo related_name='+' um keine beziehung rückwärst zu erstellen
     processor = models.ForeignKey(to=Processor, on_delete=models.CASCADE)
+    interface = models.ForeignKey(to='dcim.Interface', on_delete=models.SET_NULL, related_name='+', blank=True, null=True) # todo gleiche ip mehrfach! oder range?
     endpoint_type = models.CharField(choices=EndpointTypeChoices, null=True) # todo farben als plakette
     primary_ip = models.OneToOneField(to='ipam.IPAddress', on_delete=models.SET_NULL, related_name='+', blank=True, null=True) # todo gleiche ip mehrfach! oder range?
     secondary_ip = models.OneToOneField(to='ipam.IPAddress', on_delete=models.SET_NULL, related_name='+', blank=True, null=True)

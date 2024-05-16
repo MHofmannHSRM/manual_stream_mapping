@@ -4,7 +4,7 @@ from utilities.forms import add_blank_choice
 from utilities.forms.fields import CommentField, DynamicModelChoiceField
 
 from .models import *
-from dcim.models import Device, Module
+from dcim.models import Device, Module, Interface
 from ipam.models import IPAddress  # todo korrekt oder range?
 
 
@@ -116,7 +116,7 @@ class EndpointForm(NetBoxModelForm):
     comments = CommentField()
 
     fieldsets = (
-        ('Endpoint', ('name', 'device', 'processor', 'description')),
+        ('Endpoint', ('name', 'device', 'processor', 'interface', 'description')),
         ('Technical Parameters', ('endpoint_type', 'supported_formats', 'signal_type', 'switch_method')),
         ('Network Parameters', ('primary_ip', 'secondary_ip', 'max_bandwidth')),
         ('Tags', ('tags',)),
@@ -126,7 +126,7 @@ class EndpointForm(NetBoxModelForm):
         model = Endpoint
 
         fields = (
-            'name', 'device', 'processor', 'endpoint_type', 'signal_type', 'primary_ip', 'secondary_ip',
+            'name', 'device', 'processor', 'interface', 'endpoint_type', 'signal_type', 'primary_ip', 'secondary_ip',
             'max_bandwidth', 'supported_formats', 'switch_method', 'description',  'tags', 'comments'
         )
 
@@ -145,6 +145,7 @@ class EndpointFilterForm(NetBoxModelFilterSetForm):
     name = forms.CharField(required=False)  # todo muss eindeutig
     device = DynamicModelChoiceField(queryset=Device.objects.all(), required=False)
     processor = DynamicModelChoiceField(queryset=Processor.objects.all(), required=False)
+    interface = DynamicModelChoiceField(queryset=Interface.objects.all(), required=False)
     endpoint_type = forms.ChoiceField(label='Endpoint Type', choices=add_blank_choice(EndpointTypeChoices), required=False)
     primary_ip = DynamicModelChoiceField(label='Primary IP Address', queryset=IPAddress.objects.all(), required=False)
     secondary_ip = DynamicModelChoiceField(label='Secondary IP Address', queryset=IPAddress.objects.all(), required=False)
@@ -171,6 +172,7 @@ class EndpointBulkEditForm(NetBoxModelBulkEditForm):
     name = forms.CharField(required=False)  # todo muss eindeutig
     device = DynamicModelChoiceField(queryset=Device.objects.all(), required=False)
     processor = DynamicModelChoiceField(queryset=Processor.objects.all(), required=False)
+    interface = DynamicModelChoiceField(queryset=Interface.objects.all(), required=False)
     endpoint_type = forms.ChoiceField(label='Endpoint Type', choices=add_blank_choice(EndpointTypeChoices), required=False)
     primary_ip = DynamicModelChoiceField(label='Primary IP Address', queryset=IPAddress.objects.all(), required=False)
     secondary_ip = DynamicModelChoiceField(label='Secondary IP Address', queryset=IPAddress.objects.all(), required=False)
@@ -182,7 +184,7 @@ class EndpointBulkEditForm(NetBoxModelBulkEditForm):
     comments = CommentField(required=False)
 
     fieldsets = (
-        ('Endpoint', ('name', 'device', 'processor', 'description')),
+        ('Endpoint', ('name', 'device', 'processor', 'interface', 'description')),
         ('Technical Parameters', ('endpoint_type', 'supported_formats', 'signal_type', 'switch_method')),
         ('Network Parameters', ('primary_ip', 'secondary_ip', 'max_bandwidth')),
     )
