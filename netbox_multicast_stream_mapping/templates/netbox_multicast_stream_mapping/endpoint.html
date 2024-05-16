@@ -78,14 +78,19 @@
         <div class="card-body">
 
           <table class="table table-hover attr-table">
-            <!--            todo liste formate label buttons?-->
-            <!--            todo link auf format?-->
-
             <tr>
-              <th scope="row">Supported Formats </th>
-              <td>{{ object.supported_formats }}</td>
+              <th scope="row">Supported Formats</th>
+              <td>
+                {% if object.supported_formats.all %}
+                  {% for format in object.supported_formats.all %}
+                    {{ format|linkify }}
+                    {% if not forloop.last %}, {% endif %}
+                  {% endfor %}
+                {% else %}
+                   —
+                {% endif %}
+              </td>
             </tr>
-
           </table>
 
         </div>

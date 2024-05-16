@@ -200,7 +200,7 @@ class StreamForm(NetBoxModelForm):
 
     fieldsets = (
         ('Stream', ('name', 'sender', 'receivers', 'description')),
-        ('Technical Parameters', ('bandwidth', 'signal_type', 'protocol', 'supported_formats')),
+        ('Technical Parameters', ('bandwidth', 'signal_type', 'protocol', 'formats')),
         ('Tags', ('tags',)),
     )
 
@@ -231,7 +231,7 @@ class StreamBulkEditForm(NetBoxModelBulkEditForm):
 
     fieldsets = (
         ('Stream', ('name', 'sender', 'receivers', 'description')),
-        ('Technical Parameters', ('bandwidth', 'signal_type', 'protocol', 'supported_formats')),
+        ('Technical Parameters', ('bandwidth', 'signal_type', 'protocol', 'formats')),
     )
 
     nullable_fields = ('description', 'comments')

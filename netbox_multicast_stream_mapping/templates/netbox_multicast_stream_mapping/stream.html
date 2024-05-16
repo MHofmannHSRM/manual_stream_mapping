@@ -1,8 +1,8 @@
 
 {% extends 'generic/object.html' %}
 
-<!--TODO: Add Rules Table -> in Views ergänzen -< context data -> context variable -->
-<!--TODO: get_absolute_url; placeholder; protocol/action -> funktion schritt 6 -->
+<!--TODO: context data -> context variable -->
+<!--TODO: get_absolute_url; -->
 
 {% block content %}
   <div class="row mb-3">
@@ -46,10 +46,18 @@
               <td>{{ object.protocol|placeholder }}</td>
             </tr>
 
-<!--              todo link auf format-->
             <tr>
               <th scope="row">Formats</th>
-              <td>{{ object.formats|placeholder }}</td>
+              <td>
+                {% if object.formats.all %}
+                  {% for formats in object.formats.all %}
+                    {{ formats|linkify }}
+                    {% if not forloop.last %}, {% endif %}
+                  {% endfor %}
+                {% else %}
+                   —
+                {% endif %}
+              </td>
             </tr>
 
           </table>
