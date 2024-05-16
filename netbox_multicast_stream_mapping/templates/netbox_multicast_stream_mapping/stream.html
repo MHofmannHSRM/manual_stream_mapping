@@ -15,9 +15,6 @@
 
           <table class="table table-hover attr-table">
 
-<!--            todo label buttons-->
-<!--            todo verlinkung-->
-
             <tr>
               <th scope="row">Name</th>
               <td>{{ object.name }}</td>
@@ -28,6 +25,7 @@
               <td>{{ object.sender|linkify }}</td>
             </tr>
 
+<!--              todo dateteyp und link-->
             <tr>
               <th scope="row">Receivers</th>
               <td>{{ object.receivers|linkify }}</td>
@@ -40,7 +38,7 @@
 
             <tr>
               <th scope="row">Signal Type</th>
-              <td>{{ object.signal_type|placeholder }}</td>
+              <td>{{ object.get_signal_type_display|placeholder }}</td>
             </tr>
 
             <tr>
@@ -48,6 +46,7 @@
               <td>{{ object.protocol|placeholder }}</td>
             </tr>
 
+<!--              todo link auf format-->
             <tr>
               <th scope="row">Formats</th>
               <td>{{ object.formats|placeholder }}</td>

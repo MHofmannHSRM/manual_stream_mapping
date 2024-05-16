@@ -22,7 +22,7 @@
 
             <tr>
               <th scope="row">Type</th>
-              <td>{{ object.type|placeholder }}</td>
+              <td>{{ object.get_type_display|placeholder }}</td>
             </tr>
 
             <tr>
@@ -35,7 +35,6 @@
               <td>{{ object.res_w|placeholder }}</td>
             </tr>
 
-<!--            todo strich für nichts; pixel für res; badges für rest -->
             <tr>
               <th scope="row">Frame Rate</th>
               <td>{{ object.fps|placeholder }}</td>
@@ -43,7 +42,7 @@
 
             <tr>
               <th scope="row">Number of Audio Channels </th>
-              <td>{{ object.channel_no|placeholder }}</td>
+              <td>{{ object.audio_ch|placeholder }}</td>
             </tr>
 
             <tr>
