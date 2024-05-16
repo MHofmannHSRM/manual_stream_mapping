@@ -46,7 +46,7 @@ class FormatTypeChoices(ChoiceSet):
         ('video', 'Video', 'red'),
         ('audio', 'Audio', 'blue'),
         ('metadata', 'Metadata', 'yellow'),
-        ('ect', 'Ect.', 'green')
+        ('ect', 'Ect.', 'green'),
     ]
 
 # todo feste auswahloptionen fpr pixel, bandbreite, usw....
@@ -176,3 +176,6 @@ class Stream(NetBoxModel):
 
     def get_absolute_url(self):
         return reverse('plugins:netbox_multicast_stream_mapping:stream', args=[self.pk])
+
+    def get_signal_type_color(self):
+        return SignalTypeChoices.colors.get(self.signal_type)

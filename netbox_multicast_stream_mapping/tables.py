@@ -14,13 +14,13 @@ class FormatTable(NetBoxTable):
     port = tables.Column(verbose_name='Network Port')
     comments = tables.Column()
     description = tables.Column()
-    tags = TagColumn()  # TODO -> Verlinkung -> Filter?
+    tags = TagColumn(url_name='plugins:netbox_multicast_stream_mapping:format_list')  # TODO -> Verlinkung -> Filter?
 
     class Meta(NetBoxTable.Meta):
         model = Format
         fields = (
             'pk', 'id', 'name', 'type', 'res_h', 'res_w', 'fps', 'audio_ch', 'port', 'comments', 'description', 'tags'
-        ) # todo updated?
+        )
         default_columns = ('name', 'type', 'res_h', 'res_w', 'fps', 'audio_ch', 'port', 'description', 'tags')
 
 
@@ -34,7 +34,7 @@ class ProcessorTable(NetBoxTable):
             verbose_name='Number of Endpoints')
     description = tables.Column()
     comments = tables.Column()
-    tags = TagColumn()  # TODO -> Verlinkung -> Filter? # tags = TagColumn(url_name='tag')
+    tags = TagColumn(url_name='plugins:netbox_multicast_stream_mapping:processor_list')  # TODO -> Verlinkung -> Filter? # tags = TagColumn(url_name='tag')
 
     class Meta(NetBoxTable.Meta):
         model = Processor
@@ -57,7 +57,7 @@ class EndpointTable(NetBoxTable):
     signal_type = ChoiceFieldColumn(verbose_name='Signal Type')
     description = tables.Column()
     comments = tables.Column()
-    tags = TagColumn()  # TODO -> Verlinkung -> Filter?
+    tags = TagColumn(url_name='plugins:netbox_multicast_stream_mapping:endpoint_list')  # TODO -> Verlinkung -> Filter?
 
     class Meta(NetBoxTable.Meta):
         model = Endpoint
@@ -65,7 +65,7 @@ class EndpointTable(NetBoxTable):
         fields = (
             'pk', 'id', 'name', 'processor', 'interface', 'endpoint_type', 'primary_ip', 'secondary_ip',
             'max_bandwidth', 'supported_formats',  'signal_type', 'comments', 'description', 'tags'
-        )  # todo updated?
+        )
         default_columns = (
             'name', 'endpoint_type', 'signal_type', 'description',  'device', 'processor', 'switch_method',
             'supported_formats', 'primary_ip', 'secondary_ip', 'tags'
@@ -77,12 +77,12 @@ class StreamTable(NetBoxTable):
     sender = tables.Column(linkify=True)
     receivers = ManyToManyColumn(linkify=True) # todo ändern
     bandwidth = tables.Column() #rechtschreibfehler überall
-    signal_type = tables.Column() #todo button
+    signal_type = ChoiceFieldColumn(verbose_name='Signal Type')
     protocol = tables.Column()
     formats = ManyToManyColumn(verbose_name='Supported Formats', linkify=True)
     comments = tables.Column()
     description = tables.Column()
-    tags = TagColumn()  # TODO -> Verlinkung -> Filter?
+    tags = TagColumn(url_name='plugins:netbox_multicast_stream_mapping:stream_list')  # TODO -> Verlinkung -> Filter? -> in die liste
 
     class Meta(NetBoxTable.Meta):
         model = Stream
@@ -90,5 +90,5 @@ class StreamTable(NetBoxTable):
         fields = (
             'pk', 'id', 'name', 'sender', 'receivers', 'bandwidth', 'signal_type', 'protocol', 'formats', 'comments',
             'description', 'tags'
-        ) # todo updated?
+        )
         default_columns = ('name', 'signal_type', 'sender', 'receivers', 'description', 'tags')
