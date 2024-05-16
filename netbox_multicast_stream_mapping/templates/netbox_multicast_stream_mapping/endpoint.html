@@ -23,7 +23,7 @@
 
             <tr>
               <th scope="row">Signal Type</th>
-              <td>{{ object.signal_type|placeholder }}</td>
+              <td>{{ object.get_signal_type_display|placeholder }}</td>
 <!--                todo plakette -> mit funktion? -> auch in modell definitition? -> tutorial shauen!-->
             </tr>
 
@@ -44,7 +44,7 @@
 
             <tr>
               <th scope="row">Endpoint Type</th>
-              <td>{{ object.endpoint_type }}</td>
+              <td>{{ object.get_endpoint_type_display }}</td>
             </tr>
 
             <tr>
@@ -64,7 +64,7 @@
 
             <tr>
               <th scope="row">Switch Method (2022-7) </th>
-              <td>{{ object.switch_method|placeholder }}</td>
+              <td>{{ object.get_switch_method_display|placeholder }}</td>
             </tr>
 
           </table>
