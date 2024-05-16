@@ -52,7 +52,7 @@ class FormatTypeChoices(ChoiceSet):
 # todo feste auswahloptionen fpr pixel, bandbreite, usw....
 
 # choices for framerates in Format Presets
-class FpsChoices(ChoiceSet):  # todo in arbeit mit quelle!
+class FpsChoices(ChoiceSet):
     key = 'Format.fps'
 
     CHOICES = [
@@ -104,7 +104,7 @@ class Format(NetBoxModel):
     def get_absolute_url(self):
         return reverse('plugins:netbox_multicast_stream_mapping:format', args=[self.pk])
 
-    def get_format_type_color(self):
+    def get_type_color(self):
         return FormatTypeChoices.colors.get(self.type) # todo
 
 
@@ -124,6 +124,9 @@ class Processor(NetBoxModel): # todo device spalte anzahl an enpoints oder procs
 
     def get_absolute_url(self):
         return reverse('plugins:netbox_multicast_stream_mapping:processor', args=[self.pk])
+
+    def get_endpoint_count(self):
+        return self.endpoint_set.count()
 
 
 # model for internal processing units of devices -> has senders and receivers
