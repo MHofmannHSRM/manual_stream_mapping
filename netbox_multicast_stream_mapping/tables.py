@@ -2,7 +2,6 @@ import django_tables2 as tables
 from django_tables2.utils import A
 from netbox.tables import NetBoxTable, ChoiceFieldColumn, TagColumn, ManyToManyColumn, columns
 from .models import *
-# todo actions?
 
 
 class FormatTable(NetBoxTable):
@@ -53,7 +52,7 @@ class EndpointTable(NetBoxTable):
     primary_ip = tables.Column(linkify=True, verbose_name='Primary IP Address')
     secondary_ip = tables.Column(linkify=True, verbose_name='Secondary IP Address')
     max_bandwidth = tables.Column(verbose_name='Max. Bandwidth (Mbps)')
-    supported_formats = ManyToManyColumn(verbose_name='Supported Formats')
+    supported_formats = ManyToManyColumn(verbose_name='Supported Formats', linkify=True)
     switch_method = tables.Column(verbose_name='Switch Method (2022-7)') # todo button
     signal_type = ChoiceFieldColumn(verbose_name='Signal Type')
     description = tables.Column()
@@ -67,18 +66,20 @@ class EndpointTable(NetBoxTable):
             'pk', 'id', 'name', 'processor', 'interface', 'endpoint_type', 'primary_ip', 'secondary_ip',
             'max_bandwidth', 'supported_formats',  'signal_type', 'comments', 'description', 'tags'
         )  # todo updated?
-        default_columns = ('name', 'endpoint_type', 'signal_type', 'description',  'device', 'processor',
-                           'switch_method', 'supported_formats', 'primary_ip', 'secondary_ip', 'tags')
+        default_columns = (
+            'name', 'endpoint_type', 'signal_type', 'description',  'device', 'processor', 'switch_method',
+            'supported_formats', 'primary_ip', 'secondary_ip', 'tags'
+        )
 
 
 class StreamTable(NetBoxTable):
     name = tables.Column(linkify=True)
     sender = tables.Column(linkify=True)
-    receivers = tables.Column() # todo ändern
+    receivers = ManyToManyColumn(linkify=True) # todo ändern
     bandwidth = tables.Column() #rechtschreibfehler überall
     signal_type = tables.Column() #todo button
     protocol = tables.Column()
-    formats = tables.Column()
+    formats = ManyToManyColumn(verbose_name='Supported Formats', linkify=True)
     comments = tables.Column()
     description = tables.Column()
     tags = TagColumn()  # TODO -> Verlinkung -> Filter?

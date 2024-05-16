@@ -28,7 +28,16 @@
 <!--              todo dateteyp und link-->
             <tr>
               <th scope="row">Receivers</th>
-              <td>{{ object.receivers|linkify }}</td>
+              <td>
+                {% if object.receivers.all %}
+                  {% for receivers in object.receivers.all %}
+                    {{ receivers|linkify }}
+                    {% if not forloop.last %},&nbsp;{% endif %}
+                  {% endfor %}
+                {% else %}
+                   —
+                {% endif %}
+              </td>
             </tr>
 
             <tr>
@@ -52,7 +61,7 @@
                 {% if object.formats.all %}
                   {% for formats in object.formats.all %}
                     {{ formats|linkify }}
-                    {% if not forloop.last %}, {% endif %}
+                    {% if not forloop.last %},&nbsp;{% endif %}
                   {% endfor %}
                 {% else %}
                    —

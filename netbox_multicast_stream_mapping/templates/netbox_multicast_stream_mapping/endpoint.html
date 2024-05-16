@@ -84,7 +84,7 @@
                 {% if object.supported_formats.all %}
                   {% for format in object.supported_formats.all %}
                     {{ format|linkify }}
-                    {% if not forloop.last %}, {% endif %}
+                    {% if not forloop.last %},&nbsp;{% endif %}
                   {% endfor %}
                 {% else %}
                    —
