@@ -15,20 +15,21 @@ class FormatForm(NetBoxModelForm):
 
     fieldsets = (
         ('Format', ('name', 'type', 'description')),
-        ('Technical Parameter', ('res_h', 'res_w', 'fps', 'audio_ch')),
+        ('Technical Parameter', ('res_h', 'res_w', 'fps', 'audio_ch', 'port')),
         ('Tags', ('tags',)),
     )
 
     class Meta:
         model = Format
 
-        fields = ('name', 'type', 'res_h', 'res_w', 'fps', 'audio_ch', 'description', 'tags', 'comments')
+        fields = ('name', 'type', 'res_h', 'res_w', 'fps', 'audio_ch', 'description', 'tags', 'port', 'comments')
 
         labels = {
             'res_h': 'Vertical Resolution',
             'res_w': 'Horizontal Resolution',
             'fps': 'Frame Rate',
             'audio_ch': 'Number of Audio Channels',
+            'port': 'Network Port',
         }
 
 
@@ -41,6 +42,7 @@ class FormatFilterForm(NetBoxModelFilterSetForm):
     res_w = forms.IntegerField(label='Horizontal Resolution', required=False, min_value=0)
     fps = forms.ChoiceField(label='Frame Rate', choices=add_blank_choice(FpsChoices), required=False)
     audio_ch = forms.IntegerField(label='Number of Audio Channels', required=False, min_value=0)
+    port = forms.IntegerField(label='Network Port', required=False, min_value=0) # todo min max
     description = forms.CharField(required=False)
 
 
@@ -53,12 +55,13 @@ class FormatBulkEditForm(NetBoxModelBulkEditForm):
     res_w = forms.IntegerField(label='Horizontal Resolution', required=False, min_value=0)
     fps = forms.ChoiceField(label='Frame Rate', choices=add_blank_choice(FpsChoices), required=False)
     audio_ch = forms.IntegerField(label='Number of Audio Channels', required=False, min_value=0)
+    port = forms.IntegerField(label='Network Port', required=False, min_value=0) # todo min max
     description = forms.CharField(required=False)
     comments = CommentField(required=False)
 
     fieldsets = (
         ('Format', ('name', 'type', 'description')),
-        ('Technical Parameter', ('res_h', 'res_w', 'fps', 'audio_ch')),
+        ('Technical Parameter', ('res_h', 'res_w', 'fps', 'audio_ch', 'port')),
     )
 
     nullable_fields = ('description', 'comments')
@@ -122,8 +125,10 @@ class EndpointForm(NetBoxModelForm):
     class Meta:
         model = Endpoint
 
-        fields = ('name', 'device', 'processor', 'endpoint_type', 'signal_type', 'primary_ip', 'secondary_ip',
-                  'max_bandwidth', 'supported_formats', 'switch_method', 'description',  'tags', 'comments')
+        fields = (
+            'name', 'device', 'processor', 'endpoint_type', 'signal_type', 'primary_ip', 'secondary_ip',
+            'max_bandwidth', 'supported_formats', 'switch_method', 'description',  'tags', 'comments'
+        )
 
         labels = {
             'primary_ip': 'Primary IP Address',
@@ -199,8 +204,10 @@ class StreamForm(NetBoxModelForm):
 
     class Meta:
         model = Stream
-        fields = ('name', 'sender', 'receivers', 'bandwidth', 'signal_type', 'protocol', 'formats', 'description',
-                  'tags', 'comments')
+        fields = (
+            'name', 'sender', 'receivers', 'bandwidth', 'signal_type', 'protocol', 'formats', 'description', 'tags',
+            'comments'
+        )
 
 
 class StreamFilterForm(NetBoxModelFilterSetForm):

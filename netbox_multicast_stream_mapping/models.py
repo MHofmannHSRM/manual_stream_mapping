@@ -52,7 +52,7 @@ class FormatTypeChoices(ChoiceSet):
 # todo feste auswahloptionen fpr pixel, bandbreite, usw....
 
 # choices for framerates in Format Presets
-class FpsChoices(ChoiceSet): # todo in arbeit mit quelle!
+class FpsChoices(ChoiceSet):  # todo in arbeit mit quelle!
     key = 'Format.fps'
 
     CHOICES = [
@@ -91,6 +91,7 @@ class Format(NetBoxModel):
     res_w = models.PositiveIntegerField(null=True, blank=True)
     fps = models.CharField(choices=FpsChoices, null=True, blank=True)
     audio_ch = models.PositiveIntegerField(null=True, blank=True)
+    port = models.PositiveIntegerField(null=True, blank=True) # todo min/max?
     comments = models.TextField(blank=True)
     description = models.CharField(max_length=500, blank=True)
 

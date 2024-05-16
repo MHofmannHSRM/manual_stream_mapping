@@ -10,7 +10,7 @@ class FormatFilterSet(NetBoxModelFilterSet):
 
     class Meta:
         model = Format
-        fields = ('id', 'name', 'type', 'res_h', 'res_w', 'fps', 'audio_ch', 'description')  # TODO
+        fields = ('id', 'name', 'type', 'res_h', 'res_w', 'fps', 'audio_ch', 'port', 'description')  # TODO
 
     def search(self, queryset, name, value):
         return queryset.filter(description__icontains=value)
@@ -30,8 +30,10 @@ class EndpointFilterSet(NetBoxModelFilterSet):
 
     class Meta:
         model = Endpoint
-        fields = ('id', 'name', 'device', 'processor', 'endpoint_type', 'primary_ip', 'secondary_ip', 'max_bandwidth',
-                  'supported_formats', 'switch_method', 'signal_type', 'description')
+        fields = (
+            'id', 'name', 'device', 'processor', 'endpoint_type', 'primary_ip', 'secondary_ip', 'max_bandwidth',
+            'supported_formats', 'switch_method', 'signal_type', 'description'
+        )
 
     def search(self, queryset, name, value):
         return queryset.filter(description__icontains=value)

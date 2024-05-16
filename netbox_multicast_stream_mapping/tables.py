@@ -7,19 +7,22 @@ from .models import *
 
 class FormatTable(NetBoxTable):
     name = tables.Column(linkify=True)
-    type = ChoiceFieldColumn()
+    type = ChoiceFieldColumn() # todo button color
     res_h = tables.Column(verbose_name='Vertical Resolution')
     res_w = tables.Column(verbose_name='Horizontal Resolution')
     fps = ChoiceFieldColumn(verbose_name='Frame Rate')
     audio_ch = tables.Column(verbose_name='Number of Audio Channels')
+    port = tables.Column(verbose_name='Network Port')
     comments = tables.Column()
     description = tables.Column()
     tags = TagColumn()  # TODO -> Verlinkung -> Filter?
 
     class Meta(NetBoxTable.Meta):
         model = Format
-        fields = ('pk', 'id', 'name', 'type', 'res_h', 'res_w', 'fps', 'audio_ch', 'comments', 'description', 'tags') # todo updated?
-        default_columns = ('name', 'type', 'res_h', 'res_w', 'fps', 'audio_ch', 'description', 'tags')
+        fields = (
+            'pk', 'id', 'name', 'type', 'res_h', 'res_w', 'fps', 'audio_ch', 'port', 'comments', 'description', 'tags'
+        ) # todo updated?
+        default_columns = ('name', 'type', 'res_h', 'res_w', 'fps', 'audio_ch', 'port', 'description', 'tags')
 
 
 class ProcessorTable(NetBoxTable):
@@ -45,12 +48,12 @@ class EndpointTable(NetBoxTable):
     name = tables.Column(linkify=True)
     device = tables.Column(linkify=True)
     processor = tables.Column(linkify=True)
-    endpoint_type = tables.Column(verbose_name='Endpoint Type')
+    endpoint_type = tables.Column(verbose_name='Endpoint Type') # todo button
     primary_ip = tables.Column(linkify=True, verbose_name='Primary IP Address')
     secondary_ip = tables.Column(linkify=True, verbose_name='Secondary IP Address')
     max_bandwidth = tables.Column(verbose_name='Max. Bandwidth (Mbps)')
     supported_formats = ManyToManyColumn(verbose_name='Supported Formats')
-    switch_method = tables.Column(verbose_name='Switch Method (2022-7)')
+    switch_method = tables.Column(verbose_name='Switch Method (2022-7)') # todo button
     signal_type = ChoiceFieldColumn(verbose_name='Signal Type')
     description = tables.Column()
     comments = tables.Column()
@@ -59,18 +62,20 @@ class EndpointTable(NetBoxTable):
     class Meta(NetBoxTable.Meta):
         model = Endpoint
         # template_name = 'utilities/tables/netbox_table.html' TODO
-        fields = ('pk', 'id', 'name', 'processor', 'endpoint_type', 'primary_ip', 'secondary_ip', 'max_bandwidth',
-                  'supported_formats',  'signal_type', 'comments', 'description', 'tags')  # todo updated?
+        fields = (
+            'pk', 'id', 'name', 'processor', 'endpoint_type', 'primary_ip', 'secondary_ip', 'max_bandwidth',
+            'supported_formats',  'signal_type', 'comments', 'description', 'tags'
+        )  # todo updated?
         default_columns = ('name', 'endpoint_type', 'signal_type', 'description',  'device', 'processor',
                            'switch_method', 'supported_formats', 'primary_ip', 'secondary_ip', 'tags')
 
 
 class StreamTable(NetBoxTable):
     name = tables.Column(linkify=True)
-    sender = tables.Column()
+    sender = tables.Column(linkify=True)
     receivers = tables.Column() # todo ändern
     bandwidth = tables.Column() #rechtschreibfehler überall
-    signal_type = tables.Column()
+    signal_type = tables.Column() #todo button
     protocol = tables.Column()
     formats = tables.Column()
     comments = tables.Column()
@@ -80,6 +85,8 @@ class StreamTable(NetBoxTable):
     class Meta(NetBoxTable.Meta):
         model = Stream
         # template_name = 'utilities/tables/netbox_table.html' TODO
-        fields = ('pk', 'id', 'name', 'sender', 'receivers', 'bandwidth', 'signal_type', 'protocol',
-                  'formats', 'comments', 'description', 'tags') # todo updated?
+        fields = (
+            'pk', 'id', 'name', 'sender', 'receivers', 'bandwidth', 'signal_type', 'protocol', 'formats', 'comments',
+            'description', 'tags'
+        ) # todo updated?
         default_columns = ('name', 'signal_type', 'sender', 'receivers', 'description', 'tags')

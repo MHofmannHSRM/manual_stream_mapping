@@ -82,6 +82,6 @@ class FormatSerializer(NetBoxModelSerializer):
     class Meta:
         model = Format
         fields = (
-            'id', 'url', 'display', 'name', 'type', 'res_h', 'res_w', 'fps', 'audio_ch', 'comments', 'description',
-            'custom_fields', 'created', 'last_updated',
+            'id', 'url', 'display', 'name', 'type', 'res_h', 'res_w', 'fps', 'audio_ch', 'port', 'comments',
+            'description', 'custom_fields', 'created', 'last_updated',
         )
