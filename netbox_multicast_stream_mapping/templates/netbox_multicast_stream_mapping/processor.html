@@ -27,7 +27,6 @@
               <td>{{ object.module|linkify|placeholder }}</td>
             </tr>
 
-<!--todo zähler mit link-->
             <tr>
                 <th scope="row">Number of Endpoints</th>
                 <td><a href="{% url 'plugins:netbox_multicast_stream_mapping:endpoint_children' object.pk %}">{{ object.get_endpoint_count }}</a></td>

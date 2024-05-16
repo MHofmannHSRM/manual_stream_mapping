@@ -125,6 +125,7 @@ class Processor(NetBoxModel): # todo device spalte anzahl an enpoints oder procs
     def get_absolute_url(self):
         return reverse('plugins:netbox_multicast_stream_mapping:processor', args=[self.pk])
 
+    # function to get number of endpoints for detail view template
     def get_endpoint_count(self):
         return self.endpoint_set.count()
 
