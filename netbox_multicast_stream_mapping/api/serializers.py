@@ -5,8 +5,39 @@ from ipam.api.serializers import NestedPrefixSerializer
 from ..models import Processor, Endpoint, Stream, Format
 
 
+# Format ---------------------------------------------------------------------------------------------------------------
+
+class NestedFormatSerializer(NetBoxModelSerializer):
+
+    url = serializers.HyperlinkedIdentityField(
+        view_name='plugins-api:netbox_multicast_stream_mapping-api:format-detail'
+    )
+
+    class Meta:
+        model = Format
+        fields = ('id', 'url', 'display', 'name')
+
+
+class FormatSerializer(NetBoxModelSerializer):
+
+    url = serializers.HyperlinkedIdentityField(
+        view_name='plugins-api:netbox_multicast_stream_mapping-api:format-detail'
+    )
+
+    class Meta:
+        model = Format
+        fields = (
+            'id', 'url', 'display', 'name', 'type', 'res_h', 'res_w', 'fps', 'audio_ch', 'port', 'comments',
+            'description', 'custom_fields', 'created', 'last_updated',
+        )
+
+
+# Processor ------------------------------------------------------------------------------------------------------------
+
 class NestedProcessorSerializer(WritableNestedSerializer):
-    url = serializers.HyperlinkedIdentityField(view_name='plugins-api:netbox_multicast_stream_mapping-api:processor-detail')
+    url = serializers.HyperlinkedIdentityField(
+        view_name='plugins-api:netbox_multicast_stream_mapping-api:processor-detail'
+    )
 
     class Meta:
         model = Processor
@@ -15,11 +46,9 @@ class NestedProcessorSerializer(WritableNestedSerializer):
 
 class ProcessorSerializer(NetBoxModelSerializer):
 
-    url = serializers.HyperlinkedIdentityField(view_name='plugins-api:netbox_multicast_stream_mapping-api:processor-detail')
-
-    # todo access_list = NestedAccessListSerializer()
-    # todo andere modlle     source_prefix = NestedPrefixSerializer()
-    # todo rules count
+    url = serializers.HyperlinkedIdentityField(
+        view_name='plugins-api:netbox_multicast_stream_mapping-api:processor-detail'
+    )
 
     class Meta:
         model = Processor
@@ -29,25 +58,24 @@ class ProcessorSerializer(NetBoxModelSerializer):
         )
 
 
-# class NestedMulticastSenderSerializer(WritableNestedSerializer):
-#     url = serializers.HyperlinkedIdentityField(view_name='plugins-api:netbox_multicast_stream_mapping-api:multicast_sender-detail')
-#
-#     class Meta:
-#         model = MulticastSender
-#         fields = ('id', 'url', 'display', 'name')
-#
+# Endpoint -------------------------------------------------------------------------------------------------------------
 
+class NestedEndpointSerializer(NetBoxModelSerializer):
 
-# TODO Nested Endpojnt + alle?
+    url = serializers.HyperlinkedIdentityField(
+        view_name='plugins-api:netbox_multicast_stream_mapping-api:endpoint-detail'
+    )
+
+    class Meta:
+        model = Endpoint
+        fields = ('id', 'url', 'display', 'name')
 
 
 class EndpointSerializer(NetBoxModelSerializer):
 
-    url = serializers.HyperlinkedIdentityField(view_name='plugins-api:netbox_multicast_stream_mapping-api:endpoint-detail')
-
-    # todo access_list = NestedAccessListSerializer()
-    # todo andere modlle     source_prefix = NestedPrefixSerializer()
-    # todo rules count
+    url = serializers.HyperlinkedIdentityField(
+        view_name='plugins-api:netbox_multicast_stream_mapping-api:endpoint-detail'
+    )
 
     class Meta:
         model = Endpoint
@@ -58,30 +86,28 @@ class EndpointSerializer(NetBoxModelSerializer):
         )
 
 
+# Stream ---------------------------------------------------------------------------------------------------------------
+
+class NestedStreamSerializer(NetBoxModelSerializer):
+
+    url = serializers.HyperlinkedIdentityField(
+        view_name='plugins-api:netbox_multicast_stream_mapping-api:stream-detail'
+    )
+
+    class Meta:
+        model = Stream
+        fields = ('id', 'url', 'display', 'name')
+
+
 class StreamSerializer(NetBoxModelSerializer):
 
-    url = serializers.HyperlinkedIdentityField(view_name='plugins-api:netbox_multicast_stream_mapping-api:stream-detail')
-
-    # todo access_list = NestedAccessListSerializer()
-    # todo andere modlle     source_prefix = NestedPrefixSerializer()
-    # todo rules count
+    url = serializers.HyperlinkedIdentityField(
+        view_name='plugins-api:netbox_multicast_stream_mapping-api:stream-detail'
+    )
 
     class Meta:
         model = Stream
         fields = (
             'id', 'url', 'display', 'name', 'sender', 'receivers', 'bandwidth', 'formats', 'signal_type',
             'comments', 'description', 'tags', 'custom_fields', 'created', 'last_updated',
-        )
-
-
-# todo
-class FormatSerializer(NetBoxModelSerializer):
-
-    url = serializers.HyperlinkedIdentityField(view_name='plugins-api:netbox_multicast_stream_mapping-api:format-detail')
-
-    class Meta:
-        model = Format
-        fields = (
-            'id', 'url', 'display', 'name', 'type', 'res_h', 'res_w', 'fps', 'audio_ch', 'port', 'comments',
-            'description', 'custom_fields', 'created', 'last_updated',
         )
