@@ -3,11 +3,13 @@ from netbox.api.viewsets import NetBoxModelViewSet
 from .. import filtersets, models
 from .serializers import *
 
+# View Sets for api
+
 
 class FormatViewSet(NetBoxModelViewSet):
     queryset = models.Format.objects.prefetch_related('tags')
     serializer_class = FormatSerializer
-    # filterset_class = filtersets.StreamFilterSet
+    filterset_class = filtersets.FormatFilterSet
 
 
 class ProcessorViewSet(NetBoxModelViewSet):

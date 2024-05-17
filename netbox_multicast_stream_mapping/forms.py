@@ -5,11 +5,12 @@ from utilities.forms.fields import CommentField, DynamicModelChoiceField
 
 from .models import *
 from dcim.models import Device, Module, Interface
-from ipam.models import IPAddress  # todo korrekt oder range?
+from ipam.models import IPAddress  # TODO korrekt oder range?
 
 
 # Format ---------------------------------------------------------------------------------------------------------------
 
+# form for creating or editing format tags
 class FormatForm(NetBoxModelForm):
     comments = CommentField()
 
@@ -33,6 +34,7 @@ class FormatForm(NetBoxModelForm):
         }
 
 
+# form for filtering format tags
 class FormatFilterForm(NetBoxModelFilterSetForm):
     model = Format
 
@@ -42,10 +44,11 @@ class FormatFilterForm(NetBoxModelFilterSetForm):
     res_w = forms.IntegerField(label='Horizontal Resolution', required=False, min_value=0)
     fps = forms.ChoiceField(label='Frame Rate', choices=add_blank_choice(FpsChoices), required=False)
     audio_ch = forms.IntegerField(label='Number of Audio Channels', required=False, min_value=0)
-    port = forms.IntegerField(label='Network Port', required=False, min_value=0) # todo min max
+    port = forms.IntegerField(label='Network Port', required=False, min_value=0) # TODO min max
     description = forms.CharField(required=False)
 
 
+# form for editing many format tags at once
 class FormatBulkEditForm(NetBoxModelBulkEditForm):
     model = Format
 
@@ -55,7 +58,7 @@ class FormatBulkEditForm(NetBoxModelBulkEditForm):
     res_w = forms.IntegerField(label='Horizontal Resolution', required=False, min_value=0)
     fps = forms.ChoiceField(label='Frame Rate', choices=add_blank_choice(FpsChoices), required=False)
     audio_ch = forms.IntegerField(label='Number of Audio Channels', required=False, min_value=0)
-    port = forms.IntegerField(label='Network Port', required=False, min_value=0) # todo min max
+    port = forms.IntegerField(label='Network Port', required=False, min_value=0) # TODO min max
     description = forms.CharField(required=False)
     comments = CommentField(required=False)
 
@@ -69,6 +72,7 @@ class FormatBulkEditForm(NetBoxModelBulkEditForm):
 
 # Processor ------------------------------------------------------------------------------------------------------------
 
+# form for creating or editing processor
 class ProcessorForm(NetBoxModelForm):
     comments = CommentField()
 
@@ -83,20 +87,21 @@ class ProcessorForm(NetBoxModelForm):
         fields = ('name', 'device', 'module', 'description', 'tags', 'comments')
 
 
+# form for filtering processors
 class ProcessorFilterForm(NetBoxModelFilterSetForm):
     model = Processor
 
-    name = forms.CharField(required=False) # todo muss eindeutig -> generell alle namen
+    name = forms.CharField(required=False)
     device = DynamicModelChoiceField(queryset=Device.objects.all(), required=False)
     module = DynamicModelChoiceField(queryset=Module.objects.all(), required=False)
     description = forms.CharField(required=False)
 
 
+# form for editing many processors at once
 class ProcessorBulkEditForm(NetBoxModelBulkEditForm):
     model = Processor
 
-    # todo felder anpassen
-    name = forms.CharField(required=False) # todo muss eindeutig
+    name = forms.CharField(required=False)
     description = forms.CharField(required=False)
     comments = CommentField(required=False)
     device = DynamicModelChoiceField(queryset=Device.objects.all(), required=False)
@@ -111,6 +116,7 @@ class ProcessorBulkEditForm(NetBoxModelBulkEditForm):
 
 # Endpoint -------------------------------------------------------------------------------------------------------------
 
+# form for creating or editing endpoints
 class EndpointForm(NetBoxModelForm):
     # site = DynamicModelChoiceField(queryset=Site.objects.all())
     comments = CommentField()
@@ -139,10 +145,11 @@ class EndpointForm(NetBoxModelForm):
         }
 
 
+# form for filtering endpoints
 class EndpointFilterForm(NetBoxModelFilterSetForm):
     model = Endpoint
 
-    name = forms.CharField(required=False)  # todo muss eindeutig
+    name = forms.CharField(required=False)
     device = DynamicModelChoiceField(queryset=Device.objects.all(), required=False)
     processor = DynamicModelChoiceField(queryset=Processor.objects.all(), required=False)
     interface = DynamicModelChoiceField(queryset=Interface.objects.all(), required=False)
@@ -155,21 +162,17 @@ class EndpointFilterForm(NetBoxModelFilterSetForm):
     signal_type = forms.ChoiceField(label='Signal Type', choices=add_blank_choice(SignalTypeChoices), required=False)
     description = forms.CharField(required=False)
 
-    # access_list = forms.ModelMultipleChoiceField( TODO -> für sender/receiver
-    #     queryset=AccessList.objects.all(),
-    #     required=False
-    # )
     #
-    # index = forms.IntegerField( # todo was heißt index ?
+    # index = forms.IntegerField( # todo was heißt index ? -> doku nachlesen!!
     #     required=False
     # )
 
 
+# form for editing many processors at once
 class EndpointBulkEditForm(NetBoxModelBulkEditForm):
     model = Endpoint
 
-    # todo felder anpassen -> feiheiten, konsistenz reihenfolge/gliederung?
-    name = forms.CharField(required=False)  # todo muss eindeutig
+    name = forms.CharField(required=False)
     device = DynamicModelChoiceField(queryset=Device.objects.all(), required=False)
     processor = DynamicModelChoiceField(queryset=Processor.objects.all(), required=False)
     interface = DynamicModelChoiceField(queryset=Interface.objects.all(), required=False)
@@ -193,8 +196,8 @@ class EndpointBulkEditForm(NetBoxModelBulkEditForm):
 
 
 # Stream/Flow ----------------------------------------------------------------------------------------------------------
-# TODO alle Stream FUnktionen nochmal anpassen
 
+# form for creating or editing streams between endpoints
 class StreamForm(NetBoxModelForm):
     comments = CommentField()
 
@@ -212,10 +215,12 @@ class StreamForm(NetBoxModelForm):
         )
 
 
+# form for filtering streams
 class StreamFilterForm(NetBoxModelFilterSetForm):
     model = Stream
 
 
+# form for editing many streams at once
 class StreamBulkEditForm(NetBoxModelBulkEditForm):
     model = Stream
 
@@ -231,7 +236,7 @@ class StreamBulkEditForm(NetBoxModelBulkEditForm):
 
     fieldsets = (
         ('Stream', ('name', 'sender', 'receivers', 'description')),
-        ('Technical Parameters', ('bandwidth', 'signal_type', 'protocol', 'formats')),
+        ('Technical Parameters', ('bandwidth', 'signal_type', 'protocol', 'supported_formats')),
     )
 
     nullable_fields = ('description', 'comments')

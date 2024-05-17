@@ -49,13 +49,14 @@ class FormatTypeChoices(ChoiceSet):
         ('ect', 'Ect.'),
     ]
 
-# todo feste auswahloptionen fpr pixel, bandbreite, usw....
 
-# choices for framerates in Format Presets
+# todo feste auswahloptionen fpr pixel, bandbreite, usw....
+# choices for frame rates in Format Presets
 class FpsChoices(ChoiceSet):
     key = 'Format.fps'
 
     CHOICES = [
+        # progressive broadcast
         ('p25', 'p25'),
         ('p29.97', 'p29.97'),
         ('p30', 'p30'),
@@ -63,21 +64,17 @@ class FpsChoices(ChoiceSet):
         ('p59.94', 'p59.94'),
         ('p60', 'p60'),
 
+        # interlaced broadcast
         ('i50', 'i50'),
         ('i59.94', 'i59.94'),
         ('i60', 'i60'),
 
+        # high frame rate
         ('p100', 'p100'),
         ('p120', 'p120'),
         ('p144', 'p144'),
         ('p180', 'p180'),
         ('p240', 'p240'),
-
-        ('p23.976', 'p23.976'),
-        ('p24', 'p24'),
-        ('p48', 'p48'),
-        ('p72', 'p72'),
-        ('p96', 'p96'),
     ]
 
 
@@ -98,12 +95,15 @@ class Format(NetBoxModel):
     class Meta:
         ordering = ("name",)
 
+    # returns human readable name
     def __str__(self):
         return self.name
 
+    # django convention for URL mapping
     def get_absolute_url(self):
         return reverse('plugins:netbox_multicast_stream_mapping:format', args=[self.pk])
 
+    # returns badge color for multiple choice fields
     def get_type_color(self):
         return FormatTypeChoices.colors.get(self.type)
 
@@ -119,9 +119,11 @@ class Processor(NetBoxModel): # todo device spalte anzahl an enpoints oder procs
     class Meta:
         ordering = ("name",)
 
+    # returns human readable name
     def __str__(self):
         return self.name
 
+    # django convention for URL mapping
     def get_absolute_url(self):
         return reverse('plugins:netbox_multicast_stream_mapping:processor', args=[self.pk])
 
@@ -150,18 +152,23 @@ class Endpoint(NetBoxModel):
         ordering = ("name",)
         # todo unique_together = ('access_list', 'index') ?
 
+    # returns human readable name
     def __str__(self):
         return self.name
 
+    # django convention for URL mapping
     def get_absolute_url(self):
         return reverse('plugins:netbox_multicast_stream_mapping:endpoint', args=[self.pk])
 
+    # returns badge color for multiple choice fields
     def get_signal_type_color(self):
         return SignalTypeChoices.colors.get(self.signal_type)
 
+    # returns badge color for multiple choice fields
     def get_switch_method_color(self):
         return SwitchMethodChoices.colors.get(self.switch_method)
 
+    # returns badge color for multiple choice fields
     def get_endpoint_type_color(self):
         return EndpointTypeChoices.colors.get(self.endpoint_type)
 
@@ -181,11 +188,14 @@ class Stream(NetBoxModel):
     class Meta:
         ordering = ("name",)
 
+    # returns human readable name
     def __str__(self):
         return self.name
 
+    # django convention for URL mapping
     def get_absolute_url(self):
         return reverse('plugins:netbox_multicast_stream_mapping:stream', args=[self.pk])
 
+    # returns badge color for multiple choice fields
     def get_signal_type_color(self):
         return SignalTypeChoices.colors.get(self.signal_type)

@@ -7,8 +7,7 @@ from .tables import *
 from .filtersets import *
 from .forms import *
 from dcim.models import Device
-# todo suche geht nicht (?)
-# todo in allen lösch/edit ansichten filter und filterset
+# todo logik!" auswahl, filterung, ...
 
 # Format ---------------------------------------------------------------------------------------------------------------
 
@@ -31,11 +30,10 @@ class FormatEditView(generic.ObjectEditView):
     queryset = Format.objects.all()
     form = FormatForm
 
-
+# bulk edit view
 class FormatBulkEditView(generic.BulkEditView):
     queryset = Format.objects.all()
     filterset = FormatFilterSet
-
     table = FormatTable
     form = FormatBulkEditForm
 
@@ -45,6 +43,7 @@ class FormatDeleteView(generic.ObjectDeleteView):
     queryset = Format.objects.all()
 
 
+# bulk delete view
 class FormatBulkDeleteView(generic.BulkDeleteView):
     queryset = Format.objects.prefetch_related("tags")
     filterset = FormatFilterSet
@@ -58,9 +57,9 @@ class FormatBulkDeleteView(generic.BulkDeleteView):
 class ProcessorView(generic.ObjectView):
     queryset = Processor.objects.all()
 
+    # extra function to get number of endpoints -> will be displayed in detail view -> template.html
     def get_extra_context(self, request, instance):
         endpoints = instance.endpoint_set.all()
-
         table = EndpointTable(endpoints)
         table.configure(request)
 
@@ -69,7 +68,8 @@ class ProcessorView(generic.ObjectView):
 
 # list view
 class ProcessorListView(generic.ObjectListView):
-    queryset = Processor.objects.annotate(endpoint_count=Count('endpoint'))# TODO
+    # annotate queryset to display count of endpoints in list view
+    queryset = Processor.objects.annotate(endpoint_count=Count('endpoint'))
     table = ProcessorTable
     filterset = ProcessorFilterSet
     filterset_form = ProcessorFilterForm
@@ -81,6 +81,7 @@ class ProcessorEditView(generic.ObjectEditView):
     form = ProcessorForm
 
 
+# bulk edit view
 class ProcessorBulkEditView(generic.BulkEditView):
     queryset = Processor.objects.all()
     filterset = ProcessorFilterSet
@@ -90,12 +91,13 @@ class ProcessorBulkEditView(generic.BulkEditView):
 
 # delete view
 class ProcessorDeleteView(generic.ObjectDeleteView):
-    queryset = Processor.objects.all() # todo count funktion?
-# todo alle farben in ansichten?
+    queryset = Processor.objects.all()
 
 
+# bulk delete view
 class ProcessorBulkDeleteView(generic.BulkDeleteView):
-    queryset = Processor.objects.prefetch_related("tags")
+    # annotate queryset to display count of endpoints in list view
+    queryset = Processor.objects.prefetch_related("tags").annotate(endpoint_count=Count('endpoint'))
     filterset = ProcessorFilterSet
     table = ProcessorTable
 
@@ -122,6 +124,7 @@ class EndpointEditView(generic.ObjectEditView):
     form = EndpointForm
 
 
+# bulk edit view
 class EndpointBulkEditView(generic.BulkEditView):
     queryset = Endpoint.objects.all()
     filterset = EndpointFilterSet
@@ -134,6 +137,7 @@ class EndpointDeleteView(generic.ObjectDeleteView):
     queryset = Endpoint.objects.all()
 
 
+# bulk delete view
 class EndpointBulkDeleteView(generic.BulkDeleteView):
     queryset = Endpoint.objects.prefetch_related("tags")
     filterset = EndpointFilterSet
@@ -151,8 +155,6 @@ class StreamView(generic.ObjectView):
 # list view
 class StreamListView(generic.ObjectListView):
     queryset = Stream.objects.all()
-    # für logik
-    # queryset = models.AccessList.objects.annotate(rule_count=Count('rules'))
     table = StreamTable
     filterset = StreamFilterSet
     filterset_form = StreamFilterForm
@@ -164,6 +166,7 @@ class StreamEditView(generic.ObjectEditView):
     form = StreamForm
 
 
+# bulk edit view
 class StreamBulkEditView(generic.BulkEditView):
     queryset = Stream.objects.all()
     filterset = StreamFilterSet
@@ -176,6 +179,7 @@ class StreamDeleteView(generic.ObjectDeleteView):
     queryset = Stream.objects.all()
 
 
+# bulk delete view
 class StreamBulkDeleteView(generic.BulkDeleteView):
     queryset = Stream.objects.prefetch_related("tags")
     filterset = StreamFilterSet
@@ -186,7 +190,8 @@ class StreamBulkDeleteView(generic.BulkDeleteView):
 
 
 # todo spalte in device list view?
-# processor view for devices
+# todo überschrift anpassen? in tempalte!!
+# processor view for devices -> shows all processors of selected device
 @register_model_view(model=Device, name='Processors', path='processors')
 class DeviceProcessorView(generic.ObjectChildrenView):
     queryset = Device.objects.all()
@@ -195,18 +200,19 @@ class DeviceProcessorView(generic.ObjectChildrenView):
     filterset = ProcessorFilterSet
     template_name = 'netbox_multicast_stream_mapping/processor_list.html'
 
+    # creates tab in device detail view showing all linked processors
     tab = ViewTab(
-        label="Processors",
-        weight=100,
-        badge=lambda obj: Processor.objects.filter(device=obj).count(),
+        label="Processors",  # display name
+        weight=100,  # weight for order in tab row
+        badge=lambda obj: Processor.objects.filter(device=obj).count(),  # badge with number of linked processors
     )
 
+    # returns all children processors and also annotates queryset with number of endpoints to display in list view
     def get_children(self, request, instance):
         return Processor.objects.filter(device=instance).annotate(endpoint_count=Count('endpoint'))
 
 
 # todo spalte in device list view?
-# todo urls registrieeren?
 # processor view for devices
 @register_model_view(model=Device, name='Endpoints', path='endpoints')
 class DeviceEndpointView(generic.ObjectChildrenView):
@@ -214,24 +220,27 @@ class DeviceEndpointView(generic.ObjectChildrenView):
     child_model = Endpoint
     table = EndpointTable
     filterset = EndpointFilterSet
-    template_name = 'netbox_multicast_stream_mapping/processor_list.html' # todo eigenes template?
+    template_name = 'netbox_multicast_stream_mapping/processor_list.html'
 
+    # creates tab in device detail view showing all linked endpoints
     tab = ViewTab(
-        label="Endpoints",
-        weight=110,
-        badge=lambda obj: Endpoint.objects.filter(device=obj).count(),
+        label="Endpoints",  # display name
+        weight=110,  # weight for order in tab row -> one after processor tab
+        badge=lambda obj: Endpoint.objects.filter(device=obj).count(),  # badge with number of linked endpoints
     )
 
+    # returns all children endpoints of current device
     def get_children(self, request, instance):
         return Endpoint.objects.filter(device=instance)
 
 
-# endpoint view for single processor
+# endpoint view for single processor -> shows all linked endpoints
 class EndpointChildView(generic.ObjectChildrenView):
     queryset = Processor.objects.all().prefetch_related('endpoint_set')
     child_model = Endpoint
     table = EndpointTable
     template_name = "netbox_multicast_stream_mapping/endpoint_list.html"
 
+    # returns all children endpoints of current processor
     def get_children(self, request, parent):
         return parent.endpoint_set.all()

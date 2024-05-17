@@ -1,6 +1,8 @@
 from netbox.api.routers import NetBoxRouter
 from . import views
 
+# url router for api
+
 
 app_name = 'netbox_multicast_stream_mapping'
 

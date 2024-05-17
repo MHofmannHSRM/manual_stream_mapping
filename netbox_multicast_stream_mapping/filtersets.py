@@ -1,16 +1,16 @@
 # import django_filters
 from netbox.filtersets import NetBoxModelFilterSet
 from .models import *
-# todo TagFilter?
 # todo auch in bulk edit/bulkd delete
-# todo auch rest api filterset_class
+
+# all flter sets for all objects and the attributes the user can filter by
 
 
 class FormatFilterSet(NetBoxModelFilterSet):
 
     class Meta:
         model = Format
-        fields = ('id', 'name', 'type', 'res_h', 'res_w', 'fps', 'audio_ch', 'port', 'description')  # TODO
+        fields = ('id', 'name', 'type', 'res_h', 'res_w', 'fps', 'audio_ch', 'port', 'description')
 
     def search(self, queryset, name, value):
         return queryset.filter(description__icontains=value)
