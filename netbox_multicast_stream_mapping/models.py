@@ -12,8 +12,8 @@ class EndpointTypeChoices(ChoiceSet):
     key = 'Endpoint.endpoint_type'
 
     CHOICES = [
-        ('sender', 'Sender', 'green'),
-        ('receiver', 'Receiver', 'blue'),
+        ('sender', 'Sender', 'red'),
+        ('receiver', 'Receiver', 'green'),
     ]
 
 
@@ -22,9 +22,9 @@ class SignalTypeChoices(ChoiceSet):
     key = 'Endpoint.signal_type'
 
     CHOICES = [
-        ('video', 'Video', 'red'),
-        ('audio', 'Audio', 'blue'),
-        ('metadata', 'Metadata', 'yellow'),
+        ('video', 'Video', 'blue'),
+        ('audio', 'Audio', 'yellow'),
+        ('metadata', 'Metadata', 'orange'),
     ]
 
 
@@ -33,8 +33,8 @@ class SwitchMethodChoices(ChoiceSet):
     key = 'Endpoint.switch_method'
 
     CHOICES = [
-        ('sips_merge', 'SiPs Merge', 'red'),
-        ('sips_split', 'SiPs Split', 'green'),
+        ('sips_merge', 'SiPs Merge', 'cyan'),
+        ('sips_split', 'SiPs Split', 'purple'),
     ]
 
 
@@ -43,10 +43,10 @@ class FormatTypeChoices(ChoiceSet):
     key = 'Format.type'
 
     CHOICES = [
-        ('video', 'Video', 'red'),
-        ('audio', 'Audio', 'blue'),
-        ('metadata', 'Metadata', 'yellow'),
-        ('ect', 'Ect.', 'green'),
+        ('video', 'Video', 'blue'),
+        ('audio', 'Audio', 'yellow'),
+        ('metadata', 'Metadata', 'orange'),
+        ('ect', 'Ect.'),
     ]
 
 # todo feste auswahloptionen fpr pixel, bandbreite, usw....
@@ -105,7 +105,7 @@ class Format(NetBoxModel):
         return reverse('plugins:netbox_multicast_stream_mapping:format', args=[self.pk])
 
     def get_type_color(self):
-        return FormatTypeChoices.colors.get(self.type) # todo
+        return FormatTypeChoices.colors.get(self.type)
 
 
 # model for internal processing units of devices -> has senders and receivers
@@ -141,7 +141,7 @@ class Endpoint(NetBoxModel):
     secondary_ip = models.OneToOneField(to='ipam.IPAddress', on_delete=models.SET_NULL, related_name='+', blank=True, null=True)
     max_bandwidth = models.FloatField(null=True, blank=True)
     supported_formats = models.ManyToManyField(to=Format, blank=True) # todo filter basiert auf signal type?
-    switch_method = models.CharField(choices=SwitchMethodChoices, null=True, blank=True)
+    switch_method = models.CharField(choices=SwitchMethodChoices, null=True, blank=True) # todo plakette
     signal_type = models.CharField(choices=SignalTypeChoices, null=True, blank=True)
     description = models.CharField(max_length=500, null=True, blank=True)
     comments = models.TextField(null=True, blank=True)
@@ -158,6 +158,12 @@ class Endpoint(NetBoxModel):
 
     def get_signal_type_color(self):
         return SignalTypeChoices.colors.get(self.signal_type)
+
+    def get_switch_method_color(self):
+        return SwitchMethodChoices.colors.get(self.switch_method)
+
+    def get_endpoint_type_color(self):
+        return EndpointTypeChoices.colors.get(self.endpoint_type)
 
 
 # model for internal processing units of devices -> has senders and receivers

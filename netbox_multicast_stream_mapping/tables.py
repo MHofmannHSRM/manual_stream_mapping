@@ -48,12 +48,12 @@ class EndpointTable(NetBoxTable):
     device = tables.Column(linkify=True)
     processor = tables.Column(linkify=True)
     interface = tables.Column(linkify=True)
-    endpoint_type = tables.Column(verbose_name='Endpoint Type') # todo button
+    endpoint_type = ChoiceFieldColumn(verbose_name='Endpoint Type') # todo button
     primary_ip = tables.Column(linkify=True, verbose_name='Primary IP Address')
     secondary_ip = tables.Column(linkify=True, verbose_name='Secondary IP Address')
     max_bandwidth = tables.Column(verbose_name='Max. Bandwidth (Mbps)')
     supported_formats = ManyToManyColumn(verbose_name='Supported Formats', linkify=True)
-    switch_method = tables.Column(verbose_name='Switch Method (2022-7)') # todo button
+    switch_method = ChoiceFieldColumn(verbose_name='Switch Method (2022-7)') # todo button
     signal_type = ChoiceFieldColumn(verbose_name='Signal Type')
     description = tables.Column()
     comments = tables.Column()
