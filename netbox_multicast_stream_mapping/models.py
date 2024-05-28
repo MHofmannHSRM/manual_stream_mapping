@@ -94,6 +94,7 @@ class Format(NetBoxModel):
 
     class Meta:
         ordering = ("name",)
+        unique_together = ("name",)
 
     # returns human readable name
     def __str__(self):
@@ -118,6 +119,8 @@ class Processor(NetBoxModel): # todo device spalte anzahl an enpoints oder procs
 
     class Meta:
         ordering = ("name",)
+        unique_together = ("name",)
+        # TODO mehr?
 
     # returns human readable name
     def __str__(self):
@@ -150,7 +153,8 @@ class Endpoint(NetBoxModel):
 
     class Meta:
         ordering = ("name",)
-        # todo unique_together = ('access_list', 'index') ?
+        unique_together = ("name",)
+        # todo mehr ?
 
     # returns human readable name
     def __str__(self):
@@ -187,6 +191,7 @@ class Stream(NetBoxModel):
 
     class Meta:
         ordering = ("name",)
+        unique_together = ("name",)
 
     # returns human readable name
     def __str__(self):
